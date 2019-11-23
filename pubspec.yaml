@@ -25,6 +25,8 @@ dependencies:
   firebase_auth: ^0.8.3
   google_sign_in: ^4.0.1+1
   geolocator: 5.0.1
+  google_maps_webservice: ^0.0.16
+  google_maps_flutter: ^0.5.21+12
   uuid: ^2.0.2
   image: ^2.0.7
   animator: 0.1.4
@@ -34,7 +36,10 @@ dependencies:
   timeago: 2.0.17
   cached_network_image:
   flutter_svg:
-  google_maps_flutter: ^0.5.21+12
+  new_geolocation:
+    git:
+      url: https://github.com/alfanhui/new_geolocation
+  
   
 
 dev_dependencies:

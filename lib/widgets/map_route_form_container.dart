@@ -1,21 +1,27 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import '../pages/map_route.dart';
 
 class MapRouteForm extends StatefulWidget {
-  MapRouteForm( {this.topLocattion, this. textForm, this.textHint, this.Iconform, this.onChange});
+  MapRouteForm( {this.topLocattion, this. textForm, this.textHint, this.Iconform, this.onChange, this.frmPickupController });
 
   final double topLocattion;
   final IconData Iconform;
   final String  textForm;
   final String textHint;
   final Function onChange;
+   TextEditingController frmPickupController;
+  // TextEditingController destinationController = TextEditingController();
 
   @override
   _MapRouteFormState createState() => _MapRouteFormState();
 }
 
 class _MapRouteFormState extends State<MapRouteForm> {
+  // TextEditingController frmPickupController;
+  // TextEditingController statefrmPickupController;
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -37,18 +43,19 @@ class _MapRouteFormState extends State<MapRouteForm> {
           ],
         ),
         child: TextField(
+          
+          controller: widget.frmPickupController,
+          onChanged: widget.onChange,
           cursorColor: Colors.black,
           // controller: appState.locationController,
           decoration: InputDecoration(
-            icon: Container(
-              margin: EdgeInsets.only(left: 20, top: 5),
-              width: 10,
-              height: 10,
-              child: Icon(
-                widget.Iconform,
-                color: Colors.black,
-              ),
+            prefixIcon: IconButton(
+              icon: Icon(widget.Iconform),
+              color: Colors.black87,
+              onPressed: (){print('pressssssssssssssed');},
             ),
+            
+         
             hintText: widget.textHint,
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),

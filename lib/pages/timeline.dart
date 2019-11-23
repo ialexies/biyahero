@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/header.dart';
 import 'package:fluttershare/widgets/progress.dart';
-
+import 'package:geolocator/geolocator.dart';
 
 final usersRef = Firestore.instance.collection('users');
 
@@ -95,6 +95,20 @@ class _TimelineState extends State<Timeline> {
       appBar: header(context,isAppTitle: true),
       // body: circularProgress(),
       body: linearProgress(),
+      floatingActionButton: FloatingActionButton(
+        
+        onPressed: (){
+         
+             getLocation();
+        },
+        child: Icon(Icons.ac_unit),
+      ),
     );
+  }
+
+  	void getLocation() async{
+      
+	    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+	    print('$position');
   }
 }
