@@ -61,7 +61,15 @@ class AppState with ChangeNotifier{
  
 
   void _getUserLocation() async{
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+
+Position position;
+try {
+       position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    } catch (e) {
+       position = await Geolocator().getLastKnownPosition();
+    }
+
+    // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     List<Placemark> placemark =  await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude); 
       _initialPosition=LatLng(position.latitude, position.longitude); 
 
@@ -120,6 +128,7 @@ class AppState with ChangeNotifier{
 
   // When the user type something in the textbox it will show the placemark 
   void sendRequest(String intendedLocation)async{
+    print('-------------$intendedLocation');
      List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation); 
     _markers.clear();
     _polyLines.clear();

@@ -17,21 +17,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   bool isAuth = false;
   PageController pageController;
   int pageIndex = 0;
   bool internetStatus = false;
 
   //generate unique key for widget
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  final GlobalKey<ScaffoldState> _snackbarScaffoldKey =
+      new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     pageController = PageController(
-      initialPage: 2,
+      initialPage: 0,
     );
     // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
@@ -66,7 +65,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  login() async{
+  login() async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -76,8 +75,6 @@ class _HomeState extends State<Home> {
       // print('not connected');
       _showSnackBar();
     }
-
-    
   }
 
   logout() {
@@ -103,17 +100,30 @@ class _HomeState extends State<Home> {
   _showSnackBar() {
     // print("Show Snackbar here !");
     final snackBar = new SnackBar(
-        content: new Text("Please connect to the Internet"),
-        duration: new Duration(seconds: 3),
-        backgroundColor: Colors.red,
-        action: new SnackBarAction(label: 'Ok', onPressed: (){
-          print('Please connect to the Internet');
-        }),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(Icons.warning,color: Colors.yellow,size: 80,),
+          SizedBox(height: 30,),
+          Text(
+            "Please connect to the Internet",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
+
+      duration: new Duration(seconds: 3),
+      backgroundColor: Colors.red,
+      // action: new SnackBarAction(label: 'Ok', onPressed: (){
+      //   print('Please connect to the Internet');
+      // }),
     );
     //How to display Snackbar ?
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+    _snackbarScaffoldKey.currentState.showSnackBar(snackBar);
   }
-
 
   Scaffold buildAuthScreen() {
     return Scaffold(
@@ -123,8 +133,8 @@ class _HomeState extends State<Home> {
       ),
       body: PageView(
         children: <Widget>[
-          Timeline(),
           Maproute(),
+          Timeline(),
           ActivityFeed(),
           Upload(),
           Search(),
@@ -167,7 +177,7 @@ class _HomeState extends State<Home> {
 
   Scaffold buildUnAuthScreen() {
     return Scaffold(
-       key: _scaffoldKey,
+      key: _snackbarScaffoldKey,
       // floatingActionButton: FloatingActionButton(
       //   onPressed:  _showSnackBar,
       // ),
@@ -194,6 +204,9 @@ class _HomeState extends State<Home> {
                 fontSize: 90.0,
                 color: Colors.white,
               ),
+            ),
+            SizedBox(
+              height: 30,
             ),
             GestureDetector(
               // onTap: login,
@@ -223,8 +236,8 @@ class _HomeState extends State<Home> {
     return isAuth ? buildAuthScreen() : buildUnAuthScreen();
   }
 
-void interntStats()async{
-  bool stats = false;
+  void interntStats() async {
+    bool stats = false;
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -244,10 +257,5 @@ void interntStats()async{
         internetStatus = false;
       });
     }
+  }
 }
-
-
-
-}
-
-
