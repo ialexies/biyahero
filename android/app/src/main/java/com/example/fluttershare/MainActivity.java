@@ -1,4 +1,4 @@
-package com.digitapps.bloggingapp;
+package com.digitapps.rideapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
