@@ -42,17 +42,17 @@ class _MaprouteState extends State<Maproute> {
       // bottomNavigationBar: BottomNavigationBar(
       //   // items: ,
       // ),
-      floatingActionButton: FloatingActionButton(
-      onPressed: (){
-        //  googleSignIn.signOut().then(console.log);
-        googleSignIn.signOut();
-        //  Navigator.pushNamed(context, Home);
-         Navigator.push(context, MaterialPageRoute(builder: (context){
-           return (Home());
-         }));
-      },
-        child: Icon(Icons.exit_to_app),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      // onPressed: (){
+      //   //  googleSignIn.signOut().then(console.log);
+      //   googleSignIn.signOut();
+      //   //  Navigator.pushNamed(context, Home);
+      //    Navigator.push(context, MaterialPageRoute(builder: (context){
+      //      return (Home());
+      //    }));
+      // },
+      //   child: Icon(Icons.exit_to_app),
+      // ),
     );
   }
 }
