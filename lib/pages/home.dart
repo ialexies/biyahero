@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     pageController = PageController(
-      initialPage: 1,
+      initialPage: 0,
     );
     // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: logout,
-        child: 
+        child: Text('logout'),
       ),
       body: PageView(
         children: <Widget>[
