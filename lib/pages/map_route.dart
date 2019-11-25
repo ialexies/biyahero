@@ -258,10 +258,14 @@ class _MapState extends State<Map> {
         // });
 
         appState.destinationControler.text=appState.selectedPlace.toString();
-        appState.sendRequest(appState.toString());
+        appState.sendRequest(appState.destinationControler.text.toString());
+
+
+        // appState.sendRequest(appState.toString());
+
         //  appState.sendRequest(value);
         // print(values[index].code);
-        print(appState.selectedPlace);
+        // print(appState.selectedPlace);
       },
       child: Column(
         children: <Widget>[
