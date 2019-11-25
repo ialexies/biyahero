@@ -128,7 +128,7 @@ try {
 
   // When the user type something in the textbox it will show the placemark 
   void sendRequest(String intendedLocation)async{
-    // print('-------------$intendedLocation');
+    print('-------------$intendedLocation');
      List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation); 
     _markers.clear();
     _polyLines.clear();
@@ -185,7 +185,7 @@ try {
     /*adding to previous value as done in encoding */
     for (var i = 2; i < lList.length; i++) lList[i] += lList[i - 2];
 
-    // print(lList.toString());
+    print(lList.toString());
   
     return lList;
   }
