@@ -9,9 +9,6 @@ class GoogleMapsServices{
     Future<String> getRouteCoordinates(LatLng l1, LatLng l2)async{
       String url = "https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&avoid=highways&region=ph&destination=${l2.latitude},${l2.longitude}&key=$apiKey";
       // String url = "https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&avoid=highways&region=ph&mode=bicycling&destination=${l2.latitude},${l2.longitude}&key=$apiKey";
-     
-      // String url = "https://maps.googleapis.com/maps/api/directions/json?origin=14.82828,120.28158000000002&destination=14.823748600000002,120.29060859999998&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU";
-     
       http.Response response = await http.get(url);
       Map values = jsonDecode(response.body);
 
