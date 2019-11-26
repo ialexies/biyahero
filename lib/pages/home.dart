@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
         "displayName": user.displayName,
         "bio": "",
         "timestamp": timestamp
+
       });
     }
   }
@@ -148,7 +149,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: logout,
-        child: Text('logout'),
+        child: Icon(Icons.exit_to_app),
       ),
       body: PageView(
         children: <Widget>[
