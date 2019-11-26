@@ -76,21 +76,27 @@ class _HomeState extends State<Home> {
     // 1) check if user exists in users collection in database (according to their id)
     final GoogleSignInAccount user = googleSignIn.currentUser;
     final DocumentSnapshot doc = await usersRef.document(user.id).get();
+    // print(user);
+    // print(user.displayName);
+    // print(user.email);
+    // print(user.photoUrl);
 
     if (!doc.exists) {
       // 2) if the user doesn't exist, then we want to take them to the create account page
-      final username = await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreateAccount()));
+      final additionalUserInfo = await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAccount(userInfo: user,)));
 
       // 3) get username from create account, use it to make new user document in users collection
       usersRef.document(user.id).setData({
         "id": user.id,
-        "username": username,
+        "username": additionalUserInfo[0],
         "photoUrl": user.photoUrl,
         "email": user.email,
         "displayName": user.displayName,
         "bio": "",
-        "timestamp": timestamp
+        "timestamp": timestamp,
+        "contactNumber": additionalUserInfo[1],
+        "address":additionalUserInfo[2],
 
       });
     }
