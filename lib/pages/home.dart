@@ -9,6 +9,8 @@ import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:io';
+// import 'package:geolocator/geolocator.dart';
+
 
 import 'create_account.dart';
 
@@ -73,6 +75,7 @@ class _HomeState extends State<Home> {
   }
 
   createUserInFirestore() async {
+    // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     // 1) check if user exists in users collection in database (according to their id)
     final GoogleSignInAccount user = googleSignIn.currentUser;
     final DocumentSnapshot doc = await usersRef.document(user.id).get();
@@ -86,6 +89,8 @@ class _HomeState extends State<Home> {
       final additionalUserInfo = await Navigator.push(
           context, MaterialPageRoute(builder: (context) => CreateAccount(userInfo: user,)));
 
+
+        
       // 3) get username from create account, use it to make new user document in users collection
       usersRef.document(user.id).setData({
         "id": user.id,
@@ -97,6 +102,7 @@ class _HomeState extends State<Home> {
         "timestamp": timestamp,
         "contactNumber": additionalUserInfo[1],
         "address":additionalUserInfo[2],
+        "currentLocation":"",
 
       });
     }

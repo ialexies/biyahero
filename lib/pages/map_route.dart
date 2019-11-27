@@ -13,6 +13,11 @@ import 'package:provider/provider.dart';
 import '../states/state_map.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f875a87536297b7f0c673182171cb06d61769010
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
 // import 'autocomplete.dart';

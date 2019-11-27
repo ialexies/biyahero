@@ -31,9 +31,9 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   submit() {
-    print('----$username');
-    print('----$contactNumber');
-    print('----$address');
+    // print('----$username');
+    // print('----$contactNumber');
+    // print('----$address');
 
     final form = _formKey.currentState;
     if (form.validate()) {
