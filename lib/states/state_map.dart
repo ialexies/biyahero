@@ -18,6 +18,8 @@ class AppState with ChangeNotifier{
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyLines = {};
   GoogleMapController _mapController;
+  final  int regularPrice = 30;
+  final int perKmPrice = 10;
 
   //for autocomplete
   List <SuggestedPlaces> _autoComplete ;

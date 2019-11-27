@@ -63,8 +63,8 @@ class _CreateAccountState extends State<CreateAccount> {
               Column(
                 children: <Widget>[
                   Container(
-                    width: 150,
-                    height: 150,
+                    width: 100,
+                    height: 100,
                     decoration: BoxDecoration(
                       image: DecorationImage(image: NetworkImage(userInfo.photoUrl),fit: BoxFit.cover),
                       borderRadius: new BorderRadius.all(Radius.circular(75)),
@@ -111,6 +111,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                           onSaved: (val) => username = val,
                           decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.people),
                             border: OutlineInputBorder(),
                             labelStyle: TextStyle(fontSize: 15),
                             hintText: "Enter User Name",
@@ -118,6 +119,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                         SizedBox(height: 10,),
                         TextFormField(
+                          
                           validator: (valcontact) {
                             if (valcontact.trim().length < 8 || valcontact.isEmpty) {
                               return 'Contact No. is too short';
@@ -133,6 +135,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           onSaved: (valContact)=> contactNumber = valContact,
                           inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                           decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.contact_phone),
                             border: OutlineInputBorder(),
                             labelStyle: TextStyle(fontSize: 15),
                             hintText: "Contact No."),
@@ -152,6 +155,8 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                           onSaved: (valAddress) => address = valAddress,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(0),
+                            prefixIcon: Icon(Icons.markunread_mailbox),
                             border: OutlineInputBorder(),
                             labelStyle: TextStyle(fontSize: 15),
                             hintText: "Home Address"),

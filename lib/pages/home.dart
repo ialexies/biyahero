@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     pageController = PageController(
-      initialPage: 0,
+      // initialPage: 0,
     );
     // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
@@ -45,11 +45,11 @@ class _HomeState extends State<Home> {
       print('Error signing in: $err');
     });
     // Reauthenticate user when app is opened
-    // googleSignIn.signInSilently(suppressErrors: false).then((account) {
-    //   handleSignIn(account);
-    // }).catchError((err) {
-    //   print('Error signing in: $err');
-    // });
+    googleSignIn.signInSilently(suppressErrors: false).then((account) {
+      handleSignIn(account);
+    }).catchError((err) {
+      print('Error signing in: $err');
+    });
   }
 
   @override
@@ -58,10 +58,10 @@ class _HomeState extends State<Home> {
     pageController.dispose();
   }
 
-  handleSignIn(GoogleSignInAccount account) {
+  handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
       // print('User signed in!: $account');
-      createUserInFirestore();
+      await createUserInFirestore();
       setState(() {
         isAuth = true;
       });
