@@ -1,50 +1,28 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttershare/widgets/header.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+
 
 class CreateAccount extends StatefulWidget {
-  final GoogleSignInAccount userInfo;
-  CreateAccount({this.userInfo});
-
   @override
-  _CreateAccountState createState() => _CreateAccountState(this.userInfo);
+  _CreateAccountState createState() => _CreateAccountState();
 }
 
 class _CreateAccountState extends State<CreateAccount> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
-  GoogleSignInAccount userInfo;
-  _CreateAccountState(this.userInfo);
+  final _formKey =  GlobalKey<FormState>();
 
   String username;
-  String contactNumber;
-  String address;
-
-  @override
-  void initState() {
-    super.initState();
-    print('hello $userInfo.');
-  }
-
-  submit() {
-    // print('----$username');
-    // print('----$contactNumber');
-    // print('----$address');
-
+  
+  submit(){
     final form = _formKey.currentState;
-    if (form.validate()) {
-      _formKey.currentState.save(); //save the content of the form
-      SnackBar snackBar = SnackBar(
-        content: Text("Welcome $username!"),
-      ); //define a snackbar content
+    if (form.validate()){
+      _formKey.currentState.save();  //save the content of the form
+      SnackBar snackBar = SnackBar(content: Text("Welcome $username!"),); //define a snackbar content
       _scaffoldKey.currentState.showSnackBar(snackBar); //show snackbar
-      Timer(Duration(seconds: 2), () {
-        Navigator.pop(context, [username,contactNumber,address]);
-      }); //redirect back to home after 2 seconds
+      Timer(Duration(seconds: 2), (){Navigator.pop(context, username);}); //redirect back to home after 2 seconds
     }
   }
 
@@ -52,47 +30,24 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext parentContext) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar:
-          header(context, titleText: 'Setup Profile', removeBackButton: true),
+      appBar: header(context, titleText: 'Setup Profile', removeBackButton: true),
       body: ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
-        
-              SizedBox(height: 30,),
-              Column(
-                children: <Widget>[
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(userInfo.photoUrl),fit: BoxFit.cover),
-                      borderRadius: new BorderRadius.all(Radius.circular(75)),
-                      border: Border.all(color: Colors.grey[400], width: 5),
-
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 25),
-                    child: Text(userInfo.displayName.toUpperCase(), style: TextStyle(
-                      fontSize:25,
-                      fontWeight: FontWeight.bold
-                    ),),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Text(userInfo.email, style: TextStyle(
-                      fontSize:15
-                    ),),
-                  ),
-                ],
+                padding: EdgeInsets.only(top: 25),
+                child: Center(
+                  child:
+                      Text("Create username", style: TextStyle(fontSize: 25)),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(16),
                 child: Container(
                   child: Form(
-                    //
+                    // 
                     key: _formKey,
+<<<<<<< HEAD
                     autovalidate:
                         true, //If set to true, it immediately validates the input every type of user
                     child: Column(
@@ -108,14 +63,6 @@ class _CreateAccountState extends State<CreateAccount> {
                             } else {
                               return null;
                             }
-                          },
-                          onSaved: (val) => username = val,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.people),
-                            border: OutlineInputBorder(),
-                            labelStyle: TextStyle(fontSize: 15),
-                            hintText: "Enter User Name",
-                          ),
                         ),
                         SizedBox(height: 10,),
                         TextFormField(
@@ -162,10 +109,27 @@ class _CreateAccountState extends State<CreateAccount> {
                             hintText: "Home Address"),
                         ),
                         SizedBox(height: 10,),
+=======
+                    autovalidate: true, //If set to true, it immediately validates the input every type of user
+                    child: TextFormField(
+                      validator: (val){
+                        if (val.trim().length<3||val.isEmpty){
+                          return 'usarneme too short';
+                        } else if (val.trim().length>12 ){
+                          return 'username too long';
+                        } else{
+                          return null;
+                        }
+>>>>>>> parent of c45cc38... finish user profile input with validation and firestore
                         
-                      ],
-                    ),
-                  ),
+                      },
+                      onSaved: (val)=> username = val ,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontSize: 15),
+                        hintText: "At least 3 characters", 
+                      ),
+                    ),),
                 ),
               ),
               GestureDetector(
@@ -174,17 +138,16 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: 70,
                   width: 350,
                   padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(7.0)),
+                    decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(7.0)
+                  ),
                   child: Center(
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    child: Text("Submit", style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold
+                    ),),
                   ),
                 ),
               ),
