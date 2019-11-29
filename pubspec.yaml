@@ -38,7 +38,6 @@ dependencies:
   flutter_svg:
   provider: ^3.1.0+1
   connectivity: ^0.4.5+3
-  location: ^2.3.5
 
   
   

@@ -13,11 +13,7 @@ import 'package:provider/provider.dart';
 import '../states/state_map.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> f875a87536297b7f0c673182171cb06d61769010
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
 // import 'autocomplete.dart';
@@ -26,10 +22,10 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class Maproute extends StatefulWidget {
-  // to receive data from the call, constructor
-  static String id = 'home_screen';
+  // to receive data from the call, constructor 
+  static String id='home_screen';
 
-  Maproute({Key key, this.title}) : super(key: key);
+  Maproute({Key key, this.title}):super(key: key);
   final String title;
 
   @override
@@ -37,6 +33,8 @@ class Maproute extends StatefulWidget {
 }
 
 class _MaprouteState extends State<Maproute> {
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,52 +57,48 @@ class _MaprouteState extends State<Maproute> {
   }
 }
 
-class Map extends StatefulWidget {
+class Map extends StatefulWidget { 
   @override
   _MapState createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
+ 
+
+
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
 
-    return appState.initalPosition == null
-        ? Container(
-            alignment: Alignment.center,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Please enable location services!",
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          )
-        : Stack(
+    return    appState.initalPosition == null? 
+      Container(
+        alignment: Alignment.center,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: appState.initalPosition,
-                  zoom: 16.0,
-                ),
-                onMapCreated: appState.onCreated,
-                myLocationEnabled: true,
-                mapType: MapType.normal,
-                compassEnabled: true,
-                markers: appState.markers,
-                onCameraMove: appState.onCameraMove,
-                polylines: appState.polyline,
-              ),
-              Visibility(
-                visible: appState.autoCompleteContainer == true,
+              CircularProgressIndicator(),
+              SizedBox(height: 20,),
+              Text("Please enable location services!", style: TextStyle(color: Colors.grey, fontSize: 18),),
+            ],
+          ),
+        ),
+      ) :
+      Stack(
+        children: <Widget>[
+          GoogleMap(
+            initialCameraPosition: CameraPosition(target: appState.initalPosition,   zoom: 16.0,),
+            onMapCreated: appState.onCreated,
+            myLocationEnabled: true,
+            mapType: MapType.normal,
+            compassEnabled: true,
+            markers: appState.markers,
+            onCameraMove: appState.onCameraMove,
+            polylines: appState.polyline,
+            
+          ),
+           Visibility(
+             visible: appState.autoCompleteContainer==true,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(15, 180, 15, 0),
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -113,193 +107,176 @@ class _MapState extends State<Map> {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1.0, 5.0),
-                          blurRadius: 10,
-                          spreadRadius: 3)
+                        color: Colors.grey,
+                        offset: Offset(1.0, 5.0),
+                        blurRadius: 10,
+                        spreadRadius: 3)
                     ],
                   ),
                   child: FutureBuilder(
                     future: appState.getCountries(),
                     initialData: [],
-                    builder: (context, snapshot) {
-                      return createCountriesListView(context, snapshot);
+                    builder: (context,snapshot){
+                      return  createCountriesListView(context, snapshot);
                     },
                   ),
-                ),
               ),
-              Positioned(
-                top: 50.0,
-                right: 15.0,
-                left: 15.0,
-                child: Container(
-                  height: 50.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1.0, 5.0),
-                          blurRadius: 10,
-                          spreadRadius: 3)
-                    ],
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.black,
-                    controller: appState.locationController,
-                    decoration: InputDecoration(
-                      icon: Container(
-                        margin: EdgeInsets.only(left: 20, top: 5),
-                        width: 10,
-                        height: 10,
-                        child: Icon(
-                          Icons.location_on,
-                          color: Colors.black,
-                        ),
-                      ),
-                      hintText: "pick up",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
-                    ),
-                  ),
-                ),
-              ),
-
-              Positioned(
-                top: 105.0,
-                right: 15.0,
-                left: 15.0,
-                child: Container(
-                  height: 50.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1.0, 5.0),
-                          blurRadius: 10,
-                          spreadRadius: 3)
-                    ],
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.black,
-                    controller: appState.destinationControler,
-                    textInputAction: TextInputAction.go,
-                    onSubmitted: (value) {
-                      // appState.autoCompleteContainer = false;
-                      // appState.autoCompleteContainer = false;
-                      appState.visibilityAutoComplete(false);
-                      appState.sendRequest(value);
-                      // appState.autoCompleteContainer = false;
-                    },
-                    onChanged: (value) {
-                      appState.increment();
-                      // appState.autoCompleteContainer = true;
-                      if (appState.destinationControler.text != null) {
-                        appState.autoCompleteContainer = true;
-                      } else {
-                        appState.autoCompleteContainer = false;
-                      }
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          // appState.destinationControler.text="";
-                          appState.clearDestination();
-                          // GoogleMap
-                        },
-                      ),
-                      icon: Container(
-                        margin: EdgeInsets.only(left: 20, top: 5),
-                        width: 10,
-                        height: 10,
-                        child: Icon(
-                          Icons.local_taxi,
-                          color: Colors.black,
-                        ),
-                      ),
-                      hintText: "destination?",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
-                    ),
-                  ),
-                ),
-              ),
-              // Positioned(
-              //   top: 40, right: 10,
-              //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-              //   child: FloatingActionButton(
-              //     onPressed: _onAddMarkerPressed,
-              //     backgroundColor: Black,
-              //     child: Icon(Icons.add_location,color:White),
-              //     ),
-              // ),
-
-              Positioned(
-                bottom: 100,
-                left: 20,
-                child: Text('fdfdf'),
-              ),
-
-
-              ListView(
-                children: <Widget>[
-                  Card(
-                    child: ListTile(
-                      leading: FlutterLogo(),
-                      title: Text(appState.regularPrice.toString()),
-                      trailing: Text(
-                          "Your Driver is Alexies Iglesia, body no. is 4085. He will arrive in 20 minutes"),
-                    ),
-                  )
+           ),
+          Positioned(
+            top: 50.0,
+            right: 15.0,
+            left: 15.0,
+            child: Container(
+              height: 50.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(1.0, 5.0),
+                      blurRadius: 10,
+                      spreadRadius: 3)
                 ],
               ),
-            ],
-          );
+              child: TextField(
+                cursorColor: Colors.black,
+                controller: appState.locationController,
+                decoration: InputDecoration(
+                  icon: Container(
+                    margin: EdgeInsets.only(left: 20, top: 5),
+                    width: 10,
+                    height: 10,
+                    child: Icon(
+                      Icons.location_on,
+                      color: Colors.black,
+                    ),
+                  ),
+                  hintText: "pick up",
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 105.0,
+            right: 15.0,
+            left: 15.0,
+            child: Container(
+              height: 50.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(1.0, 5.0),
+                      blurRadius: 10,
+                      spreadRadius: 3)
+                ],
+              ),
+              child: TextField(
+                
+                cursorColor: Colors.black,
+                controller:  appState.destinationControler,
+                textInputAction: TextInputAction.go,
+                onSubmitted: (value) {
+                  // appState.autoCompleteContainer = false;
+                  // appState.autoCompleteContainer = false;
+                  appState.visibilityAutoComplete(false);
+                  appState.sendRequest(value);
+                  // appState.autoCompleteContainer = false;
+                },
+                onChanged: (value){
+                  appState.increment();
+                  // appState.autoCompleteContainer = true;
+                  if(appState.destinationControler.text!=null){
+                    appState.autoCompleteContainer = true;
+                  }else{
+                    appState.autoCompleteContainer = false;
+                  }
+                },
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: (){
+                      // appState.destinationControler.text="";
+                      appState.clearDestination();
+                      // GoogleMap
+                      
+                    },
+                  ),
+                  icon: Container(
+                    margin: EdgeInsets.only(left: 20, top: 5),
+                    width: 10,
+                    height: 10,
+                    child: Icon(
+                      Icons.local_taxi,
+                      color: Colors.black,
+                    ),
+                  ),
+                  hintText: "destination?",
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+                ),
+              ),
+            ),
+          ),
+          // Positioned(
+          //   top: 40, right: 10,
+          //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
+          //   child: FloatingActionButton( 
+          //     onPressed: _onAddMarkerPressed,
+          //     backgroundColor: Black,
+          //     child: Icon(Icons.add_location,color:White),
+          //     ),
+          // ),
+        ],
+      );
+
   }
 
   Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
     var values = snapshot.data;
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: values == null ? 0 : values.length,
-      itemBuilder: (BuildContext context, int index) {
-        final appState = Provider.of<AppState>(context);
+    itemCount: values == null ? 0 : values.length,
+    itemBuilder: (BuildContext context, int index) {
+      final appState = Provider.of<AppState>(context);
 
-        return GestureDetector(
-          onTap: () {
-            // setState(() {
-            // selectedCountry = values[index].code;
-            appState.selectedPlace = values[index].description;
-            appState.sendRequest(values[index].description);
-            appState.visibilityAutoComplete(false);
-            // });
+      return GestureDetector(
+      onTap: () {
+        // setState(() {
+        // selectedCountry = values[index].code;
+        appState.selectedPlace = values[index].description;
+        appState.sendRequest(values[index].description);
+        appState.visibilityAutoComplete(false);
+        // });
 
-            appState.destinationControler.text =
-                appState.selectedPlace.toString();
-            // appState.sendRequest(appState.toString());
-            appState.sendRequest(appState.destinationControler.toString());
-            //  appState.sendRequest(value);
-            // print(values[index].code);
-            print(appState.selectedPlace);
-          },
-          child: Column(
-            children: <Widget>[
-              new ListTile(
-                title: Text(values[index].description),
-              ),
-              Divider(
-                height: 2.0,
-              ),
-            ],
-          ),
-        );
+        appState.destinationControler.text=appState.selectedPlace.toString();
+        // appState.sendRequest(appState.toString());
+        appState.sendRequest(appState.destinationControler.toString());
+        //  appState.sendRequest(value);
+        // print(values[index].code);
+        print(appState.selectedPlace);
       },
+      child: Column(
+        children: <Widget>[
+        new ListTile(
+          title: Text(values[index].description),
+        ),
+        Divider(
+          height: 2.0,
+        ),
+        ],
+      ),
+      );
+    },
     );
   }
+
 }

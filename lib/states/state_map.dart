@@ -8,9 +8,6 @@ import '../services/google_maps_request.dart';
 // import '../screens/autocomplete.dart';
 import 'package:provider/provider.dart';
 // import 'package:path_provider/path_provider.dart';
-import 'package:location/location.dart';
-
-
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,8 +18,6 @@ class AppState with ChangeNotifier{
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyLines = {};
   GoogleMapController _mapController;
-  final  int regularPrice = 30;
-  final int perKmPrice = 10;
 
   //for autocomplete
   List <SuggestedPlaces> _autoComplete ;
@@ -66,33 +61,9 @@ class AppState with ChangeNotifier{
  
 
   void _getUserLocation() async{
-    // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low).catchError((err){
-      
-    //   return Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.low);
-    // });
-    // bool serviceStatus = await Geolocator.serviceEnabled();
-
-// LocationData currentLocation;  
-
-LocationData currentLocation;
-
-Location location = new Location();
-
-currentLocation = await location.getLocation();
-//  var location = new Location();
-
-// location.onLocationChanged().listen((LocationData currentLocation) {
-//   print(currentLocation.latitude);
-//   print(currentLocation.longitude);
-// });
-
-
-
-
-    // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-
-    List<Placemark> placemark =  await Geolocator().placemarkFromCoordinates(currentLocation.latitude, currentLocation.longitude); 
-      _initialPosition=LatLng(currentLocation.latitude,currentLocation.longitude); 
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    List<Placemark> placemark =  await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude); 
+      _initialPosition=LatLng(position.latitude, position.longitude); 
 
       locationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
       notifyListeners();

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "350151572111-ug3ck0ge3st4vkqhtjck368sjet3bdni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digitapps.rideapp",
+            "certificate_hash": "ca7d76ad3b008c5c385acc5e1e60c1f2229c64e4"
+          }
+        },
+        {
           "client_id": "350151572111-d0h9tif8ppgvchdddb0h41b9k8e1dosa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

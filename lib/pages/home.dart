@@ -9,8 +9,6 @@ import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:io';
-// import 'package:geolocator/geolocator.dart';
-
 
 import 'create_account.dart';
 
@@ -38,13 +36,13 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     pageController = PageController(
-      // initialPage: 0,
+      initialPage: 0,
     );
     // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
     }, onError: (err) {
-      print('Error signing in: $err');
+      print('--------------------------Error signing in: $err');
     });
     // Reauthenticate user when app is opened
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
@@ -60,14 +58,15 @@ class _HomeState extends State<Home> {
     pageController.dispose();
   }
 
-  handleSignIn(GoogleSignInAccount account) async {
+  handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
       // print('User signed in!: $account');
-      await createUserInFirestore();
+      createUserInFirestore();
       setState(() {
         isAuth = true;
       });
     } else {
+      
       setState(() {
         isAuth = false;
       });
@@ -75,34 +74,30 @@ class _HomeState extends State<Home> {
   }
 
   createUserInFirestore() async {
-    // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     // 1) check if user exists in users collection in database (according to their id)
     final GoogleSignInAccount user = googleSignIn.currentUser;
     final DocumentSnapshot doc = await usersRef.document(user.id).get();
+    // print(user);
+    // print(user.displayName);
+    // print(user.email);
+    // print(user.photoUrl);
 
     if (!doc.exists) {
       // 2) if the user doesn't exist, then we want to take them to the create account page
-      final username = await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreateAccount()));
+      final additionalUserInfo = await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAccount(userInfo: user,)));
 
-
-        
       // 3) get username from create account, use it to make new user document in users collection
       usersRef.document(user.id).setData({
         "id": user.id,
-        "username": username,
+        "username": additionalUserInfo[0],
         "photoUrl": user.photoUrl,
         "email": user.email,
         "displayName": user.displayName,
         "bio": "",
-<<<<<<< HEAD
         "timestamp": timestamp,
         "contactNumber": additionalUserInfo[1],
         "address":additionalUserInfo[2],
-        "currentLocation":"",
-=======
-        "timestamp": timestamp
->>>>>>> parent of c45cc38... finish user profile input with validation and firestore
 
       });
     }
