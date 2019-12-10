@@ -313,6 +313,7 @@ packages:
     source: hosted
     version: "2.0.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   share:
     dependency: "direct main"
     description:
@@ -320,6 +321,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3+4"
+=======
+>>>>>>> parent of 99efc51... with new format from blog desin
 =======
 >>>>>>> parent of 99efc51... with new format from blog desin
   sky_engine:

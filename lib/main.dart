@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import './screens/group_join_screen.dart';
 import './screens/group_page_screen.dart';
 import './screens/group_create_screen.dart';
 import './screens/home_screen.dart';
 import './screens/registration_screen.dart';
+=======
+import 'package:fluttershare/pages/home.dart';
+>>>>>>> parent of 99efc51... with new format from blog desin
 =======
 import 'package:fluttershare/pages/home.dart';
 >>>>>>> parent of 99efc51... with new format from blog desin
