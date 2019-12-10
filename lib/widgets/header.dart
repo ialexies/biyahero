@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-AppBar header(context,{bool isAppTitle = false, String titleText, removeBackButton = false }){
+AppBar appHeader(context,{bool isAppTitle = false, String titleText, removeBackButton = false }) {
   return AppBar(
-    automaticallyImplyLeading: removeBackButton? false: true,
+    automaticallyImplyLeading: removeBackButton ? false : true,
     title: Text(
-      isAppTitle ? "ByaHero" : titleText, 
+      isAppTitle ? "ByaHero" : titleText,
       style: TextStyle(
         color: Colors.white,
         fontFamily: isAppTitle ? "Signatra" : "",
-        fontSize: isAppTitle ? 50.0 :22.0,
+        fontSize: isAppTitle ? 50.0 : 22.0,
       ),
     ),
     centerTitle: true,

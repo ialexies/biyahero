@@ -1,58 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/controllers/helper_design.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:provider/provider.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:uberclone/requests/google_maps_request.dart';
 import '../services/google_maps_request.dart';
-// import 'package:uberclone/screens/signIn_screen.dart';
-import './home.dart';
-// import 'package:uberclone/states/app_states.dart';
 import 'package:provider/provider.dart';
-import '../states/state_map.dart';
+import '../states/mapstate.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-// import 'autocomplete.dart';
-// import '../requests/google_maps_request.dart';
-// import '../utils/core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 
-class Maproute extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   // to receive data from the call, constructor 
   static String id='home_screen';
 
-  Maproute({Key key, this.title}):super(key: key);
+  MapScreen({Key key, this.title}):super(key: key);
   final String title;
 
   @override
   _MaprouteState createState() => _MaprouteState();
 }
 
-class _MaprouteState extends State<Maproute> {
-  
-
+class _MaprouteState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Map(),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   // items: ,
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      // onPressed: (){
-      //   //  googleSignIn.signOut().then(console.log);
-      //   googleSignIn.signOut();
-      //   //  Navigator.pushNamed(context, Home);
-      //    Navigator.push(context, MaterialPageRoute(builder: (context){
-      //      return (Home());
-      //    }));
-      // },
-      //   child: Icon(Icons.exit_to_app),
-      // ),
+
     );
   }
 }
@@ -61,16 +36,13 @@ class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
-
 class _MapState extends State<Map> {
  
-
-
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
+    final mapState = Provider.of<MapState>(context);
 
-    return    appState.initalPosition == null? 
+    return mapState.initalPosition == null? 
       Container(
         alignment: Alignment.center,
         child: Center(
@@ -87,18 +59,18 @@ class _MapState extends State<Map> {
       Stack(
         children: <Widget>[
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: appState.initalPosition,   zoom: 16.0,),
-            onMapCreated: appState.onCreated,
+            initialCameraPosition: CameraPosition(target: mapState.initalPosition,   zoom: 14.0,),
+            onMapCreated: mapState.onCreated,
             myLocationEnabled: true,
             mapType: MapType.normal,
             compassEnabled: true,
-            markers: appState.markers,
-            onCameraMove: appState.onCameraMove,
-            polylines: appState.polyline,
+            markers: mapState.markers,
+            onCameraMove: mapState.onCameraMove,
+            polylines: mapState.polyline,
             
           ),
            Visibility(
-             visible: appState.autoCompleteContainer==true,
+             visible: mapState.autoCompleteContainer==true,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(15, 180, 15, 0),
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -114,7 +86,7 @@ class _MapState extends State<Map> {
                     ],
                   ),
                   child: FutureBuilder(
-                    future: appState.getCountries(),
+                    future: mapState.getCountries(),
                     initialData: [],
                     builder: (context,snapshot){
                       return  createCountriesListView(context, snapshot);
@@ -142,7 +114,7 @@ class _MapState extends State<Map> {
               ),
               child: TextField(
                 cursorColor: Colors.black,
-                controller: appState.locationController,
+                controller: mapState.locationController,
                 decoration: InputDecoration(
                   icon: Container(
                     margin: EdgeInsets.only(left: 20, top: 5),
@@ -182,30 +154,30 @@ class _MapState extends State<Map> {
               child: TextField(
                 
                 cursorColor: Colors.black,
-                controller:  appState.destinationControler,
+                controller:  mapState.destinationControler,
                 textInputAction: TextInputAction.go,
                 onSubmitted: (value) {
-                  // appState.autoCompleteContainer = false;
-                  // appState.autoCompleteContainer = false;
-                  appState.visibilityAutoComplete(false);
-                  appState.sendRequest(value);
-                  // appState.autoCompleteContainer = false;
+                  // mapState.autoCompleteContainer = false;
+                  // mapState.autoCompleteContainer = false;
+                  mapState.visibilityAutoComplete(false);
+                  mapState.sendRequest(value);
+                  // mapState.autoCompleteContainer = false;
                 },
                 onChanged: (value){
-                  appState.increment();
-                  // appState.autoCompleteContainer = true;
-                  if(appState.destinationControler.text!=null){
-                    appState.autoCompleteContainer = true;
+                  mapState.increment();
+                  // mapState.autoCompleteContainer = true;
+                  if(mapState.destinationControler.text!=null){
+                    mapState.autoCompleteContainer = true;
                   }else{
-                    appState.autoCompleteContainer = false;
+                    mapState.autoCompleteContainer = false;
                   }
                 },
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: (){
-                      // appState.destinationControler.text="";
-                      appState.clearDestination();
+                      // mapState.destinationControler.text="";
+                      mapState.clearDestination();
                       // GoogleMap
                       
                     },
@@ -222,6 +194,50 @@ class _MapState extends State<Map> {
                   hintText: "destination?",
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+                ),
+              ),
+            ),
+          ),
+       
+  
+          Positioned  (
+            bottom: 0,
+            height: 60,
+            width: appsScreenWidth(context),
+            child: Visibility(
+              visible: mapState.destinationDistance!=null? true:false, 
+                child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.black.withOpacity(.4),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              '${mapState.destinationDistance.toString()}Km / ${mapState.destinationDuration} to your destination ',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Colors.white
+                              ),
+                            ),
+                            Text(
+                              'Your Driver is Juan Dela Cruz',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Colors.white
+                              ),
+                            ),
+                          ],
+                        ),
+                        
+                      ),
+                    
+                      // Text('${mapsta} to your destination ',textAlign: TextAlign.right,),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -246,23 +262,23 @@ class _MapState extends State<Map> {
       shrinkWrap: true,
     itemCount: values == null ? 0 : values.length,
     itemBuilder: (BuildContext context, int index) {
-      final appState = Provider.of<AppState>(context);
+      final mapState = Provider.of<MapState>(context);
 
       return GestureDetector(
       onTap: () {
         // setState(() {
         // selectedCountry = values[index].code;
-        appState.selectedPlace = values[index].description;
-        appState.sendRequest(values[index].description);
-        appState.visibilityAutoComplete(false);
+        mapState.selectedPlace = values[index].description;
+        mapState.sendRequest(values[index].description);
+        mapState.visibilityAutoComplete(false);
         // });
 
-        appState.destinationControler.text=appState.selectedPlace.toString();
-        // appState.sendRequest(appState.toString());
-        appState.sendRequest(appState.destinationControler.toString());
-        //  appState.sendRequest(value);
+        mapState.destinationControler.text=mapState.selectedPlace.toString();
+        // mapState.sendRequest(mapState.toString());
+        mapState.sendRequest(mapState.destinationControler.toString());
+        //  mapState.sendRequest(value);
         // print(values[index].code);
-        print(appState.selectedPlace);
+        print(mapState.selectedPlace);
       },
       child: Column(
         children: <Widget>[
