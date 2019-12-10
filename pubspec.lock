@@ -14,7 +14,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.11"
+    version: "2.0.10"
   args:
     dependency: transitive
     description:
@@ -144,13 +144,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  geocoder:
-    dependency: "direct main"
-    description:
-      name: geocoder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   geolocator:
     dependency: "direct main"
     description:
@@ -221,6 +214,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+11"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.5"
   location_permissions:
     dependency: transitive
     description:
@@ -312,6 +312,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+<<<<<<< HEAD
   share:
     dependency: "direct main"
     description:
@@ -319,6 +320,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3+4"
+=======
+>>>>>>> parent of 99efc51... with new format from blog desin
   sky_engine:
     dependency: transitive
     description: flutter
@@ -401,13 +404,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  unicorndial:
-    dependency: "direct main"
-    description:
-      name: unicorndial
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.5"
   uuid:
     dependency: "direct main"
     description:

@@ -1,45 +1,63 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import './screens/group_join_screen.dart';
 import './screens/group_page_screen.dart';
 import './screens/group_create_screen.dart';
 import './screens/home_screen.dart';
 import './screens/registration_screen.dart';
+=======
+import 'package:fluttershare/pages/home.dart';
+>>>>>>> parent of 99efc51... with new format from blog desin
 import 'package:provider/provider.dart';
-import './states/appstate.dart';
-import './states/mapstate.dart';
-import 'package:fluttershare/screens/map_screeen.dart';
+// import '../states/state_map.dart';
+import 'states/state_map.dart';
+// import 'package:geolocator/geolocator.dart';
+
+
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+
 
 void main() {
+  Firestore.instance.settings(timestampsInSnapshotsEnabled: true).then((_) {
+    // print("Timestamps enabled in snapshots\n");
+  }, onError: (_) {
+    // print("Error enabling timestamps in snapshots\n");
+  });
   WidgetsFlutterBinding.ensureInitialized();
-  return runApp(MultiProvider(providers: [
-      ChangeNotifierProvider.value(value: AppState(),),
-      ChangeNotifierProvider.value(value: MapState(),),
+
+    return runApp(MultiProvider(providers: [
+      ChangeNotifierProvider.value(value: AppState(),)
   ],
   child: MyApp(),));
 }
 
 
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   return runApp(MultiProvider(providers: [
+//       ChangeNotifierProvider.value(value: AppState(),)
+//   ],
+//   child: MyApp(),));
+// }
+
+
+
 class MyApp extends StatelessWidget {
-  @override 
-  Widget build(BuildContext context){
+  // check if user is logged in
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: HomeScreen.id,
+      title: 'ByaHero',
+      debugShowCheckedModeBanner: false,
+      home: Home(),
       theme: ThemeData(
-        primaryColor: Colors.green[800],
-        accentColor: Colors.green[800],
+        primaryColor: Colors.purple.withGreen(20),
+        accentColor: Colors.teal,
       ),
-      routes: {
-        MapScreen.id: (context) => MapScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
-        
-        // GroupCreateScreen.id: (context) => GroupCreateScreen(),
-        // JoinGroupScreen.id: (context)=>JoinGroupScreen(),
-                // GroupPageScreen.id: (context) => GroupPageScreen(DocumentSnapshot),
-              },
-            );
-          }
-        }
-        
-        class JoinGroup {
+    );
+  }
 }
