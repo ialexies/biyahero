@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttershare/controllers/helper_design.dart';
+import 'package:fluttershare/widgets/ma_bottom_info_content_destination.dart';
+import 'package:fluttershare/widgets/map_bottom_info.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../services/google_maps_request.dart';
@@ -50,8 +52,18 @@ class _MapState extends State<Map> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircularProgressIndicator(),
+              Visibility(
+                visible: mapState.locationServiceActive==true,
+                child: Text('Check if the location services (GPS) are enabled', style: TextStyle(color: Colors.grey, fontSize: 18),),
+              ),
               SizedBox(height: 20,),
-              Text("Please enable location services!", style: TextStyle(color: Colors.grey, fontSize: 18),),
+              // Text("Please enable location services!", style: TextStyle(color: Colors.grey, fontSize: 18),),
+              // FloatingActionButton(
+              //   onPressed: (){
+              //     mapState.getUserLocation();
+              //     // print('fdf');
+              //   },
+              // )
             ],
           ),
         ),
@@ -70,6 +82,7 @@ class _MapState extends State<Map> {
             
           ),
            Visibility(
+            //  visible: mapState.autoCompleteContainer==true,
              visible: mapState.autoCompleteContainer==true,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(15, 180, 15, 0),
@@ -198,50 +211,57 @@ class _MapState extends State<Map> {
               ),
             ),
           ),
-       
-  
-          Positioned  (
-            bottom: 0,
-            height: 60,
-            width: appsScreenWidth(context),
-            child: Visibility(
-              visible: mapState.destinationDistance!=null? true:false, 
-                child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: Colors.black.withOpacity(.4),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              '${mapState.destinationDistance.toString()}Km / ${mapState.destinationDuration} to your destination ',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
-                            ),
-                            Text(
-                              'Your Driver is Juan Dela Cruz',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Colors.white
-                              ),
-                            ),
-                          ],
-                        ),
+          mapState.destinationDistance!=null? 
+          mapBottomInfo(
+            context: context,
+            screeWidth: appsScreenWidth(context), 
+            var1: mapState.destinationDistance!=null? true:false, //visibility
+            content: destinationBottomInfoContent(context: context, destinationkm: mapState.destinationDistance, detinationDuration:mapState.destinationDuration ),
+            // var2: mapState.destinationDistance,
+            // var3: mapState.destinationDuration,
+            ): Container(),
+          // Positioned  (
+          //   bottom: 0,
+          //   // height: 60,
+          //   width: appsScreenWidth(context),
+          //   child: Visibility(
+          //     visible: mapState.destinationDistance!=null? true:false, 
+          //       child: Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: Container(
+          //         color: Colors.black.withOpacity(.4),
+          //         child: Column(
+          //           children: <Widget>[
+          //             Padding(
+          //               padding: const EdgeInsets.all(5.0),
+          //               child: Column(
+          //                 children: <Widget>[
+          //                   Text(
+          //                     '${mapState.destinationDistance.toString()}Km / ${mapState.destinationDuration} to your destination ',
+          //                     textAlign: TextAlign.right,
+          //                     style: TextStyle(
+          //                       color: Colors.white
+          //                     ),
+          //                   ),
+          //                   Text(
+          //                     'Your Driver is Juan Dela Cruz',
+          //                     textAlign: TextAlign.right,
+          //                     style: TextStyle(
+          //                       color: Colors.white
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
                         
-                      ),
+          //             ),
                     
-                      // Text('${mapsta} to your destination ',textAlign: TextAlign.right,),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          //             // Text('${mapsta} to your destination ',textAlign: TextAlign.right,),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           // Positioned(
           //   top: 40, right: 10,
           //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),

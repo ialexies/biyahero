@@ -5,6 +5,11 @@ class AppState with ChangeNotifier {
   final DateTime timestamp = DateTime.now();
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
+  
+  double _regPriceKm;
+  double _minimumPrice;
+
+  
 
   setCounter(GoogleSignInAccount googleCurrentAccount) => _googleCurrentAccount = googleCurrentAccount;
 
@@ -12,7 +17,13 @@ class AppState with ChangeNotifier {
   getGoogleCurrentAccount() => _googleCurrentAccount;
   getGoogleCurrentAccountID() => _googleCurrentAccount.id;
   getGoogleCurrentAccountDisplayName() => _googleCurrentAccount.displayName;
+
+  getregPriceKm() => _regPriceKm;
+  getminimumPrice() => _minimumPrice;
   
+
+
+
 
   void updateIsAuth(bool isAuthenticated) {
     isAuth = isAuthenticated;

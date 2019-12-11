@@ -60,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
+     
 
     return appState.isAuth
         ? buildAuthScreen(context)
@@ -74,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Scaffold buildAuthScreen(context) {
     
+
     return Scaffold(
       key: _scaffoldKey,
       body: PageView(
