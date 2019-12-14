@@ -162,33 +162,45 @@ class MapState with ChangeNotifier{
   void clearDestination(){
      _markers.clear();
     _polyLines.clear();
-    destinationControler.clear();
+    // destinationControler.text;
+    destinationControler.text="";
     
   }
 
-    Future<List<Placemark>> getPlacemark(intendedLocation) async{
-        var places  = await Geolocator().placemarkFromAddress(intendedLocation); 
+    // Future<List<Placemark>> getPlacemark(intendedLocation) async{
+    //     var places  = await Geolocator().placemarkFromAddress(intendedLocation); 
         
-        return places ;
-      }
+    //     return places ;
+    //   }
 
-    fetchPost() async {
-  final response =
-      await http.get('https://maps.googleapis.com/maps/api/geocode/json?address=hys&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU');
+//     fetchPost() async {
+//   final response =
+//       await http.get('https://maps.googleapis.com/maps/api/geocode/json?address=hys&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU');
 
-  if (response.statusCode == 200) {
-    // If server returns an OK response, parse the JSON.
-    return response.body;
-  } else {
-    // If that response was not OK, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
+//   if (response.statusCode == 200) {
+//     // If server returns an OK response, parse the JSON.
+//     return response.body;
+//   } else {
+//     // If that response was not OK, throw an error.
+//     throw Exception('Failed to load post');
+//   }
+// }
 
   // When the user type something in the textbox it will show the placemark 
   void sendRequest(String intendedLocation)async{
+
+     _markers.clear();
+    _polyLines.clear();
     // List<Placemark> placemark ;
-    //  List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation); 
+     List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation); 
+       double latitude = placemark[0].position.latitude;
+    double longitude = placemark[0].position.longitude;
+    LatLng destination = LatLng(latitude, longitude);
+
+
+    
+
+
     //  List<Placemark> placemark =  await Geolocator().placemarkFromAddress(intendedLocation).catchError((err){
     //    print('We can\'t get your location');
     //  }); 
@@ -199,32 +211,32 @@ class MapState with ChangeNotifier{
 //   Future<http.Response> fetchPlacemark(intendedLocation) {
 //   return http.get('https://maps.googleapis.com/maps/api/geocode/json?address=$intendedLocation&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU');
 // }
-  Future<List<Placemark>> placemark ;
-   placemark= getPlacemark(intendedLocation);
+  // Future<List<Placemark>> placemark ;
+  //  placemark= getPlacemark(intendedLocation);
 
   // String strPlacemark = "https://maps.googleapis.com/maps/api/geocode/json?address=$intendedLocation&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU";
   // placemarmark = strPlacemark.toList();
-  List<Placemark> placmarkFinal;
-  placmarkFinal =jsonDecode(fetchPost());
-  // print('-----------------------$strPlacemark');
-  print('-----------------------$placemark');
+  // List<Placemark> placmarkFinal;
+  // placmarkFinal =jsonDecode(fetchPost());
+  // // print('-----------------------$strPlacemark');
+  // print('-----------------------$placemark');
   
-double latitude ;
-double longitude;
-  LatLng destination;
+// double latitude ;
+// double longitude;
+//   LatLng destination;
 
   // final Future placemark = getPlacemark(intendedLocation);
   // placemark.then((val){
   
   // });
-    latitude = placmarkFinal[0].position.latitude;
-      longitude=placmarkFinal[0].position.latitude;
-      destination =LatLng(latitude, longitude);
+      // String route = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
+    // latitude = placmarkFinal[0].position.latitude;
+    //   longitude=placmarkFinal[0].position.latitude;
+    //   destination =LatLng(latitude, longitude);
 
 
      //clear all previous markings
-    _markers.clear();
-    _polyLines.clear();
+   
 
     //Initiate variable 
     
@@ -280,6 +292,8 @@ double longitude;
     // final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&input=${destinationControler.text}');
     // The location is filter for suggestion is restricted for 50km with center at olongapo city hall as LatLng
     final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&location=14.842299, 120.287810&radius=1000&input=${destinationControler.text}');
+
+
 
     if(response.statusCode == 200){
       var parsedPlacesList = json.decode(response.body);

@@ -7,6 +7,8 @@ Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}
   final mapState = Provider.of<MapState>(context);
   
   double totalPrice =   ((destinationkm-1)*mapState.getregPriceKm())+mapState.getminimumPrice() ;
+  totalPrice = totalPrice.roundToDouble();
+
   return Column(
     children: <Widget>[
       Padding(
@@ -14,7 +16,7 @@ Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}
         child: Column(
           children: <Widget>[
             Text(
-              'P$totalPrice for your ${destinationkm.toString()}Km destination. \nIt will take you $detinationDuration for you \nto arrive at your destination. ',
+              'P$totalPrice for your ${destinationkm.toString()}Km destination. It will take you $detinationDuration for you to arrive at your destination. ',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
             ),

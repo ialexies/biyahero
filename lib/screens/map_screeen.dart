@@ -295,7 +295,7 @@ class _MapState extends State<Map> {
 
         mapState.destinationControler.text=mapState.selectedPlace.toString();
         // mapState.sendRequest(mapState.toString());
-        mapState.sendRequest(mapState.destinationControler.toString());
+        mapState.sendRequest(mapState.destinationControler.text.toString());
         //  mapState.sendRequest(value);
         // print(values[index].code);
         print(mapState.selectedPlace);
