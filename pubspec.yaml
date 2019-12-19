@@ -41,6 +41,7 @@ dependencies:
   geocoder: ^0.2.1
   share: ^0.6.3+4
   unicorndial: ^1.1.5
+  flutter_signin_button: ^1.0.0
   
   
 

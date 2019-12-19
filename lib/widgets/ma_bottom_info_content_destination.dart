@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}) {
   final mapState = Provider.of<MapState>(context);
   
+  
   double totalPrice =   ((destinationkm-1)*mapState.getregPriceKm())+mapState.getminimumPrice() ;
   totalPrice = totalPrice.roundToDouble();
 
@@ -16,9 +17,9 @@ Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}
         child: Column(
           children: <Widget>[
             Text(
-              'P$totalPrice for your ${destinationkm.toString()}Km destination. It will take you $detinationDuration for you to arrive at your destination. ',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              'Price:  P$totalPrice \nPrice:  ${destinationkm.toString()}Km \nDuration:  $detinationDuration ',
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.white, fontSize: 12),
             ),
             // Text(
             //   appState.minimumPrice.toString(),

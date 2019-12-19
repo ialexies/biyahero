@@ -24,6 +24,8 @@ class MapState with ChangeNotifier{
   GoogleMapController _mapController;
   double destinationDistance;
   String destinationDuration;
+
+  bool _destinationBottomInfo = false;
  
   int _regPriceKm;
   int _minimumPrice;
@@ -52,6 +54,7 @@ class MapState with ChangeNotifier{
   Set<Marker> get markers => _markers;
   Set<Polyline> get polyline => _polyLines;
   List <SuggestedPlaces> get autocomplete => _autoComplete;
+  bool get destinationBottomInfo => _destinationBottomInfo;
 
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
@@ -158,33 +161,14 @@ class MapState with ChangeNotifier{
       notifyListeners();
   }   
 
-
   void clearDestination(){
      _markers.clear();
     _polyLines.clear();
+    _destinationBottomInfo=false;
     // destinationControler.text;
     destinationControler.text="";
     
   }
-
-    // Future<List<Placemark>> getPlacemark(intendedLocation) async{
-    //     var places  = await Geolocator().placemarkFromAddress(intendedLocation); 
-        
-    //     return places ;
-    //   }
-
-//     fetchPost() async {
-//   final response =
-//       await http.get('https://maps.googleapis.com/maps/api/geocode/json?address=hys&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU');
-
-//   if (response.statusCode == 200) {
-//     // If server returns an OK response, parse the JSON.
-//     return response.body;
-//   } else {
-//     // If that response was not OK, throw an error.
-//     throw Exception('Failed to load post');
-//   }
-// }
 
   // When the user type something in the textbox it will show the placemark 
   void sendRequest(String intendedLocation)async{
@@ -197,57 +181,9 @@ class MapState with ChangeNotifier{
     double longitude = placemark[0].position.longitude;
     LatLng destination = LatLng(latitude, longitude);
 
-
-    
-
-
-    //  List<Placemark> placemark =  await Geolocator().placemarkFromAddress(intendedLocation).catchError((err){
-    //    print('We can\'t get your location');
-    //  }); 
-
-    // Geocoder.google(apiKey).
-    // Future<List<Placemark>> placemark = getPlacemark(intendedLocation);
-
-//   Future<http.Response> fetchPlacemark(intendedLocation) {
-//   return http.get('https://maps.googleapis.com/maps/api/geocode/json?address=$intendedLocation&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU');
-// }
-  // Future<List<Placemark>> placemark ;
-  //  placemark= getPlacemark(intendedLocation);
-
-  // String strPlacemark = "https://maps.googleapis.com/maps/api/geocode/json?address=$intendedLocation&key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU";
-  // placemarmark = strPlacemark.toList();
-  // List<Placemark> placmarkFinal;
-  // placmarkFinal =jsonDecode(fetchPost());
-  // // print('-----------------------$strPlacemark');
-  // print('-----------------------$placemark');
-  
-// double latitude ;
-// double longitude;
-//   LatLng destination;
-
-  // final Future placemark = getPlacemark(intendedLocation);
-  // placemark.then((val){
-  
-  // });
-      // String route = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
-    // latitude = placmarkFinal[0].position.latitude;
-    //   longitude=placmarkFinal[0].position.latitude;
-    //   destination =LatLng(latitude, longitude);
-
-
-     //clear all previous markings
-   
-
-    //Initiate variable 
     
     String destinationPolyline;
-    // double latitude = placemark[0].position.latitude;
-    
-    // double latitude = await placemark.
-    // double longitude = placemark[0].position.longitude;
-    // double latitude =13;
-    // double longitude =120;
-    
+  
 
     // Get the Route data from google using the current position and destionation
     Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
@@ -265,6 +201,8 @@ class MapState with ChangeNotifier{
     // createRoute(route) using the polyline;
     createRoute(destinationPolyline);
     _addMarker(destination, intendedLocation); 
+
+    _destinationBottomInfo=true;
     notifyListeners();
   }
 

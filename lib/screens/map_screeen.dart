@@ -71,7 +71,7 @@ class _MapState extends State<Map> {
       Stack(
         children: <Widget>[
           GoogleMap(
-            initialCameraPosition: CameraPosition(target: mapState.initalPosition,   zoom: 14.0,),
+            initialCameraPosition: CameraPosition(target: mapState.initalPosition,   zoom: 16.0,),
             onMapCreated: mapState.onCreated,
             myLocationEnabled: true,
             mapType: MapType.normal,
@@ -79,6 +79,7 @@ class _MapState extends State<Map> {
             markers: mapState.markers,
             onCameraMove: mapState.onCameraMove,
             polylines: mapState.polyline,
+            trafficEnabled: true,
             
           ),
            Visibility(
