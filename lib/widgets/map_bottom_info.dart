@@ -16,7 +16,7 @@ Positioned mapBottomInfo({context,screeWidth,Widget content, var1, var2, var3}){
           child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            color: Colors.black.withOpacity(.4),
+            color: Colors.black.withOpacity(.6),
             child: content,
           ),
         ),

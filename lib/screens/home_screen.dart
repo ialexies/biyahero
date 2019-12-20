@@ -95,13 +95,13 @@ class _HomeScreenState extends State<HomeScreen>
         backgroundColor: Theme.of(context).primaryColor,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.map,color: Colors.white,),
+            icon: Icon(Icons.map,color: Colors.black87,),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle,color: Colors.white,),
+            icon: Icon(Icons.account_circle,color: Colors.black87,),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings,color: Colors.white,),
+            icon: Icon(Icons.settings,color: Colors.black87,),
           ),
         ],
       ),
