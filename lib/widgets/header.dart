@@ -6,12 +6,12 @@ AppBar appHeader(context,{bool isAppTitle = false, String titleText, removeBackB
     title: Text(
       isAppTitle ? "ByaHero" : titleText,
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black87,
         fontFamily: isAppTitle ? "Signatra" : "",
         fontSize: isAppTitle ? 50.0 : 22.0,
       ),
     ),
     centerTitle: true,
-    backgroundColor: Theme.of(context).accentColor,
+    backgroundColor: Theme.of(context).primaryColor,
   );
 }
