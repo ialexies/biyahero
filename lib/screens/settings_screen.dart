@@ -12,19 +12,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appHeader(context, titleText: 'Settings', removeBackButton: true),
-      body: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(child: RaisedButton(
-                child: Text('Logout'),
-                onPressed: (){
-                 GoogleAccountHelper().logoutgoogle();
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            Center(
+              child:
+                RaisedButton.icon(
+                  
+                  color: Colors.redAccent,
+                  textColor: Colors.white,
+                  icon: Icon(Icons.exit_to_app),
+                  label: Text('Logout'),
+                  onPressed: () {
+                  GoogleAccountHelper().logoutgoogle();
                 },
-              ),),
-            ],
-          )
-        ],
+                )
+              
+              //  RaisedButton(
+              
+              //   child: Text('Logout'),
+              //   onPressed: () {
+              //     GoogleAccountHelper().logoutgoogle();
+              //   },
+              // ),
+            )
+          ],
+        ),
       ),
     );
   }

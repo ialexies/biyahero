@@ -384,6 +384,7 @@ class _MapState extends State<Map> {
           //     ),
           //   ),
           // ),
+          
           mapState.destinationDistance!=null? 
           mapBottomInfo(
             context: context,
