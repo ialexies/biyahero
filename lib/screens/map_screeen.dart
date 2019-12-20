@@ -108,110 +108,281 @@ class _MapState extends State<Map> {
                   ),
               ),
            ),
-          Positioned(
-            top: 50.0,
-            right: 15.0,
-            left: 15.0,
-            child: Container(
-              height: 50.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(1.0, 5.0),
-                      blurRadius: 10,
-                      spreadRadius: 3)
-                ],
-              ),
-              child: TextField(
-                cursorColor: Colors.black,
-                controller: mapState.locationController,
-                decoration: InputDecoration(
-                  icon: Container(
-                    margin: EdgeInsets.only(left: 20, top: 5),
-                    width: 10,
-                    height: 10,
-                    child: Icon(
-                      Icons.location_on,
-                      color: Colors.black,
-                    ),
-                  ),
-                  hintText: "pick up",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
-                ),
-              ),
-            ),
-          ),
 
-          Positioned(
-            top: 105.0,
-            right: 15.0,
-            left: 15.0,
-            child: Container(
-              height: 50.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(1.0, 5.0),
-                      blurRadius: 10,
-                      spreadRadius: 3)
-                ],
-              ),
-              child: TextField(
-                
-                cursorColor: Colors.black,
-                controller:  mapState.destinationControler,
-                textInputAction: TextInputAction.go,
-                onSubmitted: (value) {
-                  // mapState.autoCompleteContainer = false;
-                  // mapState.autoCompleteContainer = false;
-                  mapState.visibilityAutoComplete(false);
-                  mapState.sendRequest(value);
-                  // mapState.autoCompleteContainer = false;
-                },
-                onChanged: (value){
-                  mapState.increment();
-                  // mapState.autoCompleteContainer = true;
-                  if(mapState.destinationControler.text!=null){
-                    mapState.autoCompleteContainer = true;
-                  }else{
-                    mapState.autoCompleteContainer = false;
-                  }
-                },
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: (){
-                      // mapState.destinationControler.text="";
-                      mapState.clearDestination();
-                      // GoogleMap
-                      
-                    },
+            Positioned(
+
+              top: 50,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Container(
+                  width: appsScreenWidth(context)-60,
+                                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(1.0, 5.0),
+                        blurRadius: 10,
+                        spreadRadius: 3)
+                  ],
+                ),
+                  child: Row(
+                    
+                children: [
+         
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 2,
+                    child: 
+                    Container(
+                      height: 90,
+                 
+                      child: Column(
+                        children: <Widget>[
+                            Expanded(
+                              child: Container( child: Icon(Icons.location_on)),
+                            ),
+                            Expanded(
+                              child:Container( child: Icon(Icons.more_vert)),
+                            ),
+                            Expanded(
+                              child:Container( child: Icon(Icons.local_taxi)),
+                            ),
+
+                        ],
+                      )),
                   ),
-                  icon: Container(
-                    margin: EdgeInsets.only(left: 20, top: 5),
-                    width: 10,
-                    height: 10,
-                    child: Icon(
-                      Icons.local_taxi,
-                      color: Colors.black,
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 11,
+                    child: Column(
+                    children: <Widget>[
+                      TextField(
+                        cursorColor: Colors.black,
+                        controller: mapState.locationController,
+                        decoration: InputDecoration(
+                   
+                          hintText: "pick up",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10 ),
+                        child: Divider(),
+                      ),
+                      TextField(
+                    
+                    cursorColor: Colors.black,
+                    controller:  mapState.destinationControler,
+                    textInputAction: TextInputAction.go,
+                    onSubmitted: (value) {
+                      // mapState.autoCompleteContainer = false;
+                      // mapState.autoCompleteContainer = false;
+                      mapState.visibilityAutoComplete(false);
+                      mapState.sendRequest(value);
+                      // mapState.autoCompleteContainer = false;
+                    },
+                    onChanged: (value){
+                      mapState.increment();
+                      // mapState.autoCompleteContainer = true;
+                      if(mapState.destinationControler.text!=null){
+                        mapState.autoCompleteContainer = true;
+                      }else{
+                        mapState.autoCompleteContainer = false;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear,color: Colors.black87,),
+                        onPressed: (){
+                          // mapState.destinationControler.text="";
+                          mapState.clearDestination();
+                          // GoogleMap
+                          
+                        },
+                      ),
+
+                      hintText: "Choose your destination",
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
                     ),
                   ),
-                  hintText: "destination?",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+                    ],
+                  ),
+                  ),
+                ],
+            ),
                 ),
               ),
+
             ),
-          ),
+
+
+          // Positioned(
+          //   top: 50.0,
+          //   right: 15.0,
+          //   left: 15.0,
+          //   child: Container(
+          //     height: 210.0,
+          //     width:500,
+          //     // width: double.infinity,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(3.0),
+          //       color: Colors.white,
+          //       boxShadow: [
+          //         BoxShadow(
+          //             color: Colors.grey,
+          //             offset: Offset(1.0, 5.0),
+          //             blurRadius: 10,
+          //             spreadRadius: 3)
+          //       ],
+          //     ),
+          //     child: Row(
+                
+          //       children: <Widget>[
+          //         Column(children: <Widget>[
+          //           Text('data')
+          //         ],),
+          //         Column(
+          //           children: <Widget>[
+          //             TextField(
+          //               cursorColor: Colors.black,
+          //               controller: mapState.locationController,
+          //               decoration: InputDecoration(
+          //                 icon: Container(
+          //                   margin: EdgeInsets.only(left: 20, top: 5),
+          //                   width: 10,
+          //                   height: 10,
+          //                   child: Icon(
+          //                     Icons.location_on,
+          //                     color: Colors.black,
+          //                   ),
+          //                 ),
+          //                 hintText: "pick up",
+          //                 border: InputBorder.none,
+          //                 contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+          //               ),
+          //             ),
+          //             TextField(
+                    
+          //           cursorColor: Colors.black,
+          //           controller:  mapState.destinationControler,
+          //           textInputAction: TextInputAction.go,
+          //           onSubmitted: (value) {
+          //             // mapState.autoCompleteContainer = false;
+          //             // mapState.autoCompleteContainer = false;
+          //             mapState.visibilityAutoComplete(false);
+          //             mapState.sendRequest(value);
+          //             // mapState.autoCompleteContainer = false;
+          //           },
+          //           onChanged: (value){
+          //             mapState.increment();
+          //             // mapState.autoCompleteContainer = true;
+          //             if(mapState.destinationControler.text!=null){
+          //               mapState.autoCompleteContainer = true;
+          //             }else{
+          //               mapState.autoCompleteContainer = false;
+          //             }
+          //           },
+          //           decoration: InputDecoration(
+          //             suffixIcon: IconButton(
+          //               icon: Icon(Icons.delete),
+          //               onPressed: (){
+          //                 // mapState.destinationControler.text="";
+          //                 mapState.clearDestination();
+          //                 // GoogleMap
+                          
+          //               },
+          //             ),
+          //             icon: Container(
+          //               margin: EdgeInsets.only(left: 20, top: 5),
+          //               width: 10,
+          //               height: 10,
+          //               child: Icon(
+          //                 Icons.local_taxi,
+          //                 color: Colors.black,
+          //               ),
+          //             ),
+          //             hintText: "destination?",
+          //             border: InputBorder.none,
+          //             contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+          //           ),
+          //         ),
+          //           ],
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+
+          // Positioned(
+          //   top: 105.0,
+          //   right: 15.0,
+          //   left: 15.0,
+          //   child: Container(
+          //     height: 50.0,
+          //     width: double.infinity,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(3.0),
+          //       color: Colors.white,
+          //       boxShadow: [
+          //         BoxShadow(
+          //             color: Colors.grey,
+          //             offset: Offset(1.0, 5.0),
+          //             blurRadius: 10,
+          //             spreadRadius: 3)
+          //       ],
+          //     ),
+          //     child:
+          //      TextField(
+                
+          //       cursorColor: Colors.black,
+          //       controller:  mapState.destinationControler,
+          //       textInputAction: TextInputAction.go,
+          //       onSubmitted: (value) {
+          //         // mapState.autoCompleteContainer = false;
+          //         // mapState.autoCompleteContainer = false;
+          //         mapState.visibilityAutoComplete(false);
+          //         mapState.sendRequest(value);
+          //         // mapState.autoCompleteContainer = false;
+          //       },
+          //       onChanged: (value){
+          //         mapState.increment();
+          //         // mapState.autoCompleteContainer = true;
+          //         if(mapState.destinationControler.text!=null){
+          //           mapState.autoCompleteContainer = true;
+          //         }else{
+          //           mapState.autoCompleteContainer = false;
+          //         }
+          //       },
+          //       decoration: InputDecoration(
+          //         suffixIcon: IconButton(
+          //           icon: Icon(Icons.delete),
+          //           onPressed: (){
+          //             // mapState.destinationControler.text="";
+          //             mapState.clearDestination();
+          //             // GoogleMap
+                      
+          //           },
+          //         ),
+          //         icon: Container(
+          //           margin: EdgeInsets.only(left: 20, top: 5),
+          //           width: 10,
+          //           height: 10,
+          //           child: Icon(
+          //             Icons.local_taxi,
+          //             color: Colors.black,
+          //           ),
+          //         ),
+          //         hintText: "destination?",
+          //         border: InputBorder.none,
+          //         contentPadding: EdgeInsets.only(left: 15.0, top: 16.0),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           mapState.destinationDistance!=null? 
           mapBottomInfo(
             context: context,
@@ -317,3 +488,4 @@ class _MapState extends State<Map> {
   }
 
 }
+
