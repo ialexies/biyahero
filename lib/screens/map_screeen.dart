@@ -116,7 +116,8 @@ class _MapState extends State<Map> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
                   width: appsScreenWidth(context)-60,
-                                decoration: BoxDecoration(
+                  height: 130,
+                  decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3.0),
                   color: Colors.white,
                   boxShadow: [
