@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.green[800],
       ),
       routes: {
-        MapScreen.id: (context) => MapScreen(),
+        MapScreen.id: (context) => MapScreen(androidFusedLocation: true,),
         RegistrationScreen.id: (context) => RegistrationScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         
