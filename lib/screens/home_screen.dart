@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen>
       key: _scaffoldKey,
       body: PageView(
         children: <Widget>[
-          MapScreen(),
+          MapScreen(androidFusedLocation: true,),
           ProfileScreen(),
           SettingsScreen(),
         ],
