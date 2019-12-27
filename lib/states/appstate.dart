@@ -17,7 +17,6 @@ class AppState with ChangeNotifier {
   getGoogleCurrentAccount() => _googleCurrentAccount;
   getGoogleCurrentAccountID() => _googleCurrentAccount.id;
   getGoogleCurrentAccountDisplayName() => _googleCurrentAccount.displayName;
-  getGoogleCurrentAccountPhoto() => _googleCurrentAccount.photoUrl;
 
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;

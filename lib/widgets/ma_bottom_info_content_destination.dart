@@ -19,9 +19,8 @@ Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}
             Text(
               'Price:  P$totalPrice \nPrice:  ${destinationkm.toString()}Km \nDuration:  $detinationDuration ',
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: 12),
             ),
-           
             // Text(
             //   appState.minimumPrice.toString(),
             // )

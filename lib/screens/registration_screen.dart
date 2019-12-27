@@ -44,22 +44,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-        child: FlatButton(
-          color: Colors.blue,
-          child: Text("Confirm", style: TextStyle(color: Colors.white)),
-          onPressed: () async {
-            _formKey.currentState.save();
-            await db.collection("createdoffers").add(
-              {
-                'name': offerName,
-                'type': offerType,
-                'start': start,
-                'end': end,
-              }
-            );
-          },
-        ),  
-
   @override
   Widget build(BuildContext parentContext) {
     return Scaffold(
