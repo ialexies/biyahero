@@ -213,8 +213,18 @@ class _MaprouteState extends State<MapScreen> {
                 ),
               ),
               Positioned(
+                bottom: 40, right: 80,
+                // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    _setLocation(btnTitle: "Set as Pickup Location", title: "Pickup Location", locType: 1);
+                  },
+                ),
+              ),
+              Positioned(
                 bottom: 40, right: 10,
                 // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
+
                 child: FloatingActionButton(
                   onPressed: _onAddMarkerPressed,
                   backgroundColor: Colors.yellow,
@@ -396,6 +406,65 @@ class _MaprouteState extends State<MapScreen> {
     setState(() {
       _pickupDropPin = position.target;
     });
+  }
+
+  Future<void> _setLocation({int locType,String title,  String btnTitle}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Container(
+              width: appsScreenWidth(context)*.7,
+              height: appScreenHeight(context)*.7,
+              child: Stack(
+                children: <Widget>[
+                  GoogleMap(
+                    zoomGesturesEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(14.838787, 120.2845745),
+                      zoom: 16.0,
+                    ),
+                    // onMapCreated: mapState.onCreated,
+                    myLocationEnabled: true,
+                    mapType: MapType.normal,
+                    compassEnabled: true,
+                    // markers: {
+                    //   Marker(
+                    //     markerId: MarkerId("markermycurrentlocation"),
+                    //     position: LatLng(14.838787, 120.2845745),
+                    //   ),
+                    // },
+                    // onCameraMove: mapState.onCameraMove,
+                    onCameraMove: _onCameraMoves,
+                    // polylines: mapState.polyline,
+                    trafficEnabled: true,
+                  ),
+                  Positioned(
+                    
+                    child: Center(child: Icon(Icons.location_on, color: Colors.redAccent, size: 40, )),
+                  ),
+                 
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            Center(
+              child: FlatButton(
+                color: Colors.red,
+                child: Center(child: Text(btnTitle)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
