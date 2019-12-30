@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttershare/screens/map_screeen.dart';
+import 'package:fluttershare/screens/test_unauth_phone.dart';
 import '../controllers/helper_google_account.dart';
 // import '../screens/dashboard_screen.dart';
 import '../screens/profile_screen.dart';
@@ -65,11 +66,13 @@ class _HomeScreenState extends State<HomeScreen>
     return appState.isAuth
         ? buildAuthScreen(context)
         : buildUnAuthScreen(context);
+        // : unAuthPhoneReg();
   }
 
     Scaffold buildUnAuthScreen(contex) {
     return Scaffold(
       body: unAuthScreen(context),
+      // body:unAuthPhoneReg(),
     );
   }
 
@@ -143,6 +146,8 @@ class _HomeScreenState extends State<HomeScreen>
   onPageChanged(int pageIndex) {
     pageIndex = pageIndex;
   }
+
+
 
 
 }

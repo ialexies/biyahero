@@ -1,12 +1,151 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:fluttershare/constants.dart';
 import 'package:fluttershare/controllers/helper_design.dart';
+import 'package:fluttershare/screens/test_unauth_phone.dart';
 import '../components/rounded_button.dart';
 import '../controllers/helper_google_account.dart';
 
+
 unAuthScreen(context) {
+  String phoneNo;
+  String smsCode;
+  String verificationId;
+
+
+    signIn() {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+
+    FirebaseAuth.instance.signInWithCredential(credential).then((user) {
+      Navigator.of(context).pushReplacementNamed('/homepage');
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+ Future<bool> smsCodeDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text('Enter sms code'),
+            content: TextField(
+              onChanged: (value) {
+                smsCode = value;
+              },
+            ),
+            contentPadding: EdgeInsets.all(10),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text('Done'),
+                onPressed: () {
+                  FirebaseAuth.instance.currentUser().then((user) {
+                    if (user != null) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/homepage');
+                    } else {
+                      Navigator.of(context).pop();
+                      signIn();
+                    }
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+
+
+Future<void> verifyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+      verificationId = verId;
+    };
+
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
+      verificationId = verId;
+      smsCodeDialog(context).then((value) {
+        print('Signed In');
+      });
+    };
+
+    final PhoneVerificationCompleted verifiedSuccess = (FirebaseUser user) {
+      print('phone number verified');
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException exception) {
+      print('Problem in phone verification -${exception.message}');
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNo,
+      codeAutoRetrievalTimeout: autoRetrieve,
+      codeSent: smsCodeSent,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verificationFailed,
+    );
+  }
+
+
+ 
+
+  Future<void> loginwithPhone(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Login with Phone Number'),
+          content: Container(
+            height: 125,
+            child: Column(
+              
+              children: <Widget>[
+                TextField(
+                  decoration: InputDecoration(hintText: 'Enter Phone Number'),
+                  onChanged: (value) {
+                    phoneNo = value;
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                  onPressed: verifyPhone,
+                  child: Text('verify'),
+                  elevation: 7,
+                  color: Colors.blue,
+                ),
+                Divider()
+              ],
+            ),
+          ),
+          actions: <Widget>[
+      
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  
+
+  
   googleSignIn.onCurrentUserChanged.listen((account) {
     GoogleAccountHelper().handleSignIn(account, context);
   }, onError: (err) {
@@ -17,17 +156,17 @@ unAuthScreen(context) {
 
   return Container(
     decoration: BoxDecoration(
-      gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: [
-        0.4,
-        0.9,
-      ],
-      colors: [
-        Colors.cyan,
-        Colors.greenAccent[200],
-      ])),
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [
+          0.4,
+          0.9,
+        ],
+            colors: [
+          Colors.cyan,
+          Colors.greenAccent[200],
+        ])),
     child: SafeArea(
       child: Stack(
         alignment: Alignment.center,
@@ -35,22 +174,20 @@ unAuthScreen(context) {
           Positioned(
             bottom: -10,
             height: 100,
-            child:Image.asset('images/home_back_buildings.png') ,
+            child: Image.asset('images/home_back_buildings.png'),
           ),
           Positioned(
             top: 30,
             child: Center(
               child: Hero(
-                
-                        tag: 'logo',
-                        child: Container(
-                          height: 130,
-                          child: Image.asset('images/byeherologo.png'),
-                        ),
-                      ),
+                tag: 'logo',
+                child: Container(
+                  height: 130,
+                  child: Image.asset('images/byeherologo.png'),
+                ),
               ),
             ),
-         
+          ),
           Positioned(
             top: 170,
             height: 260,
@@ -101,7 +238,7 @@ unAuthScreen(context) {
                           RoundedButton(
                             title: 'Login',
                             colour: Colors.cyan,
-                            onPressed: (){},
+                            onPressed: () {},
                           )
                         ],
                       ),
@@ -122,14 +259,13 @@ unAuthScreen(context) {
               ),
             ),
           ),
-     
           Positioned(
             top: 370,
-                        child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 60),
-         
+
                 SizedBox(height: 20),
                 // RoundedButton(
                 //   title: 'login with Google',
@@ -143,7 +279,18 @@ unAuthScreen(context) {
                   Buttons.Google,
                   // mini: true,
                   text: "Sign in with Google",
-                  onPressed: () {GoogleAccountHelper().login();},
+                  onPressed: () {
+                    GoogleAccountHelper().login();
+                  },
+                ),
+                SignInButton(
+                  Buttons.Google,
+                  // mini: true,
+                  text: "Sign in Phone",
+                  onPressed: () {
+                    loginwithPhone(context);
+                    // print('fdfdf');
+                  },
                 ),
                 // SignInButton(
                 //   Buttons.Facebook,
