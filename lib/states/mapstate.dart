@@ -108,19 +108,13 @@ class MapState with ChangeNotifier{
     } catch (err) {
       print('Caught error: $err');
     }
-
       _initialPosition=LatLng(position.latitude, position.longitude); 
       _initialPositionLat = position.latitude.toDouble();
       _initialPositionLat = position.longitude.toDouble();
-
-
       locationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
       notifyListeners();
-
-     
   }
   
-
   void _loadingInitialPosition()async{
     await Future.delayed(Duration(seconds: 5)).then((v) {
       if(_initialPosition == null){
@@ -137,7 +131,6 @@ class MapState with ChangeNotifier{
     notifyListeners();
   }
                 
-
 
   //Add Marker in Map
   void _addMarker(LatLng location, String address) async{

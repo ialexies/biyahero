@@ -8,14 +8,12 @@ import 'package:fluttershare/screens/test_unauth_phone.dart';
 import '../components/rounded_button.dart';
 import '../controllers/helper_google_account.dart';
 
-
 unAuthScreen(context) {
   String phoneNo;
   String smsCode;
   String verificationId;
 
-
-    signIn() {
+  signIn() {
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: verificationId,
       smsCode: smsCode,
@@ -28,7 +26,7 @@ unAuthScreen(context) {
     });
   }
 
- Future<bool> smsCodeDialog(BuildContext context) {
+  Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -61,9 +59,7 @@ unAuthScreen(context) {
         });
   }
 
-
-
-Future<void> verifyPhone() async {
+  Future<void> verifyPhone() async {
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       verificationId = verId;
     };
@@ -94,10 +90,9 @@ Future<void> verifyPhone() async {
     );
   }
 
-
- 
-
   Future<void> loginwithPhone(context) async {
+    TextEditingController phoneNumval = TextEditingController();
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -105,31 +100,62 @@ Future<void> verifyPhone() async {
         return AlertDialog(
           title: Text('Login with Phone Number'),
           content: Container(
-            height: 125,
+            height: 150,
             child: Column(
-              
               children: <Widget>[
-                TextField(
-                  decoration: InputDecoration(hintText: 'Enter Phone Number'),
-                  onChanged: (value) {
-                    phoneNo = value;
-                  },
+                Form(
+                  autovalidate: true,
+                  child: TextFormField(
+                    controller: phoneNumval,
+                    keyboardType: TextInputType.phone,
+                    validator: (val) {
+                      String patttern = r'(^(09)\d{9}$)';
+                      // String patttern = r'(^(09|\+639)\d{9}$)'; // accept also +63
+
+                      RegExp regExp = new RegExp(patttern);
+
+                      if (val.length == 0) {
+                        return 'Please enter mobile number';
+                      } else if (val.length > 11) {
+                        return 'Phone Number is too long';
+                      } else if (val.length < 11) {
+                        return 'Phone Number is too short';
+                      } else if (!regExp.hasMatch(val)) {
+                        return 'Invalid Format, ex: 09455000123';
+                      }
+// return null;
+
+                      // if (val.trim().length<11){
+                      //   return 'Phone Number is too Short';
+                      // }
+                      // else if (val.trim().length>11){
+                      //   return 'Phone Number is too long';
+                      // }
+                    },
+                    decoration: InputDecoration(
+                      hintText: '09190001234',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                    onChanged: (value) {
+                      phoneNo = "+63$value";
+                      print(phoneNo);
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 RaisedButton(
                   onPressed: verifyPhone,
-                  child: Text('verify'),
+                  child: Text('Login'),
                   elevation: 7,
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                 ),
                 Divider()
               ],
             ),
           ),
           actions: <Widget>[
-      
             FlatButton(
               child: Text('Cancel'),
               onPressed: () {
@@ -142,10 +168,6 @@ Future<void> verifyPhone() async {
     );
   }
 
-
-  
-
-  
   googleSignIn.onCurrentUserChanged.listen((account) {
     GoogleAccountHelper().handleSignIn(account, context);
   }, onError: (err) {
