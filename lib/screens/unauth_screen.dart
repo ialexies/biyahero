@@ -49,7 +49,7 @@ unAuthScreen(context) {
                       Navigator.of(context).pushReplacementNamed('/homepage');
                     } else {
                       Navigator.of(context).pop();
-                      signIn();
+                      signIn();   
                     }
                   });
                 },
