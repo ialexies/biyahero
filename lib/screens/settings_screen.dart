@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Expanded(child: RaisedButton(
                 child: Text('Logout'),
                 onPressed: (){
-                 GoogleAccountHelper().logoutgoogle();
+                 GoogleAccountHelper(appContext: context).logoutgoogle();
                 },
               ),),
             ],

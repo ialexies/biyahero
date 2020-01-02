@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttershare/states/appstate.dart';
-import 'package:fluttershare/states/mapstate.dart';
+import 'package:byahero/states/appstate.dart';
+import 'package:byahero/states/mapstate.dart';
 import 'package:provider/provider.dart';
 
 Widget destinationBottomInfoContent({context, destinationkm, detinationDuration}) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttershare/states/mapstate.dart';
+import 'package:byahero/states/mapstate.dart';
 import 'package:provider/provider.dart';
 
 Positioned mapBottomInfo({context,screeWidth,Widget content, var1, var2, var3}){

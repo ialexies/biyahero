@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttershare/controllers/helper_design.dart';
-import 'package:fluttershare/widgets/ma_bottom_info_content_destination.dart';
-import 'package:fluttershare/widgets/map_bottom_info.dart';
+import 'package:byahero/controllers/helper_design.dart';
+import 'package:byahero/widgets/ma_bottom_info_content_destination.dart';
+import 'package:byahero/widgets/map_bottom_info.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../services/google_maps_request.dart';

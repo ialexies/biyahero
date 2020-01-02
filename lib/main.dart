@@ -8,7 +8,7 @@ import './screens/registration_screen.dart';
 import 'package:provider/provider.dart';
 import './states/appstate.dart';
 import './states/mapstate.dart';
-import 'package:fluttershare/screens/map_screeen.dart';
+import 'package:byahero/screens/map_screeen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

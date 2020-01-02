@@ -1,7 +1,11 @@
 import 'dart:io';
+// import 'dart:js';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttershare/states/mapstate.dart';
+import 'package:byahero/states/mapstate.dart';
+import 'package:byahero/states/appstate.dart';
+import 'package:byahero/states/appstate.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../screens/home_screen.dart';
@@ -18,10 +22,21 @@ final usersGroupRef = Firestore.instance.collection('users').document("");
 
 
 class GoogleAccountHelper {
-  GoogleAccountHelper();
+  final BuildContext appContext;
+  GoogleAccountHelper({this.appContext});
+
+
+  // GoogleAccountHelper();
   logoutgoogle() {
     print('signout');
+    
     googleSignIn.signOut();
+    FirebaseAuth.instance.signOut();
+    AppState().updateIsAuth(false);
+    // print(AppState().getAuthVal());
+    
+    Navigator.of(appContext).pushReplacementNamed(HomeScreen.id);
+    // print(AppState().getAuthVal());
   }
 
   login() async {
@@ -42,8 +57,8 @@ class GoogleAccountHelper {
   handleSignIn(GoogleSignInAccount account, context) async {
     final appState = Provider.of<AppState>(context);
     if (account != null) {
-      // print('User signed in!: $account');
-      await createUserInFirestore(context);
+      print('User signed in!: $account');
+      await createUserInFirestore(context:context);
       appState.updateIsAuth(true);
     } else {
       appState.updateIsAuth(false);
@@ -53,7 +68,7 @@ class GoogleAccountHelper {
     }
   }
 
-  createUserInFirestore(context) async {
+  createUserInFirestore({context, phoneNumber}) async {
     final appState = Provider.of<AppState>(context);
     final mapState = Provider.of<MapState>(context);
     // 1) check if user exists in users collection in database (according to their id)

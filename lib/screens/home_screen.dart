@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttershare/screens/map_screeen.dart';
-import 'package:fluttershare/screens/test_unauth_phone.dart';
+import 'package:byahero/screens/map_screeen.dart';
+import 'package:byahero/screens/test_unauth_phone.dart';
 import '../controllers/helper_google_account.dart';
 // import '../screens/dashboard_screen.dart';
 import '../screens/profile_screen.dart';
@@ -10,9 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../states/appstate.dart';
-import 'package:fluttershare/screens/map_screeen.dart';
+import 'package:byahero/screens/map_screeen.dart';
 
-final GoogleSignIn googleSignIn = GoogleSignIn();
+final GoogleSignIn HomeGoogleSignIn = GoogleSignIn();
 
 
 class HomeScreen extends StatefulWidget {
@@ -37,19 +37,20 @@ class _HomeScreenState extends State<HomeScreen>
     pageController = PageController(initialPage: 0);
 
     // Detects when user signed in
-    googleSignIn.onCurrentUserChanged.listen((account) {
-      print('changes in user-------------');
-      GoogleAccountHelper().handleSignIn(account, this.context);
-    }, onError: (err) {
-      print('Error signing in: $err');
-    });
+    HomeGoogleSignIn.onCurrentUserChanged.listen(
+      (account) {
+        print('theres a change in user');
+        GoogleAccountHelper().handleSignIn(account, this.context);
+      }, 
+      onError: (err) {
+        print('Error signing in: $err');
+      }
+    );
 
-    // Reauthenticate user when app is opened
-    // googleSignIn.signInSilently(suppressErrors: false).then((account) {
-    //   GoogleAccountHelper().handleSignIn(account,this.context);
-    // }).catchError((err) {
-    //   print('Error signing in: $err');
-    // });
+
+    
+
+
   }
 
   @override
@@ -62,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
      
-
     return appState.isAuth
         ? buildAuthScreen(context)
         : buildUnAuthScreen(context);
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Scaffold buildAuthScreen(context) {
-    
+        print('----------');
 
     return Scaffold(
       key: _scaffoldKey,

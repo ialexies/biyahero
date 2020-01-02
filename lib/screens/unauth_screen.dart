@@ -1,14 +1,24 @@
+import 'package:byahero/controllers/helper_signin_phone.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:fluttershare/constants.dart';
-import 'package:fluttershare/controllers/helper_design.dart';
-import 'package:fluttershare/screens/test_unauth_phone.dart';
+import 'package:byahero/constants.dart';
+import 'package:byahero/controllers/helper_design.dart';
+import 'package:byahero/screens/test_unauth_phone.dart';
+import 'package:byahero/controllers/helper_google_account.dart';
+import 'package:byahero/states/appstate.dart';
+import 'package:byahero/screens/home_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+// import 'package:fluttershare/screens/home_screen.dart';
 import '../components/rounded_button.dart';
 import '../controllers/helper_google_account.dart';
+import 'home_screen.dart';
+import '../states/appstate.dart';
 
 unAuthScreen(context) {
+  final appState = Provider.of<AppState>(context);
   String phoneNo;
   String smsCode;
   String verificationId;
@@ -20,7 +30,10 @@ unAuthScreen(context) {
     );
 
     FirebaseAuth.instance.signInWithCredential(credential).then((user) {
-      Navigator.of(context).pushReplacementNamed('/homepage');
+      // Navigator.of(context).pushReplacementNamed('/homepage');
+      print('signing in using phone $verificationId');
+      appState.updateIsAuth(true);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
     }).catchError((e) {
       print(e);
     });
@@ -28,6 +41,7 @@ unAuthScreen(context) {
 
   Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
+      
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
@@ -45,10 +59,14 @@ unAuthScreen(context) {
                 onPressed: () {
                   FirebaseAuth.instance.currentUser().then((user) {
                     if (user != null) {
+                      appState.updateIsAuth(true);
+      
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed('/homepage');
+                      // Navigator.of(context).pushReplacementNamed('/homepage');
+                      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
                     } else {
                       Navigator.of(context).pop();
+
                       signIn();   
                     }
                   });
@@ -73,6 +91,37 @@ unAuthScreen(context) {
 
     final PhoneVerificationCompleted verifiedSuccess = (FirebaseUser user) {
       print('phone number verified');
+      appState.updateIsAuth(true);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+
+      // GoogleAccountHelper().createUserInFirestore(context:context, phoneNumber: phoneNo);
+      // GooglePhoneAccountHelper().createUserInFirestore() ;
+      // signIn();
+      // if(smsCode==null){
+      //   verifyPhone();
+      // }
+
+      
+      // Navigator.pushNamed(context, HomeScreen.id);
+
+          //  GoogleSignInAccount googleUserAcount;
+
+            FirebaseAuth.instance.currentUser().then((user){
+              if(user!=null){
+             
+                appState.updateIsAuth(true);
+                // Navigator.of(context).pop();
+                // Navigator.of(context).pushReplacementNamed('/homepage');
+                Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+                // firebase
+                // appState.saveGoogleAccount(user);
+                // print(googleUserAcount.toString());
+                appState.savefirebaseUser(user);
+                // phoneUser = user;
+              }
+            });
+
+
     };
 
     final PhoneVerificationFailed verificationFailed =

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -6,10 +7,10 @@ class AppState with ChangeNotifier {
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
   
+  FirebaseUser _firebaseUser;
+  
   double _regPriceKm;
   double _minimumPrice;
-
-  
 
   setCounter(GoogleSignInAccount googleCurrentAccount) => _googleCurrentAccount = googleCurrentAccount;
 
@@ -18,11 +19,12 @@ class AppState with ChangeNotifier {
   getGoogleCurrentAccountID() => _googleCurrentAccount.id;
   getGoogleCurrentAccountDisplayName() => _googleCurrentAccount.displayName;
 
+  //getfirebase account
+  getFirebaseCurrentAccount()=>_firebaseUser;
+
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
   
-
-
 
 
   void updateIsAuth(bool isAuthenticated) {
@@ -30,8 +32,24 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
+  getAuthVal(){
+    return  isAuth;
+  }
+
+  //save google account in state
   void saveGoogleAccount(GoogleSignInAccount callGoogleAccount) {
     _googleCurrentAccount = callGoogleAccount;
     notifyListeners();
   }
+
+  //Save Firebase user account in state
+  void savefirebaseUser(FirebaseUser firebaseUser){
+    _firebaseUser = firebaseUser;
+    notifyListeners();
+  }
+
+  void getFirebaseUser(){
+
+  }
+
 }

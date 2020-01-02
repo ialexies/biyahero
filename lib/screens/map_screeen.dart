@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttershare/common_widgets/placeholder_widget.dart';
-import 'package:fluttershare/controllers/helper_design.dart';
-import 'package:fluttershare/states/mapstate.dart';
-import 'package:fluttershare/widgets/ma_bottom_info_content_destination.dart';
-import 'package:fluttershare/widgets/map_bottom_info.dart';
+import 'package:byahero/common_widgets/placeholder_widget.dart';
+import 'package:byahero/controllers/helper_design.dart';
+import 'package:byahero/states/mapstate.dart';
+import 'package:byahero/widgets/ma_bottom_info_content_destination.dart';
+import 'package:byahero/widgets/map_bottom_info.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -217,7 +217,10 @@ class _MaprouteState extends State<MapScreen> {
                 // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
                 child: FloatingActionButton(
                   onPressed: () {
-                    _setLocation(btnTitle: "Set as Pickup Location", title: "Pickup Location", locType: 1);
+                    _setLocation(
+                        btnTitle: "Set as Pickup Location",
+                        title: "Pickup Location",
+                        locType: 1);
                   },
                 ),
               ),
@@ -408,7 +411,8 @@ class _MaprouteState extends State<MapScreen> {
     });
   }
 
-  Future<void> _setLocation({int locType,String title,  String btnTitle}) async {
+  Future<void> _setLocation(
+      {int locType, String title, String btnTitle}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -417,8 +421,8 @@ class _MaprouteState extends State<MapScreen> {
           title: Text(title),
           content: SingleChildScrollView(
             child: Container(
-              width: appsScreenWidth(context)*.7,
-              height: appScreenHeight(context)*.7,
+              width: appsScreenWidth(context) * .7,
+              height: appScreenHeight(context) * .7,
               child: Stack(
                 children: <Widget>[
                   GoogleMap(
@@ -443,10 +447,13 @@ class _MaprouteState extends State<MapScreen> {
                     trafficEnabled: true,
                   ),
                   Positioned(
-                    
-                    child: Center(child: Icon(Icons.location_on, color: Colors.redAccent, size: 40, )),
+                    child: Center(
+                        child: Icon(
+                      Icons.location_on,
+                      color: Colors.redAccent,
+                      size: 40,
+                    )),
                   ),
-                 
                 ],
               ),
             ),
