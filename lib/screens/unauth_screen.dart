@@ -9,6 +9,7 @@ import 'package:byahero/screens/test_unauth_phone.dart';
 import 'package:byahero/controllers/helper_google_account.dart';
 import 'package:byahero/states/appstate.dart';
 import 'package:byahero/screens/home_screen.dart';
+// import 'package:fluttershare/controllers/helper_google_account.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 // import 'package:fluttershare/screens/home_screen.dart';
@@ -41,7 +42,6 @@ unAuthScreen(context) {
 
   Future<bool> smsCodeDialog(BuildContext context) {
     return showDialog(
-      
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
@@ -60,14 +60,14 @@ unAuthScreen(context) {
                   FirebaseAuth.instance.currentUser().then((user) {
                     if (user != null) {
                       appState.updateIsAuth(true);
-      
+
                       Navigator.of(context).pop();
                       // Navigator.of(context).pushReplacementNamed('/homepage');
                       Navigator.of(context).pushReplacementNamed(HomeScreen.id);
                     } else {
                       Navigator.of(context).pop();
 
-                      signIn();   
+                      signIn();
                     }
                   });
                 },
@@ -89,39 +89,27 @@ unAuthScreen(context) {
       });
     };
 
-    final PhoneVerificationCompleted verifiedSuccess = (FirebaseUser user) {
+    final PhoneVerificationCompleted verifiedSuccess = (FirebaseUser user) async{
       print('phone number verified');
-      appState.updateIsAuth(true);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
-
-      // GoogleAccountHelper().createUserInFirestore(context:context, phoneNumber: phoneNo);
-      // GooglePhoneAccountHelper().createUserInFirestore() ;
-      // signIn();
-      // if(smsCode==null){
-      //   verifyPhone();
-      // }
-
-      
-      // Navigator.pushNamed(context, HomeScreen.id);
-
-          //  GoogleSignInAccount googleUserAcount;
-
-            FirebaseAuth.instance.currentUser().then((user){
-              if(user!=null){
-             
-                appState.updateIsAuth(true);
-                // Navigator.of(context).pop();
-                // Navigator.of(context).pushReplacementNamed('/homepage');
-                Navigator.of(context).pushReplacementNamed(HomeScreen.id);
-                // firebase
-                // appState.saveGoogleAccount(user);
-                // print(googleUserAcount.toString());
-                appState.savefirebaseUser(user);
-                // phoneUser = user;
-              }
-            });
+      // appState.updateIsAuth(true);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.id);
 
 
+       
+
+
+      FirebaseAuth.instance.currentUser().then((user) {
+        if (user != null) {
+
+           
+
+          appState.updateIsAuth(true);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+          appState.savefirebaseUser(user);
+
+          GoogleAccountHelper().checkPhoneNumberifHasProfile(context,user.phoneNumber);
+        }
+      });
     };
 
     final PhoneVerificationFailed verificationFailed =

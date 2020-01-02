@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:byahero/screens/map_screeen.dart';
 import 'package:byahero/screens/test_unauth_phone.dart';
@@ -47,8 +48,15 @@ class _HomeScreenState extends State<HomeScreen>
       }
     );
 
+    FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
 
-    
+      print('theres a change in user');
+        GoogleAccountHelper().handleFirebaseSignIn(firebaseUser, this.context);
+    },
+      onError: (err) {
+        print('Error signing in: $err');
+      }
+    );
 
 
   }

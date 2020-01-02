@@ -6,8 +6,8 @@ class AppState with ChangeNotifier {
   final DateTime timestamp = DateTime.now();
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
-  
   FirebaseUser _firebaseUser;
+  dynamic finalUser;
   
   double _regPriceKm;
   double _minimumPrice;
@@ -20,7 +20,13 @@ class AppState with ChangeNotifier {
   getGoogleCurrentAccountDisplayName() => _googleCurrentAccount.displayName;
 
   //getfirebase account
-  getFirebaseCurrentAccount()=>_firebaseUser;
+  FirebaseUser getFirebaseCurrentAccount()=>_firebaseUser;
+
+
+
+  //Actual user account
+
+
 
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
