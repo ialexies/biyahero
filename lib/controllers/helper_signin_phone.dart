@@ -1,104 +1,209 @@
-import 'dart:io';
+// import 'dart:js';
 
+import 'package:byahero/screens/home_screen.dart';
+import 'package:byahero/states/appstate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:byahero/states/mapstate.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:provider/provider.dart';
-import '../screens/home_screen.dart';
-import '../screens/registration_screen.dart';
-// import '../states/appstate.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
-final GoogleSignIn googlePhoneSignIn = GoogleSignIn();
-final firestoreInstance = Firestore.instance;
-final usersRef = Firestore.instance.collection('users');
-// final groupNameRef = Firestore.instance.collection('groups');
-// final groupUsersNameRef = Firestore.instance.collection('group_user');
-// final usersGroupRef = Firestore.instance.collection('users').document("");
+import 'helper_google_account.dart';
 
 
-class GooglePhoneAccountHelper {
-  GooglePhoneAccountHelper();
-  // logoutgoogle() {
-  //   print('signout');
-  //   googlePhoneSignIn.signOut();
-  // }
 
-  // login() async {
-  //   print('login');
-  //   // print('$tester');
-  //   try {
-  //     final result = await InternetAddress.lookup('google.com');
-  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-  //       print('with internet');
-  //       googlePhoneSignIn.signIn();
-  //     }
-  //   } on SocketException catch (_) {
-  //     print('not connected');
-  //     // _showSnackBar();
-  //   }
-  // }
+ phoneAccountLoginHelper(context){
 
-  // handleSignIn(GoogleSignInAccount account, context) async {
-  //   final appState = Provider.of<AppState>(context);
-  //   if (account != null) {
-  //     // print('User signed in!: $account');
-  //     await createUserInFirestore(context:context);
-  //     appState.updateIsAuth(true);
-  //   } else {
-  //     appState.updateIsAuth(false);
-  //     //  AppState().isAuth = false;
-  //     //  AppState().updateIsAuth(false);
+   
+  // final BuildContext appContext;
+  // phoneAccountLoginHelper(this.appContext);
 
-  //   }
-  // }
+  final appState = Provider.of<AppState>(context);
+  String phoneNo;
+  String smsCode;
+  String verificationId;
 
+  signIn() {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
 
-createUserPhoneInFirestore({context, phoneNumber}) async {
-  
-}
-
-
-  createUserInFirestore({context, phoneNumber}) async {
-    // final appState = Provider.of<AppState>(context);
-    // final mapState = Provider.of<MapState>(context);
-    // 1) check if user exists in users collection in database (according to their id)
-    final GoogleSignInAccount user = googlePhoneSignIn.currentUser;
-    final DocumentSnapshot doc = await usersRef.document(user.id).get();
-
-    if (!doc.exists) {
-      // 2) if the user doesn't exist, then we want to take them to the create account page
-      final additionalUserInfo = await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RegistrationScreen(
-                    userInfo: user,
-                  )));
-
-      // 3) get username from create account, use it to make new user document in users collection
-      usersRef.document(user.id).setData({
-        "id": user.id,
-        "username": await additionalUserInfo[0],
-        "photoUrl": user.photoUrl,
-        "email": user.email,
-        "displayName": user.displayName,
-        "bio": "",
-        "groups":[],
-        // "timestamp": AppState().timestamp,
-        "contactNumber": await additionalUserInfo[1],
-        "address": await additionalUserInfo[2],
-        // "currentLat":mapState.initalPositionLat,
-        // "currentLong":mapState.initalPositionLong,
-      });
-
-      // appState.updateIsAuth(true);
-      // appState.saveGoogleAccount(user);
-      Navigator.pushNamed(context, HomeScreen.id);
-    } else {
-      print(' already logged in and authenticated');
-      // appState.updateIsAuth(true);
-      // appState.saveGoogleAccount(user);
-
-    }
+    FirebaseAuth.instance.signInWithCredential(credential).then((user) {
+      // Navigator.of(context).pushReplacementNamed('/homepage');
+      print('signing in using phone $verificationId');
+      appState.updateIsAuth(true);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+    }).catchError((e) {
+      print(e);
+    });
   }
+
+  Future<bool> smsCodeDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text('Enter sms code'),
+            content: TextField(
+              onChanged: (value) {
+                smsCode = value;
+              },
+            ),
+            contentPadding: EdgeInsets.all(10),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text('Done'),
+                onPressed: () {
+                  FirebaseAuth.instance.currentUser().then((user) {
+                    if (user != null) {
+                      appState.updateIsAuth(true);
+
+                      Navigator.of(context).pop();
+                      // Navigator.of(context).pushReplacementNamed('/homepage');
+                      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+                    } else {
+                      Navigator.of(context).pop();
+
+                      signIn();
+                    }
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> verifyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
+      verificationId = verId;
+    };
+
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
+      verificationId = verId;
+      smsCodeDialog(context).then((value) {
+        print('Signed In');
+      });
+    };
+
+    final PhoneVerificationCompleted verifiedSuccess = (FirebaseUser user) async{
+      print('phone number verified');
+      // appState.updateIsAuth(true);
+      // Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+
+
+       
+
+
+      FirebaseAuth.instance.currentUser().then((user) {
+        if (user != null) {
+
+           
+
+          appState.updateIsAuth(true);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.id);
+          appState.savefirebaseUser(user);
+
+          GoogleAccountHelper().checkPhoneNumberifHasProfile(context,user.phoneNumber);
+        }
+      });
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException exception) {
+      print('Problem in phone verification -${exception.message}');
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNo,
+      codeAutoRetrievalTimeout: autoRetrieve,
+      codeSent: smsCodeSent,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verificationFailed,
+    );
+  }
+
+
+
+  // Future<void> loginwithPhone(context) async {
+    TextEditingController phoneNumval = TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Login with Phone Number'),
+          content: Container(
+            height: 150,
+            child: Column(
+              children: <Widget>[
+                Form(
+                  autovalidate: true,
+                  child: TextFormField(
+                    controller: phoneNumval,
+                    keyboardType: TextInputType.phone,
+                    validator: (val) {
+                      String patttern = r'(^(09)\d{9}$)';
+                      // String patttern = r'(^(09|\+639)\d{9}$)'; // accept also +63
+
+                      RegExp regExp = new RegExp(patttern);
+
+                      if (val.length == 0) {
+                        return 'Please enter mobile number';
+                      } else if (val.length > 11) {
+                        return 'Phone Number is too long';
+                      } else if (val.length < 11) {
+                        return 'Phone Number is too short';
+                      } else if (!regExp.hasMatch(val)) {
+                        return 'Invalid Format, ex: 09455000123';
+                      }
+// return null;
+
+                      // if (val.trim().length<11){
+                      //   return 'Phone Number is too Short';
+                      // }
+                      // else if (val.trim().length>11){
+                      //   return 'Phone Number is too long';
+                      // }
+                    },
+                    decoration: InputDecoration(
+                      hintText: '09190001234',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                    onChanged: (value) {
+                      phoneNo = "+63$value";
+                      print(phoneNo);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                  onPressed: verifyPhone,
+                  child: Text('Login'),
+                  elevation: 7,
+                  color: Theme.of(context).primaryColor,
+                ),
+                Divider()
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  // }
+
+
+
 }
