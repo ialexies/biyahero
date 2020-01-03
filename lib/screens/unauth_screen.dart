@@ -167,10 +167,9 @@ unAuthScreen(context) {
                   Buttons.Google,
                   // mini: true,
                   text: "Sign in Phone",
-                  onPressed: () {
-                    // phoneAccountLoginHelper loginwithPhone(context);
-                    phoneAccountLoginHelper(context);
-                    // print('fdfdf');
+                  onPressed: () async{
+                    // This will call the dialog box together its functions of phone login in firebase
+                   await phoneAccountLoginHelper(context);
                   },
                 ),
                 // SignInButton(

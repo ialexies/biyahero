@@ -85,7 +85,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Scaffold buildAuthScreen(context) {
-        print('----------');
 
     return Scaffold(
       key: _scaffoldKey,

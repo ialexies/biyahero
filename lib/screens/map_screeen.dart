@@ -212,7 +212,7 @@ class _MaprouteState extends State<MapScreen> {
                   ),
                 ),
               ),
-              Positioned(
+              Positioned( //-----------test position remove later
                 bottom: 40, right: 80,
                 // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
                 child: FloatingActionButton(
@@ -224,10 +224,9 @@ class _MaprouteState extends State<MapScreen> {
                   },
                 ),
               ),
-              Positioned(
+              Positioned(   //-----------test position remove later
                 bottom: 40, right: 10,
                 // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-
                 child: FloatingActionButton(
                   onPressed: _onAddMarkerPressed,
                   backgroundColor: Colors.yellow,
@@ -237,9 +236,9 @@ class _MaprouteState extends State<MapScreen> {
               Positioned(
                 top: 50,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
-                    width: appsScreenWidth(context) - 60,
+                    width: appsScreenWidth(context) - 20,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3.0),
                       color: Colors.white,
@@ -260,6 +259,7 @@ class _MaprouteState extends State<MapScreen> {
                               height: 90,
                               child: Column(
                                 children: <Widget>[
+                                  
                                   Expanded(
                                     child: Container(
                                       // child: Icon(Icons.location_on)),
@@ -289,20 +289,34 @@ class _MaprouteState extends State<MapScreen> {
                           flex: 11,
                           child: Column(
                             children: <Widget>[
+                              //Textfield for the piclup location
                               TextField(
+                                
                                 cursorColor: Colors.black,
                                 controller: mapState.locationController,
                                 decoration: InputDecoration(
                                   hintText: "pick up",
                                   border: InputBorder.none,
                                   contentPadding:
-                                      EdgeInsets.only(left: 15.0, top: 16.0),
+                                      EdgeInsets.only(left: 0, top: 16.0),
+                                  prefixIcon: IconButton(
+                                    icon: Icon(Icons.edit),
+                                    color: Theme.of(context).accentColor,
+                                    onPressed: (){
+                                      _setLocation(
+                                        btnTitle: "Set As Pickup Location",
+                                        title: "Pickup Location",
+                                        locType: 1
+                                      );
+                                    },
+                                  ), 
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Divider(),
                               ),
+                              //Textfield for the piclup location
                               TextField(
                                 cursorColor: Colors.black,
                                 controller: mapState.destinationControler,
@@ -340,6 +354,17 @@ class _MaprouteState extends State<MapScreen> {
                                   border: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.only(left: 15.0, top: 16.0),
+                                  prefixIcon: IconButton(
+                                    icon: Icon(Icons.edit),
+                                    color: Theme.of(context).accentColor,
+                                    onPressed: (){
+                                      _setLocation(
+                                        btnTitle: "Set As Destination Location",
+                                        title: "Destination Location",
+                                        locType: 2
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ],
@@ -410,7 +435,8 @@ class _MaprouteState extends State<MapScreen> {
       _pickupDropPin = position.target;
     });
   }
-
+  
+  //Custom location modal dialog
   Future<void> _setLocation(
       {int locType, String title, String btnTitle}) async {
     return showDialog<void>(
@@ -418,11 +444,13 @@ class _MaprouteState extends State<MapScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: AppBar(
+            title: Text(title),
+          ),
           content: SingleChildScrollView(
             child: Container(
-              width: appsScreenWidth(context) * .7,
-              height: appScreenHeight(context) * .7,
+              width: appsScreenWidth(context) * .99,
+              height: appScreenHeight(context) * .6,
               child: Stack(
                 children: <Widget>[
                   GoogleMap(
