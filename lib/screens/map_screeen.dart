@@ -291,7 +291,7 @@ class _MaprouteState extends State<MapScreen> {
                             children: <Widget>[
                               //Textfield for the piclup location
                               TextField(
-                                
+                                enabled: false,
                                 cursorColor: Colors.black,
                                 controller: mapState.locationController,
                                 decoration: InputDecoration(
