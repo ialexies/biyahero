@@ -124,6 +124,7 @@ class MapState with ChangeNotifier{
    
 
     textPickupLocationController.text = await  convertLatLngToPlaceText(_initialPosition);
+  
 
 
     notifyListeners();
@@ -144,8 +145,6 @@ class MapState with ChangeNotifier{
 
   }
 
-
-
   
   void _loadingInitialPosition()async{
     await Future.delayed(Duration(seconds: 8)).then((v) {
@@ -165,16 +164,17 @@ class MapState with ChangeNotifier{
                 
 
   //Add Marker in Map
-  void _addMarker(LatLng location, String address) async{
+  void _addMarker({LatLng location, MarkerId id, String title, String snippet, String address,BitmapDescriptor markerIcon}) async{
     _markers.add(
       Marker(
-        markerId:MarkerId(_lastPosition.toString()),
+        markerId:id,
         position: location,
         infoWindow: InfoWindow( 
-          title: "Address",
-          snippet: "Go Here",
+          title: title,
+          snippet: snippet,
         ),
-        icon: await  BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(150, 150)),"images/car-finish-flag.png"),
+        // icon:  await  BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(150, 150)),"images/car-finish-flag.png"),
+        icon:  markerIcon,
       ),
     ); 
     notifyListeners();
@@ -232,12 +232,26 @@ class MapState with ChangeNotifier{
  
     // createRoute(route) using the polyline;
     createRoute(destinationPolyline);
-    _addMarker(destination, intendedLocation); 
+
+    // _addMarker for destination
+    _addMarker(
+      location: destination, 
+      id: MarkerId('destinationLocationMarker'),
+      markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(150, 150)),"images/car-finish-flag.png")
+      );
+
+    // _addMarker for pickup
+    _addMarker(
+      location: finalPickupLocation, 
+      id: MarkerId('pickupLocationMarker'),
+      markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(250, 250)),"images/pickupmarker.png")
+      // markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(150, 150)),"images/car-finish-flag.png")
+      );
+    // _addMarker(_mapCustomPickupLocation, intendedLocation); 
 
     _destinationBottomInfo=true;
     notifyListeners();
   }
-
 
   //Create Polyline as Map Route
   void createRoute(String encodedPoly){

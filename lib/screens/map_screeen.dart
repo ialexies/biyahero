@@ -514,6 +514,7 @@ class _MaprouteState extends State<MapScreen> {
                   mapState.setMapCustomPickupLocation(_mapCustomLocationMarker);
                   mapState.textPickupLocationController.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
                   print(_mapCustomLocationMarker);
+                  mapState.sendRequest(mapState.destinationControler.text.toString());
                   Navigator.of(context).pop();
                 },
               ),
@@ -548,7 +549,7 @@ Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
           mapState.sendRequest(mapState.destinationControler.text.toString());
           //  mapState.sendRequest(value);
           // print(values[index].code);
-          print(mapState.selectedPlace);
+          // print(mapState.selectedPlace);
         },
         child: Column(
           children: <Widget>[
