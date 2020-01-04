@@ -159,7 +159,7 @@ class _MapState extends State<Map> {
                     children: <Widget>[
                       TextField(
                         cursorColor: Colors.black,
-                        controller: mapState.locationController,
+                        controller: mapState.textPickupLocationController,
                         decoration: InputDecoration(
                    
                           hintText: "pick up",
@@ -248,7 +248,7 @@ class _MapState extends State<Map> {
           //           children: <Widget>[
           //             TextField(
           //               cursorColor: Colors.black,
-          //               controller: mapState.locationController,
+          //               controller: mapState.textPickupLocationController,
           //               decoration: InputDecoration(
           //                 icon: Container(
           //                   margin: EdgeInsets.only(left: 20, top: 5),

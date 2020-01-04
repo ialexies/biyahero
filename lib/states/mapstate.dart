@@ -45,7 +45,7 @@ class MapState with ChangeNotifier{
 
   // Setters
   GoogleMapsServices _googleMapServices  = GoogleMapsServices();
-  TextEditingController locationController =TextEditingController();
+  TextEditingController textPickupLocationController =TextEditingController();
   TextEditingController destinationControler=TextEditingController();
   // num _autoComplete = 0;
 
@@ -66,8 +66,6 @@ class MapState with ChangeNotifier{
   getminimumPrice() => _minimumPrice;
 
 
-
-
   //constructor for getuserlocation
   MapState(){
     getUserLocation();
@@ -76,7 +74,7 @@ class MapState with ChangeNotifier{
   }
 
 
-  void setMapCustomLocation(LatLng customLocation){
+  void setMapCustomPickupLocation(LatLng customLocation){
     _mapCustomPickupLocation = customLocation;
     notifyListeners();
   }
@@ -114,22 +112,40 @@ class MapState with ChangeNotifier{
 
   void getUserLocation() async{
   
-    List<Placemark> placemark;
+    //set initial position variables
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     // List<Placemark> placemark =  await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude); 
+    _initialPosition=LatLng(position.latitude, position.longitude); 
+    _initialPositionLat = position.latitude.toDouble();
+    _initialPositionLat = position.longitude.toDouble();
 
+
+    // await convertLatLngToPlaceText();
+   
+
+    textPickupLocationController.text = await  convertLatLngToPlaceText(_initialPosition);
+
+
+    notifyListeners();
+  }
+
+  //convert LatLng to Text place location
+   Future convertLatLngToPlaceText(LatLng position) async{
+    List<Placemark> placemark;
     try {
-      placemark =  await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude); 
+      placemark =  await Geolocator().placemarkFromCoordinates(position.latitude,position.longitude ); 
       print('Awaiting user order...');
     } catch (err) {
       print('Caught error: $err');
     }
-      _initialPosition=LatLng(position.latitude, position.longitude); 
-      _initialPositionLat = position.latitude.toDouble();
-      _initialPositionLat = position.longitude.toDouble();
-      locationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
-      notifyListeners();
+    // textPickupLocationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+
+    return  placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+
   }
+
+
+
   
   void _loadingInitialPosition()async{
     await Future.delayed(Duration(seconds: 8)).then((v) {

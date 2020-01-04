@@ -300,7 +300,7 @@ class _MaprouteState extends State<MapScreen> {
                               TextField(
                                 
                                 cursorColor: Colors.black,
-                                controller: mapState.locationController,
+                                controller: mapState.textPickupLocationController,
                                 decoration: InputDecoration(
                                   hintText: "pick up",
                                   border: InputBorder.none,
@@ -446,8 +446,8 @@ class _MaprouteState extends State<MapScreen> {
     final mapState = Provider.of<MapState>(context);
     setState(() {
       _mapCustomLocationMarker = position.target;
-      mapState.setMapCustomLocation(position.target);
-      print(mapState.getmapCustomPickupLocation);
+      // mapState.setMapCustomLocation(position.target);
+      // print(mapState.getmapCustomPickupLocation);
     });
   }
   
@@ -509,7 +509,11 @@ class _MaprouteState extends State<MapScreen> {
               child: FlatButton(
                 color: Colors.red,
                 child: Center(child: Text(btnTitle)),
-                onPressed: () {
+                onPressed: () async{
+                  final mapState = Provider.of<MapState>(context);
+                  mapState.setMapCustomPickupLocation(_mapCustomLocationMarker);
+                  mapState.textPickupLocationController.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
+                  print(_mapCustomLocationMarker);
                   Navigator.of(context).pop();
                 },
               ),
