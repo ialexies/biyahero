@@ -116,7 +116,7 @@ class MapState with ChangeNotifier{
   }
   
   void _loadingInitialPosition()async{
-    await Future.delayed(Duration(seconds: 5)).then((v) {
+    await Future.delayed(Duration(seconds: 8)).then((v) {
       if(_initialPosition == null){
         locationServiceActive = false;
         notifyListeners();
