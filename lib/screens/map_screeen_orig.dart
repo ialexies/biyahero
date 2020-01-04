@@ -174,7 +174,7 @@ class _MapState extends State<Map> {
                       TextField(
                     
                     cursorColor: Colors.black,
-                    controller:  mapState.destinationControler,
+                    controller:  mapState.textDestinationControler,
                     textInputAction: TextInputAction.go,
                     onSubmitted: (value) {
                       // mapState.autoCompleteContainer = false;
@@ -186,7 +186,7 @@ class _MapState extends State<Map> {
                     onChanged: (value){
                       mapState.increment();
                       // mapState.autoCompleteContainer = true;
-                      if(mapState.destinationControler.text!=null){
+                      if(mapState.textDestinationControler.text!=null){
                         mapState.autoCompleteContainer = true;
                       }else{
                         mapState.autoCompleteContainer = false;
@@ -196,7 +196,7 @@ class _MapState extends State<Map> {
                       suffixIcon: IconButton(
                         icon: Icon(Icons.clear,color: Colors.black87,),
                         onPressed: (){
-                          // mapState.destinationControler.text="";
+                          // mapState.textDestinationControler.text="";
                           mapState.clearDestination();
                           // GoogleMap
                           
@@ -267,7 +267,7 @@ class _MapState extends State<Map> {
           //             TextField(
                     
           //           cursorColor: Colors.black,
-          //           controller:  mapState.destinationControler,
+          //           controller:  mapState.textDestinationControler,
           //           textInputAction: TextInputAction.go,
           //           onSubmitted: (value) {
           //             // mapState.autoCompleteContainer = false;
@@ -279,7 +279,7 @@ class _MapState extends State<Map> {
           //           onChanged: (value){
           //             mapState.increment();
           //             // mapState.autoCompleteContainer = true;
-          //             if(mapState.destinationControler.text!=null){
+          //             if(mapState.textDestinationControler.text!=null){
           //               mapState.autoCompleteContainer = true;
           //             }else{
           //               mapState.autoCompleteContainer = false;
@@ -289,7 +289,7 @@ class _MapState extends State<Map> {
           //             suffixIcon: IconButton(
           //               icon: Icon(Icons.delete),
           //               onPressed: (){
-          //                 // mapState.destinationControler.text="";
+          //                 // mapState.textDestinationControler.text="";
           //                 mapState.clearDestination();
           //                 // GoogleMap
                           
@@ -338,7 +338,7 @@ class _MapState extends State<Map> {
           //      TextField(
                 
           //       cursorColor: Colors.black,
-          //       controller:  mapState.destinationControler,
+          //       controller:  mapState.textDestinationControler,
           //       textInputAction: TextInputAction.go,
           //       onSubmitted: (value) {
           //         // mapState.autoCompleteContainer = false;
@@ -350,7 +350,7 @@ class _MapState extends State<Map> {
           //       onChanged: (value){
           //         mapState.increment();
           //         // mapState.autoCompleteContainer = true;
-          //         if(mapState.destinationControler.text!=null){
+          //         if(mapState.textDestinationControler.text!=null){
           //           mapState.autoCompleteContainer = true;
           //         }else{
           //           mapState.autoCompleteContainer = false;
@@ -360,7 +360,7 @@ class _MapState extends State<Map> {
           //         suffixIcon: IconButton(
           //           icon: Icon(Icons.delete),
           //           onPressed: (){
-          //             // mapState.destinationControler.text="";
+          //             // mapState.textDestinationControler.text="";
           //             mapState.clearDestination();
           //             // GoogleMap
                       
@@ -464,9 +464,9 @@ class _MapState extends State<Map> {
         mapState.visibilityAutoComplete(false);
         // });
 
-        mapState.destinationControler.text=mapState.selectedPlace.toString();
+        mapState.textDestinationControler.text=mapState.selectedPlace.toString();
         // mapState.sendRequest(mapState.toString());
-        mapState.sendRequest(mapState.destinationControler.text.toString());
+        mapState.sendRequest(mapState.textDestinationControler.text.toString());
         //  mapState.sendRequest(value);
         // print(values[index].code);
         print(mapState.selectedPlace);

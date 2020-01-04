@@ -46,7 +46,7 @@ class MapState with ChangeNotifier{
   // Setters
   GoogleMapsServices _googleMapServices  = GoogleMapsServices();
   TextEditingController textPickupLocationController =TextEditingController();
-  TextEditingController destinationControler=TextEditingController();
+  TextEditingController textDestinationControler=TextEditingController();
   // num _autoComplete = 0;
 
   // Getters
@@ -77,6 +77,17 @@ class MapState with ChangeNotifier{
   void setMapCustomPickupLocation(LatLng customLocation){
     _mapCustomPickupLocation = customLocation;
     notifyListeners();
+  }
+
+  void setMapCustomDestinationLocation({LatLng customLocation}){
+    if (customLocation!=null){
+      _mapCustomDestinationLocation = customLocation;
+      notifyListeners();
+    }else if (customLocation==null){
+      _mapCustomDestinationLocation = null;
+    }
+    
+    // notifyListeners();
   }
 
 
@@ -190,8 +201,8 @@ class MapState with ChangeNotifier{
      _markers.clear();
     _polyLines.clear();
     _destinationBottomInfo=false;
-    // destinationControler.text;
-    destinationControler.text="";
+    // textDestinationControler.text;
+    textDestinationControler.text="";
     
   }
 
@@ -207,6 +218,7 @@ class MapState with ChangeNotifier{
     LatLng destination = LatLng(latitude, longitude);
     String destinationPolyline;
     LatLng finalPickupLocation = initalPosition;
+    LatLng finalDestinationLocation = destination;
 
 
     //Check if there's a custom pickup location and use it
@@ -214,11 +226,17 @@ class MapState with ChangeNotifier{
       finalPickupLocation = _mapCustomPickupLocation;
     }
 
+    if(_mapCustomDestinationLocation!=null){
+      finalDestinationLocation = _mapCustomDestinationLocation; 
+    }else if(_mapCustomDestinationLocation==null){
+      finalDestinationLocation = destination;
+    }
+
   
     // Get the Route data from google using the current position and destionation
     // Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
     
-    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(finalPickupLocation, destination);
+    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(finalPickupLocation, finalDestinationLocation);
 
     // Get the the Distance from the destination in km/
     destinationDistance = (route['legs'][0]['distance']['value'])/1000;
@@ -245,9 +263,8 @@ class MapState with ChangeNotifier{
       location: finalPickupLocation, 
       id: MarkerId('pickupLocationMarker'),
       markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(250, 250)),"images/pickupmarker.png")
-      // markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(150, 150)),"images/car-finish-flag.png")
+
       );
-    // _addMarker(_mapCustomPickupLocation, intendedLocation); 
 
     _destinationBottomInfo=true;
     notifyListeners();
@@ -273,9 +290,9 @@ class MapState with ChangeNotifier{
 
   //list of place predictions of suggestion based on typed location
   Future<List<SuggestedPlaces>>getCountries() async{
-    // final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&input=${destinationControler.text}');
+    // final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&input=${textDestinationControler.text}');
     // The location is filter for suggestion is restricted for 50km with center at olongapo city hall as LatLng
-    final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&location=14.842299, 120.287810&radius=1000&input=${destinationControler.text}');
+    final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&location=14.842299, 120.287810&radius=1000&input=${textDestinationControler.text}');
 
 
 

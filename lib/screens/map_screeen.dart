@@ -326,7 +326,7 @@ class _MaprouteState extends State<MapScreen> {
                               //Textfield for the piclup location
                               TextField(
                                 cursorColor: Colors.black,
-                                controller: mapState.destinationControler,
+                                controller: mapState.textDestinationControler,
                                 textInputAction: TextInputAction.go,
                                 onSubmitted: (value) {
                                   // mapState.autoCompleteContainer = false;
@@ -338,7 +338,7 @@ class _MaprouteState extends State<MapScreen> {
                                 onChanged: (value) {
                                   mapState.increment();
                                   // mapState.autoCompleteContainer = true;
-                                  if (mapState.destinationControler.text !=
+                                  if (mapState.textDestinationControler.text !=
                                       null) {
                                     mapState.autoCompleteContainer = true;
                                   } else {
@@ -352,7 +352,7 @@ class _MaprouteState extends State<MapScreen> {
                                       color: Colors.black87,
                                     ),
                                     onPressed: () {
-                                      // mapState.destinationControler.text="";
+                                      // mapState.textDestinationControler.text="";
                                       mapState.clearDestination();
                                       // GoogleMap
                                     },
@@ -474,7 +474,7 @@ class _MaprouteState extends State<MapScreen> {
                     initialCameraPosition: CameraPosition(
                       // target: LatLng(14.838787, 120.2845745),
                       target: MapState().initalPosition,
-                      zoom: 16.0,
+                      zoom: 15.0,
                     ),
                     
                     // onMapCreated: mapState.onCreated,
@@ -511,11 +511,23 @@ class _MaprouteState extends State<MapScreen> {
                 child: Center(child: Text(btnTitle)),
                 onPressed: () async{
                   final mapState = Provider.of<MapState>(context);
-                  mapState.setMapCustomPickupLocation(_mapCustomLocationMarker);
-                  mapState.textPickupLocationController.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
-                  print(_mapCustomLocationMarker);
-                  mapState.sendRequest(mapState.destinationControler.text.toString());
-                  Navigator.of(context).pop();
+
+                  if (locType==1){
+                    mapState.setMapCustomPickupLocation(_mapCustomLocationMarker);
+                    mapState.textPickupLocationController.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
+                    mapState.sendRequest(mapState.textDestinationControler.text.toString());
+                    Navigator.of(context).pop();
+                  }else if (locType==2){
+                    mapState.setMapCustomDestinationLocation(customLocation: _mapCustomLocationMarker);
+                    mapState.textDestinationControler.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
+                    mapState.sendRequest(mapState.textDestinationControler.text.toString());
+                    Navigator.of(context).pop();
+                  } else {
+                    print('**********Location Type Not Defined***********');
+                  }
+                  
+
+
                 },
               ),
             ),
@@ -536,6 +548,8 @@ Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
 
       return GestureDetector(
         onTap: () {
+          mapState.setMapCustomDestinationLocation( customLocation: null);
+          
           // setState(() {
           // selectedCountry = values[index].code;
           mapState.selectedPlace = values[index].description;
@@ -543,10 +557,10 @@ Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
           mapState.visibilityAutoComplete(false);
           // });
 
-          mapState.destinationControler.text =
+          mapState.textDestinationControler.text =
               mapState.selectedPlace.toString();
           // mapState.sendRequest(mapState.toString());
-          mapState.sendRequest(mapState.destinationControler.text.toString());
+          mapState.sendRequest(mapState.textDestinationControler.text.toString());
           //  mapState.sendRequest(value);
           // print(values[index].code);
           // print(mapState.selectedPlace);
