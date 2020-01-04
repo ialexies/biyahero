@@ -16,9 +16,14 @@ import 'dart:convert';
 class MapState with ChangeNotifier{
   bool locationServiceActive = true;
   static LatLng _initialPosition;
+  LatLng _mapCustomPickupLocation;  //custom location of pickup
+  LatLng _mapCustomDestinationLocation;  //custom location of destination
   double  _initialPositionLat;
   double  _initialPositionLong;
+
   LatLng _lastPosition = _initialPosition;
+  
+
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyLines = {};
   GoogleMapController _mapController;
@@ -49,6 +54,7 @@ class MapState with ChangeNotifier{
   double get initalPositionLat => _initialPositionLat;
   double get initalPositionLong => _initialPositionLong;
   LatLng get lastPosition => _lastPosition;
+  LatLng get getmapCustomPickupLocation => _mapCustomPickupLocation;
   GoogleMapsServices get googleMapServices => _googleMapServices;
   GoogleMapController get mapController =>_mapController;
   Set<Marker> get markers => _markers;
@@ -59,12 +65,22 @@ class MapState with ChangeNotifier{
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
 
+
+
+
   //constructor for getuserlocation
   MapState(){
     getUserLocation();
     _loadingInitialPosition();
     initPrices();
   }
+
+
+  void setMapCustomLocation(LatLng customLocation){
+    _mapCustomPickupLocation = customLocation;
+    notifyListeners();
+  }
+
 
     void initPrices({double regKMprice, double minimumPrice})async{
       var document = await Firestore.instance.collection('appconfigs').document('prices').get();
@@ -173,13 +189,20 @@ class MapState with ChangeNotifier{
        double latitude = placemark[0].position.latitude;
     double longitude = placemark[0].position.longitude;
     LatLng destination = LatLng(latitude, longitude);
-
-    
     String destinationPolyline;
-  
+    LatLng finalPickupLocation = initalPosition;
 
+
+    //Check if there's a custom pickup location and use it
+    if(_mapCustomPickupLocation!=null){
+      finalPickupLocation = _mapCustomPickupLocation;
+    }
+
+  
     // Get the Route data from google using the current position and destionation
-    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
+    // Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
+    
+    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(finalPickupLocation, destination);
 
     // Get the the Distance from the destination in km/
     destinationDistance = (route['legs'][0]['distance']['value'])/1000;

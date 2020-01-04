@@ -80,7 +80,6 @@ class _MapState extends State<Map> {
             onCameraMove: mapState.onCameraMove,
             polylines: mapState.polyline,
             trafficEnabled: true,
-            
           ),
            Visibility(
             //  visible: mapState.autoCompleteContainer==true,

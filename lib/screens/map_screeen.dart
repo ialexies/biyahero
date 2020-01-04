@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:byahero/states/appstate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:byahero/common_widgets/placeholder_widget.dart';
@@ -36,6 +37,7 @@ class _MaprouteState extends State<MapScreen> {
   LatLng _latLngCurrentPosition;
 
   LatLng _pickupDropPin;
+  LatLng _mapCustomLocationMarker;
   LatLng _destinationDropPin;
 
   bool _visipbilit_pickUDropPin = false;
@@ -211,6 +213,11 @@ class _MaprouteState extends State<MapScreen> {
                     },
                   ),
                 ),
+              ),
+              Positioned(
+                top: 500,
+                child: Text(mapState.getmapCustomPickupLocation.toString()),
+                
               ),
               Positioned( //-----------test position remove later
                 bottom: 40, right: 80,
@@ -435,9 +442,18 @@ class _MaprouteState extends State<MapScreen> {
       _pickupDropPin = position.target;
     });
   }
+  void _onCameraMovesMapCustomLocation(CameraPosition position) {
+    final mapState = Provider.of<MapState>(context);
+    setState(() {
+      _mapCustomLocationMarker = position.target;
+      mapState.setMapCustomLocation(position.target);
+      print(mapState.getmapCustomPickupLocation);
+    });
+  }
   
   //Custom location modal dialog
   Future<void> _setLocation(
+    
       {int locType, String title, String btnTitle}) async {
     return showDialog<void>(
       context: context,
@@ -456,9 +472,11 @@ class _MaprouteState extends State<MapScreen> {
                   GoogleMap(
                     zoomGesturesEnabled: true,
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(14.838787, 120.2845745),
+                      // target: LatLng(14.838787, 120.2845745),
+                      target: MapState().initalPosition,
                       zoom: 16.0,
                     ),
+                    
                     // onMapCreated: mapState.onCreated,
                     myLocationEnabled: true,
                     mapType: MapType.normal,
@@ -470,7 +488,7 @@ class _MaprouteState extends State<MapScreen> {
                     //   ),
                     // },
                     // onCameraMove: mapState.onCameraMove,
-                    onCameraMove: _onCameraMoves,
+                    onCameraMove: _onCameraMovesMapCustomLocation,
                     // polylines: mapState.polyline,
                     trafficEnabled: true,
                   ),
