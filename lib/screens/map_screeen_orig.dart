@@ -8,6 +8,7 @@ import '../services/google_maps_request.dart';
 import 'package:provider/provider.dart';
 import '../states/mapstate.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../widgets/location_search_view.dart';
 
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -102,7 +103,9 @@ class _MapState extends State<Map> {
                     future: mapState.getCountries(),
                     initialData: [],
                     builder: (context,snapshot){
-                      return  createCountriesListView(context, snapshot);
+                      // return  createCountriesListView(context, snapshot);
+                      // return  LocationSearchView(context, snapshot);
+                      return LocationSearchView(contex: context, snapshot: snapshot);
                     },
                   ),
               ),
@@ -447,44 +450,57 @@ class _MapState extends State<Map> {
 
   }
 
-  Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
-    var values = snapshot.data;
-    return ListView.builder(
-      shrinkWrap: true,
-    itemCount: values == null ? 0 : values.length,
-    itemBuilder: (BuildContext context, int index) {
-      final mapState = Provider.of<MapState>(context);
 
-      return GestureDetector(
-      onTap: () {
-        // setState(() {
-        // selectedCountry = values[index].code;
-        mapState.selectedPlace = values[index].description;
-        mapState.sendRequest(values[index].description);
-        mapState.visibilityAutoComplete(false);
-        // });
+  // LocationSearchView( );
 
-        mapState.textDestinationControler.text=mapState.selectedPlace.toString();
-        // mapState.sendRequest(mapState.toString());
-        mapState.sendRequest(mapState.textDestinationControler.text.toString());
-        //  mapState.sendRequest(value);
-        // print(values[index].code);
-        print(mapState.selectedPlace);
-      },
-      child: Column(
-        children: <Widget>[
-        new ListTile(
-          title: Text(values[index].description),
-        ),
-        Divider(
-          height: 2.0,
-        ),
-        ],
-      ),
-      );
-    },
-    );
-  }
+  // class SearchListView extends StatelessWidget {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Container(
+        
+  //     );
+  //   }
+  // }
+
+
+  // Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
+  //   var values = snapshot.data;
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //   itemCount: values == null ? 0 : values.length,
+  //   itemBuilder: (BuildContext context, int index) {
+  //     final mapState = Provider.of<MapState>(context);
+
+  //     return GestureDetector(
+  //     onTap: () {
+  //       // setState(() {
+  //       // selectedCountry = values[index].code;
+  //       mapState.selectedPlace = values[index].description;
+  //       mapState.sendRequest(values[index].description);
+  //       mapState.visibilityAutoComplete(false);
+  //       // });
+
+  //       mapState.textDestinationControler.text=mapState.selectedPlace.toString();
+  //       // mapState.sendRequest(mapState.toString());
+  //       mapState.sendRequest(mapState.textDestinationControler.text.toString());
+  //       //  mapState.sendRequest(value);
+  //       // print(values[index].code);
+  //       print(mapState.selectedPlace);
+  //     },
+  //     child: Column(
+  //       children: <Widget>[
+  //       new ListTile(
+  //         title: Text(values[index].description),
+  //       ),
+  //       Divider(
+  //         height: 2.0,
+  //       ),
+  //       ],
+  //     ),
+  //     );
+  //   },
+  //   );
+  // }
 
 }
 

@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
 
-      print('theres a change in user');
+      print('theres a change in user'); 
         GoogleAccountHelper().handleFirebaseSignIn(firebaseUser, this.context);
     },
       onError: (err) {
