@@ -48,6 +48,12 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteAccountsInState(){
+    _googleCurrentAccount=null;
+    _firebaseUser=null;
+    notifyListeners();
+  }
+
   //Save Firebase user account in state
   void savefirebaseUser(FirebaseUser firebaseUser){
     _firebaseUser = firebaseUser;

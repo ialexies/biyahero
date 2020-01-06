@@ -18,8 +18,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: <Widget>[
               Expanded(child: RaisedButton(
                 child: Text('Logout'),
-                onPressed: (){
-                 GoogleAccountHelper(appContext: context).logoutgoogle();
+                onPressed: ()async{
+                 await GoogleAccountHelper(appContext: context).logoutgoogle(context);
+                // GoogleAccountHelper(appContext: context).logoutgoogle(context);
                 },
               ),),
             ],

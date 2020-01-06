@@ -17,6 +17,13 @@ final GoogleSignIn HomeGoogleSignIn = GoogleSignIn();
 
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen({this.child});
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_HomeScreenState>().restartApp();
+  }
+
   static const String id = 'welcome_id';
 
   @override
@@ -25,6 +32,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
+
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
   bool internetStatus = false;
   int pageIndex = 0;
   PageController pageController = PageController();

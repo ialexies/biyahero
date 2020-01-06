@@ -22,7 +22,7 @@ import 'package:byahero/controllers/helper_signin_phone.dart';
 
 
 unAuthScreen(context) {
-
+final appState = Provider.of<AppState>(context);
   final _loginFormKey = GlobalKey<FormState>();
 //
 
@@ -172,6 +172,11 @@ unAuthScreen(context) {
                    await phoneAccountLoginHelper(context);
                   },
                 ),
+                Row(
+                  children: <Widget>[
+                    Text(appState.getFirebaseCurrentAccount().toString()),
+                  ],
+                )
                 // SignInButton(
                 //   Buttons.Facebook,
                 //   // mini: true,
