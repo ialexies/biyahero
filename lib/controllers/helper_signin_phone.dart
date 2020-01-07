@@ -33,7 +33,7 @@ import 'helper_google_account.dart';
       appState.updateIsAuth(true);
       Navigator.of(context).pushReplacementNamed(HomeScreen.id);
     }).catchError((e) {
-      print('error in signing from firembase $e');
+      print(e);
     });
   }
 
@@ -97,6 +97,8 @@ import 'helper_google_account.dart';
 
       FirebaseAuth.instance.currentUser().then((user) {
         if (user != null) {
+
+           
 
           appState.updateIsAuth(true);
           Navigator.of(context).pushReplacementNamed(HomeScreen.id);

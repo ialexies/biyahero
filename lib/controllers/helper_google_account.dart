@@ -31,43 +31,13 @@ class GoogleAccountHelper {
   FirebaseUser _currentFirebaseUser;
 
   // GoogleAccountHelper();
-  logoutgoogle(context) {
+  logoutgoogle() {
     print('signout');
     
-    // googleSignIn.signOut();
-    
-    // FirebaseAuth.instance.signOut().then(
-    //  (val){
-
-    //  }
-    // ).catchError(onError){
-
-    // };
-
-
-    FirebaseAuth.instance.signOut().then((val){
-     
-      googleSignIn.signOut();
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-      HomeScreen.restartApp(context);
-      
-    }).catchError((val){
-      print('error in sign out -- $val');
-    });
-
-
-
+    googleSignIn.signOut();
+    FirebaseAuth.instance.signOut();
     AppState().updateIsAuth(false);
     // print(AppState().getAuthVal());
-
-    
-     final appState = Provider.of<AppState>(context);
-     appState.deleteAccountsInState();
-    //   final mapState = Provider.of<MapState>(context);
-        appState.dispose();
-      // mapState.dispose();
-       HomeScreen.restartApp(context);
     
     Navigator.of(appContext).pushReplacementNamed(HomeScreen.id);
     // print(AppState().getAuthVal());
@@ -102,7 +72,7 @@ class GoogleAccountHelper {
 
       final FirebaseUser user = (await FirebaseAuth.instance.signInWithCredential(credential));
       // _currentFirebaseUser = user.uid;
-      print("signed in firebase using google signed in " + user.displayName);
+      print("signed in " + user.displayName);
   }
 
   handleSignIn(GoogleSignInAccount account, context) async {
