@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,6 +20,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   GoogleSignInAccount userInfo;
+  final firebaseUser = FirebaseAuth.instance.currentUser();
   _RegistrationScreenState(this.userInfo);
 
   String username;
@@ -55,7 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 30,
               ),
-              Column(
+              userInfo!=null? Column(
                 children: <Widget>[
                   Container(
                     width: 150,
@@ -84,7 +86,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ],
-              ),
+              ):Text(''),
               Padding(
                 padding: EdgeInsets.all(16),
                 child: Container(
@@ -95,6 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         true, //If set to true, it immediately validates the input every type of user
                     child: Column(
                       children: <Widget>[
+                        Text( firebaseUser.toString()),
                         TextFormField(
                           validator: (val) {
                             if (val.trim().length < 3 || val.isEmpty) {

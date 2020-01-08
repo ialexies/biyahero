@@ -1,5 +1,6 @@
 import 'dart:io';
 // import 'dart:js';
+// import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ final usersGroupRef = Firestore.instance.collection('users').document("");
 // final _firestore = Firestore.instance;
 // final usersRef = Firestore.instance.collection('users');
 
-
 class GoogleAccountHelper {
   final BuildContext appContext;
   GoogleAccountHelper({this.appContext});
@@ -34,7 +34,7 @@ class GoogleAccountHelper {
   logoutgoogle(context) {
     final appState = Provider.of<AppState>(context);
     print('signout');
-    
+
     googleSignIn.signOut();
     FirebaseAuth.instance.signOut();
     appState.updateIsAuth(false);
@@ -54,7 +54,6 @@ class GoogleAccountHelper {
         googleSignIn.signIn();
 
         loginUserInFirebase(context);
-    
       }
     } on SocketException catch (_) {
       print('not connected');
@@ -62,27 +61,11 @@ class GoogleAccountHelper {
     }
   }
 
-  // Add the current user signed in in the firebase list of auth user
-  loginUserInFirebase(context) async{
-    final appState = Provider.of<AppState>(context);
-      final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final FirebaseUser user = (await FirebaseAuth.instance.signInWithCredential(credential));
-      appState.savefirebaseUser(user);
-      // _currentFirebaseUser = user.uid;
-      print("signed in " + user.displayName);
-  }
-
   handleSignIn(GoogleSignInAccount account, context) async {
     final appState = Provider.of<AppState>(context);
     if (account != null) {
       print('User signed in!: $account');
-      await createUserInFirestore(context:context);
+      await createUserInFirestore(context: context);
       appState.updateIsAuth(true);
       loginUserInFirebase(context);
     } else {
@@ -93,11 +76,13 @@ class GoogleAccountHelper {
     }
     // final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
   }
+
   handleFirebaseSignIn(FirebaseUser account, context) async {
     final appState = Provider.of<AppState>(context);
     if (account != null) {
       print('User signed in!: $account');
-      await createUserInFirestore(context:context);
+      await createUserInFirestore(
+          context: context, phoneNumber: account.phoneNumber);
       appState.updateIsAuth(true);
       loginUserInFirebase(context);
     } else {
@@ -107,63 +92,91 @@ class GoogleAccountHelper {
 
     }
     // final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+  }
+
+  // Add the current user signed in in the firebase list of auth user
+  loginUserInFirebase(context) async {
+    final appState = Provider.of<AppState>(context);
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final FirebaseUser user =
+        (await FirebaseAuth.instance.signInWithCredential(credential));
+    appState.savefirebaseUser(user);
+    // _currentFirebaseUser = user.uid;
+    print("signed in " + user.displayName);
   }
 
   createUserInFirestore({context, phoneNumber}) async {
     final appState = Provider.of<AppState>(context);
     final mapState = Provider.of<MapState>(context);
     // 1) check if user exists in users collection in database (according to their id)
-    final GoogleSignInAccount user = googleSignIn.currentUser;
-    final DocumentSnapshot doc = await usersRef.document(user.id).get();
-    final firebaseUserID = await FirebaseAuth.instance.currentUser().then((user){return user.uid.toString();});
+    // GoogleSignInAccount user;
+
+    // if (googleSignIn.currentUser != null) {
+      final GoogleSignInAccount user  = googleSignIn.currentUser;
+    // }
+    // final GoogleSignInAccount user = null;
+
+    final firebaseUserID =
+        await FirebaseAuth.instance.currentUser().then((user) {
+      return user.uid.toString();
+    });
+
+    final DocumentSnapshot doc = await usersRef.document(firebaseUserID).get();
 
     if (!doc.exists) {
       // 2) if the user doesn't exist, then we want to take them to the create account page
       final additionalUserInfo = await Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RegistrationScreen(
-                    userInfo: user,
-                  )));
+        context,
+        MaterialPageRoute(
+            builder: (context) => RegistrationScreen(
+              userInfo: user,
+            ),
+          ),
+        );
 
       // 3) get username from create account, use it to make new user document in users collection
-      usersRef.document(user.id).setData({
-        "uid":firebaseUserID,
-        "id": user.id,
+      usersRef.document(firebaseUserID).setData({
+        "uid": firebaseUserID,
+        // "id": user.id,
+        "googleId": user != null ? user.id : null,
         "username": await additionalUserInfo[0],
-        "photoUrl": user.photoUrl,
-        "email": user.email,
-        "displayName": user.displayName,
+        "photoUrl": user != null ? user.photoUrl : null,
+        "email": user != null ? user.email : null,
+        "displayName": user != null ? user.displayName : null,
         "bio": "",
-        "groups":[],
+        "groups": [],
         "timestamp": AppState().timestamp,
         "contactNumber": await additionalUserInfo[1],
         "address": await additionalUserInfo[2],
-        "currentLat":mapState.initalPositionLat,
-        "currentLong":mapState.initalPositionLong,
+        "currentLat": mapState.initalPositionLat,
+        "currentLong": mapState.initalPositionLong,
       });
 
       appState.updateIsAuth(true);
-      appState.saveGoogleAccount(user);
+      if (user != null) {
+        appState.saveGoogleAccount(user);
+      }
+
       Navigator.pushNamed(context, HomeScreen.id);
     } else {
       print(' already logged in and authenticated');
       appState.updateIsAuth(true);
       appState.saveGoogleAccount(user);
-
     }
   }
 
-  checkPhoneNumberifHasProfile(context,phoneNumber) async{
+  checkPhoneNumberifHasProfile(context, phoneNumber) async {
     final appState = Provider.of<AppState>(context);
-    //  final Query doc = await usersRef.where("contactNumber","==","$phoneNumber");
-      FirebaseUser firebaseuser = await appState.getFirebaseCurrentAccount();
-      print(  'your phone number is -- ${firebaseuser.phoneNumber} ');
+    FirebaseUser firebaseuser = await appState.getFirebaseCurrentAccount();
+    print('You loggedin using phone number, your UID is ${firebaseuser.uid} ');
 
-    // FirebaseUser firebaseuser = await appState.getFirebaseCurrentAccount();
-    // print('-------------current $firebaseuser');
-    // final QuerySnapshot doc =  await  usersRef.where("contactNumber", isEqualTo: firebaseuser.phoneNumber).getDocuments();
-    // print(doc.toString());
+    createUserInFirestore(context: context, phoneNumber: phoneNumber);
   }
-
 }

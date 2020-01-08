@@ -219,27 +219,27 @@ class _MaprouteState extends State<MapScreen> {
                 child: Text(mapState.getmapCustomPickupLocation.toString()),
                 
               ),
-              Positioned( //-----------test position remove later
-                bottom: 40, right: 80,
-                // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    _setLocation(
-                        btnTitle: "Set as Pickup Location",
-                        title: "Pickup Location",
-                        locType: 1);
-                  },
-                ),
-              ),
-              Positioned(   //-----------test position remove later
-                bottom: 40, right: 10,
-                // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-                child: FloatingActionButton(
-                  onPressed: _onAddMarkerPressed,
-                  backgroundColor: Colors.yellow,
-                  child: Icon(Icons.add_location, color: Colors.black45),
-                ),
-              ),
+              // Positioned( //-----------test position remove later
+              //   bottom: 40, right: 80,
+              //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
+              //   child: FloatingActionButton(
+              //     onPressed: () {
+              //       _setLocation(
+              //           btnTitle: "Set as Pickup Location",
+              //           title: "Pickup Location",
+              //           locType: 1);
+              //     },
+              //   ),
+              // ),
+              // Positioned(   //-----------test position remove later
+              //   bottom: 40, right: 10,
+              //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
+              //   child: FloatingActionButton(
+              //     onPressed: _onAddMarkerPressed,
+              //     backgroundColor: Colors.yellow,
+              //     child: Icon(Icons.add_location, color: Colors.black45),
+              //   ),
+              // ),
               Positioned(
                 top: 50,
                 child: Padding(
