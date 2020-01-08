@@ -1,3 +1,5 @@
+
+
 import 'package:byahero/controllers/helper_signin_phone.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -160,7 +162,7 @@ unAuthScreen(context) {
                   // mini: true,
                   text: "Sign in with Google",
                   onPressed: () {
-                    GoogleAccountHelper().login();
+                    GoogleAccountHelper().login(context);
                   },
                 ),
                 SignInButton(

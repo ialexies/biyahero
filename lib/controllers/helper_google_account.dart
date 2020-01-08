@@ -44,7 +44,7 @@ class GoogleAccountHelper {
     // print(AppState().getAuthVal());
   }
 
-  login() async {
+  login(context) async {
     print('login');
     // print('$tester');
     try {
@@ -53,7 +53,7 @@ class GoogleAccountHelper {
         print('with internet');
         googleSignIn.signIn();
 
-        loginUserInFirebase();
+        loginUserInFirebase(context);
     
       }
     } on SocketException catch (_) {
@@ -63,7 +63,8 @@ class GoogleAccountHelper {
   }
 
   // Add the current user signed in in the firebase list of auth user
-  loginUserInFirebase() async{
+  loginUserInFirebase(context) async{
+    final appState = Provider.of<AppState>(context);
       final GoogleSignInAccount googleUser = await googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -72,6 +73,7 @@ class GoogleAccountHelper {
       );
 
       final FirebaseUser user = (await FirebaseAuth.instance.signInWithCredential(credential));
+      appState.savefirebaseUser(user);
       // _currentFirebaseUser = user.uid;
       print("signed in " + user.displayName);
   }
@@ -82,7 +84,7 @@ class GoogleAccountHelper {
       print('User signed in!: $account');
       await createUserInFirestore(context:context);
       appState.updateIsAuth(true);
-      loginUserInFirebase();
+      loginUserInFirebase(context);
     } else {
       appState.updateIsAuth(false);
       //  AppState().isAuth = false;
@@ -97,7 +99,7 @@ class GoogleAccountHelper {
       print('User signed in!: $account');
       await createUserInFirestore(context:context);
       appState.updateIsAuth(true);
-      loginUserInFirebase();
+      loginUserInFirebase(context);
     } else {
       appState.updateIsAuth(false);
       //  AppState().isAuth = false;
