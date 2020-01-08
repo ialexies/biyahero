@@ -84,7 +84,7 @@ class GoogleAccountHelper {
       await createUserInFirestore(
           context: context, phoneNumber: account.phoneNumber);
       appState.updateIsAuth(true);
-      loginUserInFirebase(context);
+      // loginUserInFirebase(context);
     } else {
       appState.updateIsAuth(false);
       //  AppState().isAuth = false;
