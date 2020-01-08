@@ -1,18 +1,21 @@
 
+import 'package:byahero/states/appstate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
 
   static const String id = 'registration_screen';
   final GoogleSignInAccount userInfo;
-  RegistrationScreen({this.userInfo});
+  final FirebaseUser firebaseUser;
+  RegistrationScreen({this.userInfo,this.firebaseUser});
 
   @override
   _RegistrationScreenState createState() =>
-      _RegistrationScreenState(this.userInfo);
+      _RegistrationScreenState(this.userInfo,this.firebaseUser);
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
@@ -20,8 +23,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   GoogleSignInAccount userInfo;
-  final firebaseUser = FirebaseAuth.instance.currentUser();
-  _RegistrationScreenState(this.userInfo);
+  FirebaseUser firebaseUser;
+  _RegistrationScreenState(this.userInfo,this.firebaseUser);
 
   String username;
   String password;
@@ -48,6 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext parentContext) {
+
     return Scaffold(
       key: _scaffoldKey,
       body: ListView(
@@ -73,7 +77,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 25),
                     child: Text(
-                      userInfo.displayName.toUpperCase(),
+                      // userInfo.displayName.toUpperCase(),
+                  '',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
@@ -81,7 +86,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      userInfo.email,
+                      firebaseUser.toString(),
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -97,7 +102,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         true, //If set to true, it immediately validates the input every type of user
                     child: Column(
                       children: <Widget>[
-                        Text( firebaseUser.toString()),
+                        
+                        firebaseUser.phoneNumber!=null?
+                          Text( 
+                            firebaseUser.phoneNumber,
+                            style: TextStyle(fontSize: 30),
+                            )
+                          :Text(''),
+                        SizedBox(height: 30,),
                         TextFormField(
                           validator: (val) {
                             if (val.trim().length < 3 || val.isEmpty) {
@@ -144,6 +156,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: 10,
                         ),
                         TextFormField(
+                          initialValue: firebaseUser.phoneNumber!=null?    firebaseUser.phoneNumber.toString().replaceAll('+63', '0'):null,
+                          enabled: firebaseUser.phoneNumber==null?true:false,
                           validator: (valcontact) {
                             if (valcontact.trim().length < 8 ||
                                 valcontact.isEmpty) {

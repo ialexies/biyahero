@@ -82,7 +82,7 @@ class GoogleAccountHelper {
     if (account != null) {
       print('User signed in!: $account');
       await createUserInFirestore(
-          context: context, phoneNumber: account.phoneNumber);
+          context: context, phoneNumber: account.phoneNumber, firebasUser: account);
       appState.updateIsAuth(true);
       // loginUserInFirebase(context);
     } else {
@@ -112,7 +112,7 @@ class GoogleAccountHelper {
     print("signed in " + user.displayName);
   }
 
-  createUserInFirestore({context, phoneNumber}) async {
+  createUserInFirestore({context, phoneNumber, FirebaseUser firebasUser}) async {
     final appState = Provider.of<AppState>(context);
     final mapState = Provider.of<MapState>(context);
     // 1) check if user exists in users collection in database (according to their id)
@@ -137,6 +137,7 @@ class GoogleAccountHelper {
         MaterialPageRoute(
             builder: (context) => RegistrationScreen(
               userInfo: user,
+              firebaseUser: firebasUser,
             ),
           ),
         );
@@ -153,7 +154,7 @@ class GoogleAccountHelper {
         "bio": "",
         "groups": [],
         "timestamp": AppState().timestamp,
-        "contactNumber": await additionalUserInfo[1],
+        "contactNumber":  firebasUser.phoneNumber!=null? firebasUser.phoneNumber: await additionalUserInfo[1],
         "address": await additionalUserInfo[2],
         "currentLat": mapState.initalPositionLat,
         "currentLong": mapState.initalPositionLong,
