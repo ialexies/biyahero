@@ -31,14 +31,15 @@ class GoogleAccountHelper {
   FirebaseUser _currentFirebaseUser;
 
   // GoogleAccountHelper();
-  logoutgoogle() {
+  logoutgoogle(context) {
+    final appState = Provider.of<AppState>(context);
     print('signout');
     
     googleSignIn.signOut();
     FirebaseAuth.instance.signOut();
-    AppState().updateIsAuth(false);
+    appState.updateIsAuth(false);
     // print(AppState().getAuthVal());
-    
+    appState.deleteUsersInfo();
     Navigator.of(appContext).pushReplacementNamed(HomeScreen.id);
     // print(AppState().getAuthVal());
   }

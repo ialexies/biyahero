@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:byahero/screens/test_unauth_phone.dart';
 import '../components/rounded_button.dart';
@@ -111,7 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GoogleAccountHelper().logoutgoogle();
+          GoogleAccountHelper().logoutgoogle(context);
           showSnackBar('Logged Out');
         },
         child: Icon(Icons.exit_to_app),

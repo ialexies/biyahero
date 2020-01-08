@@ -42,6 +42,14 @@ class AppState with ChangeNotifier {
     return  isAuth;
   }
 
+  //delete Users Info
+  void deleteUsersInfo(){
+    _googleCurrentAccount = null;
+    _firebaseUser = null;
+    finalUser = null;
+    notifyListeners();
+  }
+
   //save google account in state
   void saveGoogleAccount(GoogleSignInAccount callGoogleAccount) {
     _googleCurrentAccount = callGoogleAccount;
