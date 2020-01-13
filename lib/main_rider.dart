@@ -8,7 +8,7 @@
       homePage: 2,
 	    appTitle: "Drivers app",
 	    buildFlavor: "Production",
-	    child: MyApp(),
+	    child: MyDriverApp(),
 	  );
 	  return runApp(configuredApp);
 }

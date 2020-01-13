@@ -6,16 +6,25 @@
     "configurations": [
 
     
+
+    
         {
             "name": "Flutter",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "flutter-flavor passenger dev",
+            "name": "byahero passenger",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_passenger.dart",
+     
+        },
+        {
+            "name": "byahero driver ",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_rider.dart",
      
         }
     ]

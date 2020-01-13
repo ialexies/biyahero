@@ -1,5 +1,3 @@
-
-
 import 'package:byahero/resources/app_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,20 +8,22 @@ import './states/appstate.dart';
 import './states/mapstate.dart';
 import 'package:byahero/screens/map_screeen.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  return runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider.value(
-        value: AppState(),
-      ),
-      ChangeNotifierProvider.value(
-        value: MapState(),
-      ),
-    ],
-    child: MyApp(),
-  ));
-}
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   return runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider.value(
+//           value: AppState(),
+//         ),
+//         ChangeNotifierProvider.value(
+//           value: MapState(),
+//         ),
+//       ],
+//       child: MyApp(),
+//     ),
+//   );
+// }
 
 class MyApp extends StatelessWidget {
   @override
@@ -69,5 +69,18 @@ class MyApp extends StatelessWidget {
     if (AppConfig.of(context).homePage == 1) {
       return buildMaterialPassengerApp();
     }
+  }
+}
+
+class MyDriverApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: AppConfig.of(context).appTitle,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Text('This is drivers app'),
+    );
   }
 }
