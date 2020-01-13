@@ -39,6 +39,16 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        passenger{
+            dimension "default"
+        }
+        driver{
+            dimension "default"
+             applicationIdSuffix ".driver"
+        }
+    }
 }
 
 flutter {
