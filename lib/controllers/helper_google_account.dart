@@ -2,6 +2,7 @@ import 'dart:io';
 // import 'dart:js';
 // import 'dart:js';
 
+import 'package:byahero/resources/app_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:byahero/states/mapstate.dart';
@@ -146,6 +147,7 @@ class GoogleAccountHelper {
       usersRef.document(firebaseUserID).setData({
         "uid": firebaseUserID,
         // "id": user.id,
+        
         "googleId": user != null ? user.id : null,
         "username": await additionalUserInfo[0],
         "photoUrl": user != null ? user.photoUrl : null,
@@ -158,7 +160,26 @@ class GoogleAccountHelper {
         "address": await additionalUserInfo[2],
         "currentLat": mapState.initalPositionLat,
         "currentLong": mapState.initalPositionLong,
+        "accountStatus": true,
       });
+
+
+        if( AppConfig.of(context).accountType==2){
+          usersRef.document(firebaseUserID).updateData(
+            {
+              "driversAvailability": false,
+              "accountType":2,
+            }
+            
+          );
+         }else if( AppConfig.of(context).accountType==1){
+          usersRef.document(firebaseUserID).updateData(
+            {
+              // "driversAvailability": false,
+              "accountType":1,
+            }
+          );
+         }
 
       appState.updateIsAuth(true);
       if (user != null) {

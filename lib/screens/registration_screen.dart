@@ -83,13 +83,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 5),
-                  //   child: Text(
-                  //     firebaseUser.toString(),
-                  //     style: TextStyle(fontSize: 15),
-                  //   ),
-                  // ),
+        
                 ],
               ):Text(''),
               Padding(

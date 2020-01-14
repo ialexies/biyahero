@@ -8,7 +8,7 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:byahero/constants.dart';
 import 'package:byahero/controllers/helper_design.dart';
-import 'package:byahero/screens/test_unauth_phone.dart';
+// import 'package:byahero/screens/test_unauth_phone.dart';
 import 'package:byahero/controllers/helper_google_account.dart';
 import 'package:byahero/states/appstate.dart';
 import 'package:byahero/screens/home_screen.dart';

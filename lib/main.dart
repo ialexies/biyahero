@@ -90,8 +90,8 @@ class  MyDriverApp extends StatelessWidget {
       return MaterialApp(
         initialRoute: HomeScreen.id,
         theme: ThemeData(
-          primaryColor: Colors.yellowAccent[400],
-          accentColor: Colors.green[800],
+          primaryColor: Colors.blue,
+          accentColor: Colors.blueAccent,
         ),
         routes: {
           MapScreen.id: (context) => MapScreen(
