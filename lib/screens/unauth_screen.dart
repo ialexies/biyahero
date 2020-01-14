@@ -1,6 +1,7 @@
 
 // import 'dart.js';
 import 'package:byahero/controllers/helper_signin_phone.dart';
+import 'package:byahero/resources/app_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -63,7 +64,8 @@ unAuthScreen(context) {
             child: Center(
               child: Container(
                 height: 130,
-                child: Image.asset('images/byeherologo.png'),
+                // child: Image.asset('images/byeherologo.png'),
+                child: Text(AppConfig.of(context).appTitle),
               ),
             ),
           ),

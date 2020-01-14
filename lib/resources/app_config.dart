@@ -6,11 +6,14 @@
 	  final String appTitle;
 	  final String buildFlavor;
 	  final Widget child;
+    final int accountType;
+
 	  AppConfig({
       @required this.homePage,
 	    @required this.appTitle, 
 	    @required this.buildFlavor,
 	    @required this.child,
+      @required this.accountType,
 	    });
 	
   

@@ -75,7 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 25),
+                    padding: EdgeInsets.only(top: 15),
                     child: Text(
                       // userInfo.displayName.toUpperCase(),
                   '',
@@ -83,13 +83,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Text(
-                      firebaseUser.toString(),
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: 5),
+                  //   child: Text(
+                  //     firebaseUser.toString(),
+                  //     style: TextStyle(fontSize: 15),
+                  //   ),
+                  // ),
                 ],
               ):Text(''),
               Padding(

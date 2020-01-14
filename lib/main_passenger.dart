@@ -11,7 +11,8 @@ void main() {
     homePage: 1,
     appTitle: "Passengers App",
     buildFlavor: "Production",
-    child: MyApp(),
+    child: MyPassengerApp(),
+    accountType: 1,
   );
   WidgetsFlutterBinding.ensureInitialized();
 
