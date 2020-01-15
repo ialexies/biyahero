@@ -46,7 +46,7 @@ android {
         }
         driver{
             dimension "default"
-             applicationIdSuffix ".driver"
+            //  applicationIdSuffix ".driver"
         }
     }
 }

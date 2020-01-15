@@ -1,3 +1,8 @@
+import 'package:byahero/components/drivers/driver_pageview.dart';
+import 'package:byahero/components/passenger_pageview.dart/passenger_pageview.dart';
+import 'package:byahero/resources/app_config.dart';
+// import 'package:byahero/screens/riders/passengerMap_screen.dart';
+import 'package:byahero/screens/riders/ridersMap_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:byahero/screens/map_screeen.dart';
@@ -11,7 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../states/appstate.dart';
-import 'package:byahero/screens/map_screeen.dart';
+// import 'package:byahero/screens/map_screeen.dart';
 
 final GoogleSignIn HomeGoogleSignIn = GoogleSignIn();
 
@@ -89,70 +94,80 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       key: _scaffoldKey,
       body: PageView(
-        children: <Widget>[
-          MapScreen(androidFusedLocation: true,),
-          ProfileScreen(),
-          SettingsScreen(),
-        ],
-        controller: pageController,
-        onPageChanged: onPageChanged(pageIndex),
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: CupertinoTabBar(
-        currentIndex: pageIndex,
-        onTap: onTap,
-        activeColor: Colors.blueGrey,
-        backgroundColor: Theme.of(context).primaryColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map,color: Colors.black87,),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle,color: Colors.black87,),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings,color: Colors.black87,),
-          ),
-        ],
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     GoogleAccountHelper().logoutgoogle();
-      //     showSnackBar('Logged Out');
-      //   },
-      //   child: Icon(Icons.exit_to_app),
-      // ),
-    );
-  }
+        children: pageViewOption(),
+                controller: pageController,
+                onPageChanged: onPageChanged(pageIndex),
+                physics: NeverScrollableScrollPhysics(),
+              ),
+              bottomNavigationBar: CupertinoTabBar(
+                currentIndex: pageIndex,
+                onTap: onTap,
+                activeColor: Colors.blueGrey,
+                backgroundColor: Theme.of(context).primaryColor,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.map,color: Colors.black87,),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle,color: Colors.black87,),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings,color: Colors.black87,),
+                  ),
+                ],
+              ),
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () {
+              //     GoogleAccountHelper().logoutgoogle();
+              //     showSnackBar('Logged Out');
+              //   },
+              //   child: Icon(Icons.exit_to_app),
+              // ),
+            );
+          }
+        
+        
+        
+        
+          showSnackBar(String txtcontent) {
+            // print("Show Snackbar here !");
+            final snackBar = new SnackBar(
+              content: new Text(txtcontent),
+              duration: new Duration(seconds: 3),
+              backgroundColor: Colors.red,
+              action: new SnackBarAction(
+                  label: 'Ok',
+                  onPressed: () {
+                    print('Please connect to the Internet');
+                  }),
+            );
+            // How to display Snackbar 
+            _scaffoldKey.currentState.showSnackBar(snackBar);
+          }
+        
+          onTap(int pageIndex) {
+            pageController.animateToPage(
+              pageIndex,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.bounceInOut,
+            );
+          }
+        
+          onPageChanged(int pageIndex) {
+            pageIndex = pageIndex;
+          }
+        
+          pageViewOption() {
+              print('${AppConfig.of(context).AppConfigType()}-----Type of User----------');
+              // return driverHomePageViewWidget(); //return pageview of driver
+             switch( AppConfig.of(context).AppConfigType()){
+               case 1:  return passengerHomePageViewWidget(); //return pageview of passenger
+               break;
+               case 2:  return driverHomePageViewWidget(); //return pageview of driver
+               break;
+             } 
 
-
-  showSnackBar(String txtcontent) {
-    // print("Show Snackbar here !");
-    final snackBar = new SnackBar(
-      content: new Text(txtcontent),
-      duration: new Duration(seconds: 3),
-      backgroundColor: Colors.red,
-      action: new SnackBarAction(
-          label: 'Ok',
-          onPressed: () {
-            print('Please connect to the Internet');
-          }),
-    );
-    // How to display Snackbar 
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  onTap(int pageIndex) {
-    pageController.animateToPage(
-      pageIndex,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.bounceInOut,
-    );
-  }
-
-  onPageChanged(int pageIndex) {
-    pageIndex = pageIndex;
-  }
+          }
 
 
 

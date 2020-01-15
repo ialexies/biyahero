@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "554930124247",
+    "firebase_url": "https://gbs-biyahero-rider.firebaseio.com",
+    "project_id": "gbs-biyahero-rider",
+    "storage_bucket": "gbs-biyahero-rider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554930124247:android:de204a508f3ca6dcacc792",
+        "android_client_info": {
+          "package_name": "com.digitapps.rideapp.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554930124247-7prbk866abnujlolp9c3t2t8hms46js3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digitapps.rideapp.driver",
+            "certificate_hash": "146ae3e693ca1f187e433f7a484b8e8a16aa80ec"
+          }
+        },
+        {
+          "client_id": "554930124247-ell3bk4o45qosoqarfo1mh5c7sbm01na.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDwryuQ9Hv-gleqDClb6Ih_RaJXXPltDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554930124247-ell3bk4o45qosoqarfo1mh5c7sbm01na.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
