@@ -1,6 +1,7 @@
 
 import 'dart:ffi';
 
+import 'package:byahero/states/appstate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,13 +16,16 @@ import 'dart:convert';
 
 class MapState with ChangeNotifier{
   bool locationServiceActive = true;
-  static LatLng _initialPosition;
-  LatLng _mapCustomPickupLocation;  //custom location of pickup
-  LatLng _mapCustomDestinationLocation;  //custom location of destination
-  double  _initialPositionLat;
-  double  _initialPositionLong;
+  static LatLng _initialPosition; ///position fromg geolocation
+  LatLng _mapCustomPickupLocation;  //custom location of pickup via pin
+  LatLng _mapCustomDestinationLocation;  //custom location of destination  via pin
+  double  _initialPositionLat; ///position fromg geolocation
+  double  _initialPositionLong; ///position fromg geolocation
+  LatLng _lastPosition = _initialPosition; /// destination via search
 
-  LatLng _lastPosition = _initialPosition;
+  LatLng _finalPickupLocation;
+  LatLng _finalDestinationLocation;
+
   
 
   final Set<Marker> _markers = {};
@@ -55,6 +59,10 @@ class MapState with ChangeNotifier{
   double get initalPositionLong => _initialPositionLong;
   LatLng get lastPosition => _lastPosition;
   LatLng get getmapCustomPickupLocation => _mapCustomPickupLocation;
+  LatLng get getFinalPickupLocation => _finalPickupLocation;
+  LatLng get getFinalDestinationLocation => _finalDestinationLocation;
+
+
   GoogleMapsServices get googleMapServices => _googleMapServices;
   GoogleMapController get mapController =>_mapController;
   Set<Marker> get markers => _markers;
@@ -66,12 +74,34 @@ class MapState with ChangeNotifier{
   getminimumPrice() => _minimumPrice;
 
 
+
+
   //constructor for getuserlocation
   MapState(){
     getUserLocation();
     _loadingInitialPosition();
     initPrices();
   }
+
+
+  //---------------- Final Pickup and Destination Functions---------------------------//
+
+  void setFinalPickupLocation(LatLng finalPickupLocation){
+    _finalPickupLocation = finalPickupLocation;
+    notifyListeners();
+  }
+
+  void setFinalDestinationLocation(LatLng finalDestinationLocation){
+    _finalDestinationLocation = finalDestinationLocation;
+    notifyListeners();
+  }
+
+  getFinaPickupLocationtest(){
+    return _finalPickupLocation;
+  }
+
+  //---------------- End of Final Pickup and Destination Functions---------------------------//
+
 
 
   void setMapCustomPickupLocation(LatLng customLocation){
@@ -217,26 +247,39 @@ class MapState with ChangeNotifier{
     double longitude = placemark[0].position.longitude;
     LatLng destination = LatLng(latitude, longitude);
     String destinationPolyline;
-    LatLng finalPickupLocation = initalPosition;
-    LatLng finalDestinationLocation = destination;
-
+    // LatLng finalPickupLocation = initalPosition;
+    // LatLng finalDestinationLocation = destination;
+    setFinalPickupLocation(initalPosition);
+    setFinalDestinationLocation( destination);
 
     //Check if there's a custom pickup location and use it
     if(_mapCustomPickupLocation!=null){
-      finalPickupLocation = _mapCustomPickupLocation;
+      // finalPickupLocation = _mapCustomPickupLocation;
+      setFinalPickupLocation(_mapCustomPickupLocation);
+      notifyListeners();
     }
 
     if(_mapCustomDestinationLocation!=null){
-      finalDestinationLocation = _mapCustomDestinationLocation; 
+      // finalDestinationLocation = _mapCustomDestinationLocation; 
+      setFinalDestinationLocation(_mapCustomDestinationLocation);
     }else if(_mapCustomDestinationLocation==null){
-      finalDestinationLocation = destination;
+      setFinalDestinationLocation( destination);
+      notifyListeners();
     }
 
+    // //Set the global use of final route Pickup & Destination
+    // setFinalPickupLocation(finalPickupLocation);
+    // setFinalDestinationLocation(finalDestinationLocation);
+    // notifyListeners();
+    
   
     // Get the Route data from google using the current position and destionation
     // Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(initalPosition, destination);
     
-    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(finalPickupLocation, finalDestinationLocation);
+    Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(_finalPickupLocation, _finalDestinationLocation);
+    print('$_finalPickupLocation---------------');
+    print('$_finalDestinationLocation---------------');
+    // Map<String, dynamic> route  = await _googleMapServices.getRouteCoordinates(_finalPickupLocation, _finalDestinationLocation);
 
     // Get the the Distance from the destination in km/
     destinationDistance = (route['legs'][0]['distance']['value'])/1000;
@@ -260,7 +303,7 @@ class MapState with ChangeNotifier{
 
     // _addMarker for pickup
     _addMarker(
-      location: finalPickupLocation, 
+      location: _finalPickupLocation, 
       id: MarkerId('pickupLocationMarker'),
       markerIcon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(250, 250)),"images/pickupmarker.png")
 
