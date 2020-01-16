@@ -29,17 +29,33 @@ Positioned mapBottomInfo({context,screeWidth,Widget content, var1, var2, var3}){
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: FloatingActionButton(
+                  backgroundColor: Colors.red,
                   elevation: 30,
                   onPressed: ()async{
                     final mapState = Provider.of<MapState>(context);
-                    // _showDialog(context: context);
-                    // Transaction(pickupLocation: MapState().)
+                    final appState = Provider.of<AppState>(context);  
+                    final pickup = mapState.getFinalPickupLocation;
+                    final destination =  mapState.getFinalDestinationLocation;
+                    final distantance = mapState.destinationDistance;
+                    String firebaseUserUid =  appState.getFirebaseCurrentAccount().uid.toString();
+                    double travelPrice =   (( distantance-1)*mapState.getregPriceKm())+mapState.getminimumPrice() ;
+
+                  // _showDialog(context: context);
+                  // Transaction(pickupLocation: MapState().)
                   //  await  Transaction().printInfo();
                   // print(mapState.getFinalPickupLocation);
-                  Transaction(pickupLocation: mapState.getFinalPickupLocation, destinationLocation: mapState.getFinalDestinationLocation,  );
+
+                  Transaction(
+                    pickupLocation: mapState.getFinalPickupLocation, 
+                    destinationLocation: mapState.getFinalDestinationLocation, 
+                    passengerFirebaseUid: firebaseUserUid,
+                    travelPrice: travelPrice,
+                    )
+                    .SaveTravelRoute();
+        
 
                   },
-                  child: Icon(Icons.drive_eta),
+                  child: Icon(Icons.play_circle_outline,size: 50,),
                 ),
               )
 
