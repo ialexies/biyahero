@@ -18,6 +18,30 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
+  List<BottomNavigationBarItem> passengerBottomNavBar() {
+    return [
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.map,
+        color: Colors.black87,
+      ),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.account_circle,
+        color: Colors.black87,
+      ),
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(
+        Icons.settings,
+        color: Colors.black87,
+      ),
+    ),
+  ];
+  }
+
+
   List<Widget> passengerHomePageViewWidget() {
     return <Widget>[
         MapScreen(androidFusedLocation: true,),
