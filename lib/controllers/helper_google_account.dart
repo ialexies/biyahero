@@ -73,7 +73,6 @@ class GoogleAccountHelper {
       appState.updateIsAuth(false);
       //  AppState().isAuth = false;
       //  AppState().updateIsAuth(false);
-
     }
     // final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
   }

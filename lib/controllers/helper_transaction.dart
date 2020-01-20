@@ -1,62 +1,76 @@
 // import 'dart:html';
 
+import 'package:byahero/states/appstate.dart';
 import 'package:byahero/states/mapstate.dart';
+import 'package:byahero/states/transactionstate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geohash/geohash.dart';
 import 'package:provider/provider.dart';
-  
 
-
-class Transaction {
+class TransactionRoute {
   LatLng pickupLocation;
   LatLng destinationLocation;
   String passengerFirebaseUid;
   double travelPrice;
   BuildContext context;
+  final transactionsRef = Firestore.instance.collection('transactions');
+  
 
-  Transaction(
-      {this.pickupLocation,
-       this.destinationLocation,
-       this.passengerFirebaseUid,
-       this.travelPrice,
-      this.context,
-      });
+  TransactionRoute({
+    this.pickupLocation,
+    this.destinationLocation,
+    this.passengerFirebaseUid,
+    this.travelPrice,
+    this.context,
+  });
+
+  DeleteTravelRoute({routeId}){
+    transactionsRef.document(routeId).delete().then((val){}).catchError((err){
+      print('error in deleteTravel $err');
+    });
+  }
 
   SaveTravelRoute() {
     // docRef.setData({
-      final mapState = Provider.of<MapState>(context);
+    final mapState = Provider.of<MapState>(context);
+    // final appState = Provider.of<AppState>(context);
+    final transactionState = Provider.of<TransactionState>(context);
 
-      final transactionsRef = Firestore.instance.collection('transactions');
-      DocumentReference docRef =  transactionsRef.document();
-      var pickupGeohash = Geohash.encode(pickupLocation.latitude, pickupLocation.longitude);
-      var destinationGeohash = Geohash.encode(destinationLocation.latitude, destinationLocation.longitude);
+    
+    DocumentReference docRef = transactionsRef.document();
+    var pickupGeohash =
+        Geohash.encode(pickupLocation.latitude, pickupLocation.longitude);
+    var destinationGeohash = Geohash.encode(
+        destinationLocation.latitude, destinationLocation.longitude);
 
-      mapState.updateWaitDriverContainer(true); //Show cirularprogress indicator
+    mapState.updateWaitDriverContainer(true); //Show cirularprogress indicator
 
-      docRef.setData({
+    docRef.setData({
       //     /*status
       //         1 = wating for driver
       //         2 = travelling
       //         3 = finish
+      //         4 = deactivated
       //     */
       "uid": passengerFirebaseUid,
       "pickup": GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
-      "destinationLocation":  GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
-      "geoHashPickup":pickupGeohash.toString(),
-      "geoHashDestination":destinationGeohash.toString(),
+      "destinationLocation":
+          GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
+      "geoHashPickup": pickupGeohash.toString(),
+      "geoHashDestination": destinationGeohash.toString(),
       "price": travelPrice,
       "status": 1,
-      "driver":null,
-      "startTime":null,
-      "endTime":null,
-      "created":DateTime.now().toUtc().millisecondsSinceEpoch,
-      "updated":null,
-
-
+      "driver": null,
+      "driverLoc":null,
+      "startTime": null,
+      "endTime": null,
+      "created": DateTime.now().toUtc().millisecondsSinceEpoch,
+      "updated": null,
     }).then((doc) {
-      print('${docRef.documentID}');
+      transactionState.setCurrentTransaction(
+          transactionId: '${docRef.documentID}');
     }).catchError((error) {
       print(error);
     });

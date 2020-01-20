@@ -72,9 +72,6 @@ class MapState with ChangeNotifier{
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
 
-
-
-
   //constructor for getuserlocation
   MapState(){
     getUserLocation();
@@ -82,8 +79,7 @@ class MapState with ChangeNotifier{
     initPrices();
   }
 
-
-   @override
+  @override
   void updateWaitDriverContainer( bool val){
 
     if (val==true){
@@ -94,10 +90,6 @@ class MapState with ChangeNotifier{
       visibilityDriverWait=false;
        notifyListeners(); 
     }
-
-    
-
-    
   }
 
   getDriverWaitVal(){

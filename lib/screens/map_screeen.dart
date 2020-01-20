@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:byahero/controllers/helper_transaction.dart';
 import 'package:byahero/states/appstate.dart';
+import 'package:byahero/states/transactionstate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:byahero/common_widgets/placeholder_widget.dart';
@@ -421,10 +424,16 @@ class _MaprouteState extends State<MapScreen> {
                         SizedBox(height: 30,),
                         Text('Waiting for Drivers',),
                         SizedBox(height: 30,),
-                        CircularProgressIndicator(),
+                        CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                        SizedBox(height: 30,),
                         FlatButton(
+                          color: Theme.of(context).primaryColor,
                           child: Text('Cancel'),
                           onPressed: (){
+                            final transactionState = Provider.of<TransactionState>(context);
+                            TransactionRoute().DeleteTravelRoute(routeId: transactionState.getCurrentTransaction());
                             mapState.updateWaitDriverContainer(false);
                           },
                         ),

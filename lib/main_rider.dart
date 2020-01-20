@@ -1,5 +1,6 @@
 import 'package:byahero/screens/home_screen.dart';
 import 'package:byahero/screens/registration_screen.dart';
+import 'package:byahero/states/transactionstate.dart';
 import 'package:flutter/material.dart';
 import 'resources/app_config.dart';
 // import 'main.dart';
@@ -32,6 +33,9 @@ void main() {
         ),
         ChangeNotifierProvider.value(
           value: MapState(),
+        ),
+        ChangeNotifierProvider.value(
+          value: TransactionState(),
         ),
       ],
       child: configuredApp,

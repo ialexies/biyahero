@@ -3,31 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AppState with ChangeNotifier {
-  final DateTime timestamp = DateTime.now();
+  
+
+  //**----Variable Users---**//
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
   FirebaseUser _firebaseUser;
   dynamic finalUser;
-  
+
+  //**----Variable Assorted---**//
+  final DateTime timestamp = DateTime.now();
   double _regPriceKm;
   double _minimumPrice;
 
-  setCounter(GoogleSignInAccount googleCurrentAccount) => _googleCurrentAccount = googleCurrentAccount;
+
+
 
   // Get Requests
+  setCounter(GoogleSignInAccount googleCurrentAccount) => _googleCurrentAccount = googleCurrentAccount;
   getGoogleCurrentAccount() => _googleCurrentAccount;
   getGoogleCurrentAccountID() => _googleCurrentAccount.id;
   getGoogleCurrentAccountDisplayName() => _googleCurrentAccount.displayName;
-
-  //getfirebase account
-  FirebaseUser getFirebaseCurrentAccount()=>_firebaseUser;
-
-
-
-  //Actual user account
-
-
-
+  FirebaseUser getFirebaseCurrentAccount()=>_firebaseUser;  //getfirebase account
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
   

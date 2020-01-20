@@ -45,7 +45,7 @@ Positioned mapBottomInfo({context,screeWidth,Widget content, var1, var2, var3}){
                   //  await  Transaction().printInfo();
                   // print(mapState.getFinalPickupLocation);
 
-                  Transaction(
+                  TransactionRoute(
                     pickupLocation: mapState.getFinalPickupLocation, 
                     destinationLocation: mapState.getFinalDestinationLocation, 
                     passengerFirebaseUid: firebaseUserUid,
