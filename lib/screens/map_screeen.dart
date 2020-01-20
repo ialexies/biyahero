@@ -40,8 +40,10 @@ class _MaprouteState extends State<MapScreen> {
   LatLng _mapCustomLocationMarker;
   LatLng _destinationDropPin;
 
-  bool _visipbilit_pickUDropPin = false;
+  bool _visipbility_pickUDropPin = false;
+  
 
+ 
   @override
   void initState() {
     super.initState();
@@ -217,29 +219,7 @@ class _MaprouteState extends State<MapScreen> {
               Positioned(
                 top: 500,
                 child: Text(mapState.getmapCustomPickupLocation.toString()),
-                
               ),
-              // Positioned( //-----------test position remove later
-              //   bottom: 40, right: 80,
-              //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-              //   child: FloatingActionButton(
-              //     onPressed: () {
-              //       _setLocation(
-              //           btnTitle: "Set as Pickup Location",
-              //           title: "Pickup Location",
-              //           locType: 1);
-              //     },
-              //   ),
-              // ),
-              // Positioned(   //-----------test position remove later
-              //   bottom: 40, right: 10,
-              //   // child: FloatingActionButton(onPressed: _onAddMarkerPressed, tooltip: "Add Map",),
-              //   child: FloatingActionButton(
-              //     onPressed: _onAddMarkerPressed,
-              //     backgroundColor: Colors.yellow,
-              //     child: Icon(Icons.add_location, color: Colors.black45),
-              //   ),
-              // ),
               Positioned(
                 top: 50,
                 child: Padding(
@@ -266,7 +246,6 @@ class _MaprouteState extends State<MapScreen> {
                               height: 90,
                               child: Column(
                                 children: <Widget>[
-                                  
                                   Expanded(
                                     child: Container(
                                       // child: Icon(Icons.location_on)),
@@ -274,7 +253,7 @@ class _MaprouteState extends State<MapScreen> {
                                         icon: Icon(Icons.location_on),
                                         onPressed: () {
                                           setState(() {
-                                            _visipbilit_pickUDropPin = true;
+                                            _visipbility_pickUDropPin = true;
                                           });
                                         },
                                       ),
@@ -298,9 +277,9 @@ class _MaprouteState extends State<MapScreen> {
                             children: <Widget>[
                               //Textfield for the piclup location
                               TextField(
-                                
                                 cursorColor: Colors.black,
-                                controller: mapState.textPickupLocationController,
+                                controller:
+                                    mapState.textPickupLocationController,
                                 decoration: InputDecoration(
                                   hintText: "pick up",
                                   border: InputBorder.none,
@@ -309,14 +288,13 @@ class _MaprouteState extends State<MapScreen> {
                                   prefixIcon: IconButton(
                                     icon: Icon(Icons.edit),
                                     color: Theme.of(context).accentColor,
-                                    onPressed: (){
+                                    onPressed: () {
                                       _setLocation(
-                                        btnTitle: "Set As Pickup Location",
-                                        title: "Pickup Location",
-                                        locType: 1
-                                      );
+                                          btnTitle: "Set As Pickup Location",
+                                          title: "Pickup Location",
+                                          locType: 1);
                                     },
-                                  ), 
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -364,12 +342,12 @@ class _MaprouteState extends State<MapScreen> {
                                   prefixIcon: IconButton(
                                     icon: Icon(Icons.edit),
                                     color: Theme.of(context).accentColor,
-                                    onPressed: (){
+                                    onPressed: () {
                                       _setLocation(
-                                        btnTitle: "Set As Destination Location",
-                                        title: "Destination Location",
-                                        locType: 2
-                                      );
+                                          btnTitle:
+                                              "Set As Destination Location",
+                                          title: "Destination Location",
+                                          locType: 2);
                                     },
                                   ),
                                 ),
@@ -398,7 +376,7 @@ class _MaprouteState extends State<MapScreen> {
                     )
                   : Container(),
               Visibility(
-                visible: _visipbilit_pickUDropPin,
+                visible: _visipbility_pickUDropPin,
                 child: Positioned(
                   left: appsScreenWidth(context) * .32,
                   top: appScreenHeight(context) * .32,
@@ -422,7 +400,7 @@ class _MaprouteState extends State<MapScreen> {
                         onPressed: () {
                           _onAddMarkerPressed();
                           setState(() {
-                            _visipbilit_pickUDropPin = false;
+                            _visipbility_pickUDropPin = false;
                             _latLngCurrentPosition = _pickupDropPin;
                             print(_latLngCurrentPosition);
                           });
@@ -432,6 +410,31 @@ class _MaprouteState extends State<MapScreen> {
                   ),
                 ),
               ),
+              Positioned(
+                child: mapState.visibilityDriverWait==true? Container(
+                  color: Theme.of(context).accentColor.withOpacity(.9),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 30,),
+                        Text('Waiting for Drivers',),
+                        SizedBox(height: 30,),
+                        CircularProgressIndicator(),
+                        FlatButton(
+                          child: Text('Cancel'),
+                          onPressed: (){
+                            mapState.updateWaitDriverContainer(false);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ):
+                Text('${mapState.visibilityDriverWait}')
+                ,
+              )
             ],
           );
         });
@@ -442,6 +445,7 @@ class _MaprouteState extends State<MapScreen> {
       _pickupDropPin = position.target;
     });
   }
+
   void _onCameraMovesMapCustomLocation(CameraPosition position) {
     final mapState = Provider.of<MapState>(context);
     setState(() {
@@ -450,10 +454,9 @@ class _MaprouteState extends State<MapScreen> {
       // print(mapState.getmapCustomPickupLocation);
     });
   }
-  
+
   //Custom location modal dialog
   Future<void> _setLocation(
-    
       {int locType, String title, String btnTitle}) async {
     return showDialog<void>(
       context: context,
@@ -476,7 +479,7 @@ class _MaprouteState extends State<MapScreen> {
                       target: MapState().initalPosition,
                       zoom: 15.0,
                     ),
-                    
+
                     // onMapCreated: mapState.onCreated,
                     myLocationEnabled: true,
                     mapType: MapType.normal,
@@ -509,25 +512,28 @@ class _MaprouteState extends State<MapScreen> {
               child: FlatButton(
                 color: Colors.red,
                 child: Center(child: Text(btnTitle)),
-                onPressed: () async{
+                onPressed: () async {
                   final mapState = Provider.of<MapState>(context);
 
-                  if (locType==1){
-                    mapState.setMapCustomPickupLocation(_mapCustomLocationMarker);
-                    mapState.textPickupLocationController.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
-                    mapState.sendRequest(mapState.textDestinationControler.text.toString());
+                  if (locType == 1) {
+                    mapState
+                        .setMapCustomPickupLocation(_mapCustomLocationMarker);
+                    mapState.textPickupLocationController.text = await mapState
+                        .convertLatLngToPlaceText(_mapCustomLocationMarker);
+                    mapState.sendRequest(
+                        mapState.textDestinationControler.text.toString());
                     Navigator.of(context).pop();
-                  }else if (locType==2){
-                    mapState.setMapCustomDestinationLocation(customLocation: _mapCustomLocationMarker);
-                    mapState.textDestinationControler.text =await  mapState.convertLatLngToPlaceText(_mapCustomLocationMarker);
-                    mapState.sendRequest(mapState.textDestinationControler.text.toString());
+                  } else if (locType == 2) {
+                    mapState.setMapCustomDestinationLocation(
+                        customLocation: _mapCustomLocationMarker);
+                    mapState.textDestinationControler.text = await mapState
+                        .convertLatLngToPlaceText(_mapCustomLocationMarker);
+                    mapState.sendRequest(
+                        mapState.textDestinationControler.text.toString());
                     Navigator.of(context).pop();
                   } else {
                     print('**********Location Type Not Defined***********');
                   }
-                  
-
-
                 },
               ),
             ),
@@ -548,8 +554,8 @@ Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
 
       return GestureDetector(
         onTap: () {
-          mapState.setMapCustomDestinationLocation( customLocation: null);
-          
+          mapState.setMapCustomDestinationLocation(customLocation: null);
+
           // setState(() {
           // selectedCountry = values[index].code;
           mapState.selectedPlace = values[index].description;
@@ -560,7 +566,8 @@ Widget createCountriesListView(BuildContext context, AsyncSnapshot snapshot) {
           mapState.textDestinationControler.text =
               mapState.selectedPlace.toString();
           // mapState.sendRequest(mapState.toString());
-          mapState.sendRequest(mapState.textDestinationControler.text.toString());
+          mapState
+              .sendRequest(mapState.textDestinationControler.text.toString());
           //  mapState.sendRequest(value);
           // print(values[index].code);
           // print(mapState.selectedPlace);

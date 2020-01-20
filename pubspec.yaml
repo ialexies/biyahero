@@ -44,6 +44,7 @@ dependencies:
   flutter_signin_button: ^1.0.0
   geoflutterfire: 2.0.3
   rxdart:  ^0.20.0
+  geohash: ^0.2.1
   
   
 

@@ -50,6 +50,7 @@ Positioned mapBottomInfo({context,screeWidth,Widget content, var1, var2, var3}){
                     destinationLocation: mapState.getFinalDestinationLocation, 
                     passengerFirebaseUid: firebaseUserUid,
                     travelPrice: travelPrice,
+                    context:context,
                     )
                     .SaveTravelRoute();
         

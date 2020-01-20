@@ -25,8 +25,7 @@ class MapState with ChangeNotifier{
 
   LatLng _finalPickupLocation;
   LatLng _finalDestinationLocation;
-
-  
+  bool visibilityDriverWait=false; //visibility of black widget container when waiting for driver
 
   final Set<Marker> _markers = {};
   final Set<Polyline> _polyLines = {};
@@ -81,6 +80,28 @@ class MapState with ChangeNotifier{
     getUserLocation();
     _loadingInitialPosition();
     initPrices();
+  }
+
+
+   @override
+  void updateWaitDriverContainer( bool val){
+
+    if (val==true){
+      visibilityDriverWait=true;
+      notifyListeners();
+    }
+     if (val==false){
+      visibilityDriverWait=false;
+       notifyListeners(); 
+    }
+
+    
+
+    
+  }
+
+  getDriverWaitVal(){
+    return  visibilityDriverWait;
   }
 
 
