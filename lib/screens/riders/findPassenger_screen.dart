@@ -1,289 +1,104 @@
- import 'package:flutter/material.dart';
-   import 'package:geoflutterfire/geoflutterfire.dart';
-   import 'package:cloud_firestore/cloud_firestore.dart';
-   import 'package:geoflutterfire/src/point.dart';
-   import 'package:google_maps_flutter/google_maps_flutter.dart';
-   import 'package:rxdart/rxdart.dart';
-   
+import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geoflutterfire/src/point.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rxdart/rxdart.dart';
 
-   class FindPassengerScreeen extends StatefulWidget {
-     @override
-     _FindPassengerScreeenState createState() => _FindPassengerScreeenState();
-   }
-   
-   class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
-     GoogleMapController _mapController;
-     TextEditingController _latitudeController, _longitudeController;
-     final Set<Marker> _markers = {};
-   
-   
-     // firestore init
-     Firestore _firestore = Firestore.instance;
-     Geoflutterfire geo;
-     Stream<List<DocumentSnapshot>> stream;
-     var radius = BehaviorSubject(seedValue: 1.0);
-   
-     @override
-     void initState() {
-       super.initState();
-       _latitudeController = TextEditingController();
-       _longitudeController = TextEditingController();
-   
-       geo = Geoflutterfire();
-       GeoFirePoint center = geo.point(latitude: 14.8275444, longitude: 120.2827171);
-       stream = radius.switchMap((rad) {
-         var collectionReference = _firestore.collection('transactions');
-   //          .where('name', isEqualTo: 'darshan');
-         return geo
-             .collection(collectionRef: collectionReference)
-             .within(center: center, radius: rad, field: 'geoHashPickup');
-   
-         /*
-         ****Example to specify nested object**** 
-         
-         var collectionReference = _firestore.collection('nestedLocations');
-   //          .where('name', isEqualTo: 'darshan');
-         return geo.collection(collectionRef: collectionReference).within(
-             center: center, radius: rad, field: 'address.location.position');
-             
-         */
+// Init firestore and geoFlutterFire
+Geoflutterfire geo = Geoflutterfire();
+Firestore _firestore = Firestore.instance;
 
-       });
-     }
-   
-     @override
-     void dispose() {
-       super.dispose();
-       radius.close();
-     }
-   
-     @override
-     Widget build(BuildContext context) {
-       return MaterialApp(
-         home: Scaffold(
-           appBar: AppBar(
-             title: const Text('GeoFlutterFire'),
-             actions: <Widget>[
-               IconButton(
-                 onPressed: _mapController == null
-                     ? null
-                     : () {
-                         _showHome();
-                       },
-                 icon: Icon(Icons.home),
-               )
-             ],
-           ),
-           body: Container(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.center,
-               children: <Widget>[
-                 Center(
-                   child: Card(
-                     elevation: 4,
-                     margin: EdgeInsets.symmetric(vertical: 8),
-                     child: SizedBox(
-                       width: MediaQuery.of(context).size.width - 30,
-                       height: MediaQuery.of(context).size.height * (1 / 3),
-                       child: GoogleMap(
-                         markers: _markers,
-                         onMapCreated: _onMapCreated,
-                         initialCameraPosition: const CameraPosition(
-                           target: LatLng(14.8275444,120.2827171),
-                           zoom: 15.0,
-                         ),
-                       ),
-                     ),
-                   ),
-                 ),
-                 Padding(
-                   padding: const EdgeInsets.only(top: 8.0),
-                   child: Slider(
-                     min: 1,
-                     max: 200,
-                     divisions: 4,
-                     value: _value,
-                     label: _label,
-                     activeColor: Colors.blue,
-                     inactiveColor: Colors.blue.withOpacity(0.2),
-                     onChanged: (double value) => changed(value),
-                   ),
-                 ),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                   children: <Widget>[
-                     Container(
-                       width: 100,
-                       child: TextField(
-                         controller: _latitudeController,
-                         keyboardType: TextInputType.number,
-                         textInputAction: TextInputAction.next,
-                         decoration: InputDecoration(
-                             labelText: 'lat',
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(8),
-                             )),
-                       ),
-                     ),
-                     Container(
-                       width: 100,
-                       child: TextField(
-                         controller: _longitudeController,
-                         keyboardType: TextInputType.number,
-                         decoration: InputDecoration(
-                             labelText: 'lng',
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(8),
-                             )),
-                       ),
-                     ),
-                     MaterialButton(
-                       color: Colors.blue,
-                       onPressed: () {
-                         double lat = double.parse(_latitudeController.text);
-                         double lng = double.parse(_longitudeController.text);
-                         _addPoint(lat, lng);
-                       },
-                       child: Text(
-                         'ADD',
-                         style: TextStyle(color: Colors.white),
-                       ),
-                     )
-                   ],
-                 ),
-                 MaterialButton(
-                   color: Colors.amber,
-                   child: Text(
-                     'Add nested ',
-                     style: TextStyle(color: Colors.white),
-                   ),
-                   onPressed: () {
-                     double lat = double.parse(_latitudeController.text);
-                     double lng = double.parse(_longitudeController.text);
-                     _addNestedPoint(lat, lng);
-                   },
+class FindPassengerScreeen extends StatefulWidget {
+  @override
+  _FindPassengerScreeenState createState() => _FindPassengerScreeenState();
+}
 
-                   
-                 ),
-                 
-                 
-      //            StreamBuilder(
-      //   stream: Firestore.instance.collection('transactions').snapshots(),
-      //   builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
-      //     var items = snapshot.data?.documents ?? [];
+class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
+
+  var collectionReference = _firestore.collection('transactions');
+  var geoRef;
+  double radius; //km radius
+  Stream<List<DocumentSnapshot>> stream ;
+  String position = "position";
+  
+  @override
+  void initState() {
+    super.initState();
+
+    GeoFirePoint myLocation = geo.point(latitude: 14.8261296, longitude:120.2821852);
+    geoRef = geo.collection(collectionRef: collectionReference);
+    radius = 50;
+    stream = geo.collection(collectionRef: collectionReference).within(center: myLocation, radius: radius, field: position );
+    
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body:  
+          SizedBox(
+            height: 900,
+            child: StreamBuilder(
+            stream: stream,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<DocumentSnapshot>> snapshots) {
+              if (snapshots.connectionState == ConnectionState.active &&
+                  snapshots.hasData) {
+                print('data ${snapshots.data[0].data.toString()}');
+                // final  List<Text>  children  =    snapshots.data[0].data
+	              //           .map((doc)  =>  Text(doc['uid']))
+                //         .toList();
+                // List<Text> children = snapshots.data[0].data.map((doc)=>Text(doc['uid'])).toString();
+                
+                // return  ();
+                List<Text> children = List();
+
+                // snapshots.data[0].data.forEach(doc)=>Text(doc['username']); 
+                List<Card> weightData =
+snapshots.data.map( (doc) => 
+
+Card(
+  child: Column(
+    children: <Widget>[
+      ListTile(
+        leading: Icon(Icons.album),
+        title: Text(doc['uid']),
+        subtitle: Column(
+          children: <Widget>[
+            // Text(doc['pickup']),
+            Text(' Pickup ${doc.data["pickup"].longitude.toString()}' ),  
+          ],
+        ),
+      )
+    ],
+  ),
+)).toList();
+// Container(
+  
+
+//   doc['uid'].toString())).toList();
 
 
-      //     return Text(items[1].toString());
-      //   },
-      // ),
-
-StreamBuilder<List<DocumentSnapshot>>(
-  stream: stream,
-  builder: (context, snapshot) {
-    //our android version snapshot.data['androidVersion']
-      {
-        if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-         } else {
-            return Container(
-                child: ListView.builder(                                                  
-                    // itemCount: snapshot.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, int index) {
-                        return Text('${snapshot.data}');                                           
-                    }
-                )
-            );
-         }
-     }
-  },
-)
-      
-               ],
-             ),
-           ),
-         ),
-       );
-     }
-   
-     void _onMapCreated(GoogleMapController controller) {
-       setState(() {
-         _mapController = controller;
-   //      _showHome();
-         //start listening after map is created
-         stream.listen((List<DocumentSnapshot> documentList) {
-           _updateMarkers(documentList);
-         });
-       });
-     }
-   
-     void _showHome() {
-       _mapController.animateCamera(CameraUpdate.newCameraPosition(
-         const CameraPosition(
-           target: LatLng(12.960632, 77.641603),
-           zoom: 15.0,
-         ),
-       ));
-     }
-   
-     void _addPoint(double lat, double lng) {
-       GeoFirePoint geoFirePoint = geo.point(latitude: lat, longitude: lng);
-       _firestore
-           .collection('locations')
-           .add({'name': 'random name', 'position': geoFirePoint.data}).then((_) {
-         print('added ${geoFirePoint.hash} successfully');
-       });
-     }
-   
-     //example to add geoFirePoint inside nested object
-     void _addNestedPoint(double lat, double lng) {
-       GeoFirePoint geoFirePoint = geo.point(latitude: lat, longitude: lng);
-       _firestore.collection('nestedLocations').add({
-         'name': 'random name',
-         'address': {
-           'location': {'position': geoFirePoint.data}
-         }
-       }).then((_) {
-         print('added ${geoFirePoint.hash} successfully');
-       });
-     }
-   
-    void  MarkerOptions({position, icon,}){
-
-    }
-
-      
-
-     void _addMarker(double lat, double lng) {
-      LatLng markToAdd = LatLng(lat,lng);
-      setState(() {
-          _markers.add(Marker(markerId: MarkerId(markToAdd .toString()),
-            position: markToAdd ,
-              infoWindow: InfoWindow(
-                // title: address,
-                snippet: "go here"
+                return ListView(
+                  children: weightData  ,
+                );
+                // return Text(snapshots.data.forEach((doc)=>debugPrint(doc.data.toString())));
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
           ),
-          icon: BitmapDescriptor.defaultMarker
-        ));
-      });
-     }
-   
-     void _updateMarkers(List<DocumentSnapshot> documentList) {
-       documentList.forEach((DocumentSnapshot document) {
-         GeoPoint point = document.data['position']['geopoint'];
-         _addMarker(point.latitude, point.longitude);
-       });
-     }
-   
-     double _value = 20.0;
-     String _label = '';
-   
-     changed(value) {
-       setState(() {
-         _value = value;
-         _label = '${_value.toInt().toString()} kms';
-        //  _mapController.clearMarkers();
-       });
-       radius.add(value);
-     }
-   }
+          ),
+        
+      ),
+    );
+  }
+}

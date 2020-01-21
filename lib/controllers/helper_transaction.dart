@@ -60,6 +60,10 @@ class TransactionRoute {
           GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
       "geoHashPickup": pickupGeohash.toString(),
       "geoHashDestination": destinationGeohash.toString(),
+      "position":{
+        "geohash":pickupGeohash.toString(),
+        "geopoint":GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
+        },
       "price": travelPrice,
       "status": 1,
       "driver": null,
