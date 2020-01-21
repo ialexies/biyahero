@@ -28,7 +28,7 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
 
     GeoFirePoint myLocation = geo.point(latitude: 14.8261296, longitude:120.2821852);
     geoRef = geo.collection(collectionRef: collectionReference);
-    radius = 50;
+    radius = 10;
     stream = geo.collection(collectionRef: collectionReference).within(center: myLocation, radius: radius, field: position );
     
   }
@@ -63,25 +63,25 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
 
                 // snapshots.data[0].data.forEach(doc)=>Text(doc['username']); 
                 List<Card> weightData =
-snapshots.data.map( (doc) => 
+                snapshots.data.map( (doc) => 
 
-Card(
-  child: Column(
-    children: <Widget>[
-      ListTile(
-        leading: Icon(Icons.album),
-        title: Text(doc['uid']),
-        subtitle: Column(
-          children: <Widget>[
-            // Text(doc['pickup']),
-            Text(' Pickup ${doc.data["pickup"].longitude.toString()}' ),  
-          ],
-        ),
-      )
-    ],
-  ),
-)).toList();
-// Container(
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.album),
+                        title: Text(doc['uid']),
+                        subtitle: Column(
+                          children: <Widget>[
+                            // Text(doc['pickup']),
+                            Text(' Pickup ${doc.data["pickup"].longitude.toString()}' ),  
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )).toList();
+                // Container(
   
 
 //   doc['uid'].toString())).toList();
