@@ -255,7 +255,7 @@ class MapState with ChangeNotifier{
      _markers.clear();
     _polyLines.clear();
     // List<Placemark> placemark ;
-     List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation); 
+     List<Placemark> placemark = await Geolocator().placemarkFromAddress(intendedLocation.toString()); 
        double latitude = placemark[0].position.latitude;
     double longitude = placemark[0].position.longitude;
     LatLng destination = LatLng(latitude, longitude);

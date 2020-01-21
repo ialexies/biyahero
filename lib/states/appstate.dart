@@ -32,7 +32,13 @@ class AppState with ChangeNotifier {
   getminimumPrice() => _minimumPrice;
   getUserProfile() =>_userProfile;
   
-  setUserProfile(val)=>_userProfile=val;
+  // setUserProfile(vals)=>_userProfile=vals;
+
+
+ void updateUserProfile(val){
+   _userProfile = val;
+  notifyListeners();
+ } 
 
   // Setter
 

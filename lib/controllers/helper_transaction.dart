@@ -32,7 +32,7 @@ class TransactionRoute {
     });
   }
 
-  SaveTravelRoute() {
+  SaveTravelRoute() async{
     // docRef.setData({
     final mapState = Provider.of<MapState>(context);
     final appState = Provider.of<AppState>(context);
@@ -67,7 +67,7 @@ class TransactionRoute {
         "geohash":pickupGeohash.toString(),
         "geopoint":GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
         },
-      "passangerName":appState.getUserProfile(),
+      "passangerName":  appState.getUserProfile().toString(),
       
       "price": travelPrice,
       "status": 1,

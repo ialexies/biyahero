@@ -89,7 +89,8 @@ class GoogleAccountHelper {
       await createUserInFirestore(
           context: context, phoneNumber: account.phoneNumber, firebasUser: account);
       
-            appState.setUserProfile( usersRef.document(account.uid).get());
+            // appState.setUserProfile( usersRef.document(account.uid).get());
+            appState.updateUserProfile( usersRef.document(account.uid).get());
 
     appState.savefirebaseUser(account);
 
