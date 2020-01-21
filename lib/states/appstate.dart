@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,6 +10,8 @@ class AppState with ChangeNotifier {
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
   FirebaseUser _firebaseUser;
+  Future<DocumentSnapshot> _userProfile;
+
   dynamic finalUser;
 
   //**----Variable Assorted---**//
@@ -27,8 +30,11 @@ class AppState with ChangeNotifier {
   FirebaseUser getFirebaseCurrentAccount()=>_firebaseUser;  //getfirebase account
   getregPriceKm() => _regPriceKm;
   getminimumPrice() => _minimumPrice;
+  getUserProfile() =>_userProfile;
   
+  setUserProfile(val)=>_userProfile=val;
 
+  // Setter
 
   void updateIsAuth(bool isAuthenticated) {
     isAuth = isAuthenticated;

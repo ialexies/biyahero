@@ -26,10 +26,13 @@ final usersGroupRef = Firestore.instance.collection('users').document("");
 // final _firestore = Firestore.instance;
 // final usersRef = Firestore.instance.collection('users');
 
+
+
 class GoogleAccountHelper {
   final BuildContext appContext;
   GoogleAccountHelper({this.appContext});
   FirebaseUser _currentFirebaseUser;
+ 
 
   // GoogleAccountHelper();
   logoutgoogle(context) {
@@ -53,6 +56,8 @@ class GoogleAccountHelper {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         print('with internet');
         googleSignIn.signIn();
+
+  
 
         loginUserInFirebase(context);
       }
@@ -83,7 +88,12 @@ class GoogleAccountHelper {
       print('User signed in!: $account');
       await createUserInFirestore(
           context: context, phoneNumber: account.phoneNumber, firebasUser: account);
-      appState.updateIsAuth(true);
+      
+            appState.setUserProfile( usersRef.document(account.uid).get());
+
+    appState.savefirebaseUser(account);
+
+    appState.updateIsAuth(true);
       // loginUserInFirebase(context);
     } else {
       appState.updateIsAuth(false);

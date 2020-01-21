@@ -35,7 +35,7 @@ class TransactionRoute {
   SaveTravelRoute() {
     // docRef.setData({
     final mapState = Provider.of<MapState>(context);
-    // final appState = Provider.of<AppState>(context);
+    final appState = Provider.of<AppState>(context);
     final transactionState = Provider.of<TransactionState>(context);
 
     
@@ -55,15 +55,20 @@ class TransactionRoute {
       //         4 = deactivated
       //     */
       "uid": passengerFirebaseUid,
-      "pickup": GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
-      "destinationLocation":
-          GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
-      "geoHashPickup": pickupGeohash.toString(),
-      "geoHashDestination": destinationGeohash.toString(),
-      "position":{
+      "pickupLocation": GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
+      "destinationLocation": GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
+
+      "positionPickup":{
         "geohash":pickupGeohash.toString(),
         "geopoint":GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
         },
+      
+      "positionDestination":{
+        "geohash":pickupGeohash.toString(),
+        "geopoint":GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
+        },
+      "passangerName":appState.getUserProfile(),
+      
       "price": travelPrice,
       "status": 1,
       "driver": null,
