@@ -73,7 +73,7 @@ class MapState with ChangeNotifier{
   getminimumPrice() => _minimumPrice;
 
   //constructor for getuserlocation
-  MapState(){
+  MapState() {
     getUserLocation();
     _loadingInitialPosition();
     initPrices();
@@ -193,9 +193,16 @@ class MapState with ChangeNotifier{
     } catch (err) {
       print('Caught error: $err');
     }
-    // textPickupLocationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+    // return textPickupLocationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+    // var textReturn =  placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
 
-    return  placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+    // return textReturn;
+
+    if(placemark!=null){
+      return textPickupLocationController.text = placemark[0].subThoroughfare + ' ' + placemark[0].thoroughfare + ', ' +placemark[0].locality;
+    }else{
+      return 'Location Not Registered';
+    }
 
   }
 

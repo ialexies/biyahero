@@ -92,9 +92,10 @@ class _MaprouteState extends State<MapScreen> {
       setState(() {
         // Here you can write your code for open new view
         _lastKnownPosition = position;
+        });
         setState(() => _latLngLastKownPosition =
             LatLng(position.latitude, position.longitude));
-      });
+      
     });
 
     // setState(() async{

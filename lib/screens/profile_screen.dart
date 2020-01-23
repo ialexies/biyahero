@@ -14,8 +14,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final appState = Provider.of<AppState>(context);
     return Scaffold(
       appBar: appHeader(context, titleText: 'Profile', removeBackButton: true),
-      body: Text(appState.getFirebaseCurrentAccount().toString(),
-      
+      body: Column(
+        children: <Widget>[
+          Text(appState.getFirebaseCurrentAccount().toString(), ),
+          Text(appState.getUserProfile().toString(), ),
+          
+        ],
       )
     );
   }

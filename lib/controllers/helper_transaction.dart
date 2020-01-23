@@ -67,7 +67,7 @@ class TransactionRoute {
         "geohash":pickupGeohash.toString(),
         "geopoint":GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
         },
-      "passangerName":  appState.getUserProfile().toString(),
+      "passangerInfo":  appState.getUserProfile(),
       
       "price": travelPrice,
       "status": 1,

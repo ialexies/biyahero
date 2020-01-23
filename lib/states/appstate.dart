@@ -10,7 +10,7 @@ class AppState with ChangeNotifier {
   bool isAuth = false;
   GoogleSignInAccount _googleCurrentAccount;
   FirebaseUser _firebaseUser;
-  Future<DocumentSnapshot> _userProfile;
+Map<String, dynamic> _userProfile;
 
   dynamic finalUser;
 
@@ -35,12 +35,17 @@ class AppState with ChangeNotifier {
   // setUserProfile(vals)=>_userProfile=vals;
 
 
- void updateUserProfile(val){
-   _userProfile = val;
+ updateUserProfile(Map<String, dynamic> userProfile )async{
+
+
+   _userProfile = userProfile;
   notifyListeners();
  } 
 
   // Setter
+
+
+
 
   void updateIsAuth(bool isAuthenticated) {
     isAuth = isAuthenticated;

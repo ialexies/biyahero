@@ -98,8 +98,6 @@ import 'helper_google_account.dart';
       FirebaseAuth.instance.currentUser().then((user) {
         if (user != null) {
 
-           
-
           appState.updateIsAuth(true);
           Navigator.of(context).pushReplacementNamed(HomeScreen.id);
           appState.savefirebaseUser(user);

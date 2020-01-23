@@ -26,13 +26,10 @@ final usersGroupRef = Firestore.instance.collection('users').document("");
 // final _firestore = Firestore.instance;
 // final usersRef = Firestore.instance.collection('users');
 
-
-
 class GoogleAccountHelper {
   final BuildContext appContext;
   GoogleAccountHelper({this.appContext});
   FirebaseUser _currentFirebaseUser;
- 
 
   // GoogleAccountHelper();
   logoutgoogle(context) {
@@ -57,8 +54,6 @@ class GoogleAccountHelper {
         print('with internet');
         googleSignIn.signIn();
 
-  
-
         loginUserInFirebase(context);
       }
     } on SocketException catch (_) {
@@ -70,7 +65,7 @@ class GoogleAccountHelper {
   handleSignIn(GoogleSignInAccount account, context) async {
     final appState = Provider.of<AppState>(context);
     if (account != null) {
-      print('User signed in!: $account');
+      print('User signed in Google!: $account');
       await createUserInFirestore(context: context);
       appState.updateIsAuth(true);
       loginUserInFirebase(context);
@@ -85,22 +80,20 @@ class GoogleAccountHelper {
   handleFirebaseSignIn(FirebaseUser account, context) async {
     final appState = Provider.of<AppState>(context);
     if (account != null) {
-      print('User signed in!: $account');
+      print('User signed in Firebase --!: $account');
       await createUserInFirestore(
-          context: context, phoneNumber: account.phoneNumber, firebasUser: account);
-      
-            // appState.setUserProfile( usersRef.document(account.uid).get());
-            appState.updateUserProfile( usersRef.document(account.uid).get());
+          context: context,
+          phoneNumber: account.phoneNumber,
+          firebasUser: account);
 
-    appState.savefirebaseUser(account);
+      // appState.updateUserProfile( usersRef.document(account.uid).get());
+      updateUserProfile(context, account.uid);
 
-    appState.updateIsAuth(true);
-      // loginUserInFirebase(context);
+      appState.savefirebaseUser(account);
+
+      appState.updateIsAuth(true);
     } else {
       appState.updateIsAuth(false);
-      //  AppState().isAuth = false;
-      //  AppState().updateIsAuth(false);
-
     }
     // final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
   }
@@ -120,17 +113,18 @@ class GoogleAccountHelper {
         (await FirebaseAuth.instance.signInWithCredential(credential));
     appState.savefirebaseUser(user);
     // _currentFirebaseUser = user.uid;
-    print("signed in " + user.displayName);
+    // print("*********** signed in Firebase loginUserInFirebase " + user.displayName);
   }
 
-  createUserInFirestore({context, phoneNumber, FirebaseUser firebasUser}) async {
+  createUserInFirestore(
+      {context, phoneNumber, FirebaseUser firebasUser}) async {
     final appState = Provider.of<AppState>(context);
     final mapState = Provider.of<MapState>(context);
     // 1) check if user exists in users collection in database (according to their id)
     // GoogleSignInAccount user;
 
     // if (googleSignIn.currentUser != null) {
-      final GoogleSignInAccount user  = googleSignIn.currentUser;
+    final GoogleSignInAccount user = googleSignIn.currentUser;
     // }
     // final GoogleSignInAccount user = null;
 
@@ -146,18 +140,18 @@ class GoogleAccountHelper {
       final additionalUserInfo = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => RegistrationScreen(
-              userInfo: user,
-              firebaseUser: firebasUser,
-            ),
+          builder: (context) => RegistrationScreen(
+            userInfo: user,
+            firebaseUser: firebasUser,
           ),
-        );
+        ),
+      );
 
       // 3) get username from create account, use it to make new user document in users collection
       usersRef.document(firebaseUserID).setData({
         "uid": firebaseUserID,
         // "id": user.id,
-        
+
         "googleId": user != null ? user.id : null,
         "username": await additionalUserInfo[0],
         "photoUrl": user != null ? user.photoUrl : null,
@@ -166,30 +160,26 @@ class GoogleAccountHelper {
         "bio": "",
         "groups": [],
         "timestamp": AppState().timestamp,
-        "contactNumber":  firebasUser.phoneNumber!=null? firebasUser.phoneNumber: await additionalUserInfo[1],
+        "contactNumber": firebasUser.phoneNumber != null
+            ? firebasUser.phoneNumber
+            : await additionalUserInfo[1],
         "address": await additionalUserInfo[2],
         "currentLat": mapState.initalPositionLat,
         "currentLong": mapState.initalPositionLong,
         "accountStatus": true,
       });
 
-
-        if( AppConfig.of(context).accountType==2){
-          usersRef.document(firebaseUserID).updateData(
-            {
-              "driversAvailability": false,
-              "accountType":2,
-            }
-            
-          );
-         }else if( AppConfig.of(context).accountType==1){
-          usersRef.document(firebaseUserID).updateData(
-            {
-              // "driversAvailability": false,
-              "accountType":1,
-            }
-          );
-         }
+      if (AppConfig.of(context).accountType == 2) {
+        usersRef.document(firebaseUserID).updateData({
+          "driversAvailability": false,
+          "accountType": 2,
+        });
+      } else if (AppConfig.of(context).accountType == 1) {
+        usersRef.document(firebaseUserID).updateData({
+          // "driversAvailability": false,
+          "accountType": 1,
+        });
+      }
 
       appState.updateIsAuth(true);
       if (user != null) {
@@ -210,5 +200,14 @@ class GoogleAccountHelper {
     print('You loggedin using phone number, your UID is ${firebaseuser.uid} ');
 
     createUserInFirestore(context: context, phoneNumber: phoneNumber);
+  }
+
+  void updateUserProfile(context, String uid) async {
+    final appState = Provider.of<AppState>(context);
+    await usersRef.document('kkvWbBGqPDU11Xty1SIbgFJgWdl1').get().then((doc) {
+      appState.updateUserProfile(doc.data);
+      print('####### updateUserProfile ${appState.getUserProfile()}');
+    });
+    // print (document.toString());
   }
 }
