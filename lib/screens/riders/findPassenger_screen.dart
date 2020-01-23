@@ -29,7 +29,11 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
     GeoFirePoint myLocation = geo.point(latitude: 14.8261296, longitude:120.2821852);
     geoRef = geo.collection(collectionRef: collectionReference);
 <<<<<<< HEAD
+<<<<<<< HEAD
     radius = 1000;
+=======
+    radius = 10;
+>>>>>>> parent of 46b6cea... Revert "working filter test column"
 =======
     radius = 10;
 >>>>>>> parent of 46b6cea... Revert "working filter test column"
