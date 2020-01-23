@@ -43,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen>
 
     // Detects when user signed in
     HomeGoogleSignIn.onCurrentUserChanged.listen((account) {
-      print('theres a change in user');
+      print('theres a change in google user');
       GoogleAccountHelper().handleSignIn(account, this.context);
     }, onError: (err) {
       print('Error signing in: $err');
     });
 
     FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
-      print('theres a change in user');
+      print('theres a change firebase user in user');
       GoogleAccountHelper().handleFirebaseSignIn(firebaseUser, this.context);
     }, onError: (err) {
       print('Error signing in: $err');

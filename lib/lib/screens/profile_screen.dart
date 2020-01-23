@@ -18,7 +18,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: <Widget>[
           Text(appState.getFirebaseCurrentAccount().toString(), ),
           Text(appState.getUserProfile().toString(), ),
-          
         ],
       )
     );

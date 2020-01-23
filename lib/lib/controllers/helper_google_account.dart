@@ -111,7 +111,9 @@ class GoogleAccountHelper {
 
     final FirebaseUser user =
         (await FirebaseAuth.instance.signInWithCredential(credential));
-    appState.savefirebaseUser(user);
+    updateUserProfile(context, user.uid);
+
+    // appState.updateUserProfile(user.uid);
     // _currentFirebaseUser = user.uid;
     // print("*********** signed in Firebase loginUserInFirebase " + user.displayName);
   }
@@ -204,7 +206,7 @@ class GoogleAccountHelper {
 
   void updateUserProfile(context, String uid) async {
     final appState = Provider.of<AppState>(context);
-    await usersRef.document('kkvWbBGqPDU11Xty1SIbgFJgWdl1').get().then((doc) {
+    await usersRef.document(uid).get().then((doc) {
       appState.updateUserProfile(doc.data);
       print('####### updateUserProfile ${appState.getUserProfile()}');
     });

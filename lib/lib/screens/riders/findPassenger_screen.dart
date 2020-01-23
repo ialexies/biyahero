@@ -53,18 +53,11 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
             stream: stream,
             builder: (BuildContext context,
                 AsyncSnapshot<List<DocumentSnapshot>> snapshots) {
-              if (snapshots.connectionState == ConnectionState.active &&
-                  snapshots.hasData) {
+              if (snapshots.connectionState == ConnectionState.active &&  snapshots.hasData) {
                 print('data ${snapshots.data[0].data.toString()}');
-                // final  List<Text>  children  =    snapshots.data[0].data
-                //           .map((doc)  =>  Text(doc['uid']))
-                //         .toList();
-                // List<Text> children = snapshots.data[0].data.map((doc)=>Text(doc['uid'])).toString();
 
-                // return  ();
                 List<Text> children = List();
 
-                // snapshots.data[0].data.forEach(doc)=>Text(doc['username']);
                 List<Card> weightData = snapshots.data
                     .map((doc) => Card(
                           child: Column(
@@ -72,13 +65,19 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
                               ListTile(
                                 leading: Icon(Icons.album),
                                 // title: Text(doc['uid']),
-                                title: Text(doc['passangerInfo']["username"].toString()),
-                  
+                                title: Text(doc['passangerInfo']["username"]
+                                    .toString()),
+
                                 subtitle: Column(
                                   children: <Widget>[
-                                    Text('Pickup: ${doc.data["positionPickup"]["geopoint"].latitude.toString()}, ${doc.data["positionPickup"]["geopoint"].latitude.toString()}'),
-                                    Text('Pickup: ${doc.data["positionDestination"]["geopoint"].latitude.toString()}, ${doc.data["positionDestination"]["geopoint"].latitude.toString()}'),
-                                    Text(' Price" ${doc.data["price"].toString()}'),
+
+
+                                    Text(
+                                        'Pickup: ${doc.data["positionPickup"]["geopoint"].latitude.toString()}, ${doc.data["positionPickup"]["geopoint"].latitude.toString()}'),
+                                    Text(
+                                        'Pickup: ${doc.data["positionDestination"]["geopoint"].latitude.toString()}, ${doc.data["positionDestination"]["geopoint"].latitude.toString()}'),
+                                    Text(
+                                        ' Price" ${doc.data["price"].toString()}'),
                                   ],
                                 ),
                               )
@@ -86,10 +85,6 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
                           ),
                         ))
                     .toList();
-// Container(
-
-//   doc['uid'].toString())).toList();
-
                 return ListView(
                   children: weightData,
                 );
