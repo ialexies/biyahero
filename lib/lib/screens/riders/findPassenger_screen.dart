@@ -46,32 +46,44 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
     final appState = Provider.of<AppState>(context);
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('Find Passenger'),
+        ),
         body: SizedBox(
           height: 900,
           child: StreamBuilder(
             stream: stream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<DocumentSnapshot>> snapshots) {
-              if (snapshots.connectionState == ConnectionState.active &&  snapshots.hasData) {
-                print('data ${snapshots.data[0].data.toString()}');
+            builder: (BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshots) {
+              // if (snapshots.connectionState == ConnectionState.active &&
+              //     snapshots.hasData) {
 
-                List<Text> children = List();
+       
 
-                List<Card> weightData = snapshots.data
+              if (snapshots.connectionState == ConnectionState.active) {
+
+                if(snapshots.data.length==0){
+                  return Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      SizedBox(height: 30,),
+                      Text('No Passengers'),
+                    ],
+                  ));
+                  print('************no data');
+                }
+                else{
+                  List<Card> weightData;
+
+                    weightData = snapshots.data
                     .map((doc) => Card(
                           child: Column(
                             children: <Widget>[
                               ListTile(
                                 leading: Icon(Icons.album),
-                                // title: Text(doc['uid']),
-                                title: Text(doc['passangerInfo']["username"]
-                                    .toString()),
-
+                                title: Text(doc['passangerInfo']["username"].toString()),
                                 subtitle: Column(
                                   children: <Widget>[
-
-
                                     Text(
                                         'Pickup: ${doc.data["positionPickup"]["geopoint"].latitude.toString()}, ${doc.data["positionPickup"]["geopoint"].latitude.toString()}'),
                                     Text(
@@ -88,10 +100,16 @@ class _FindPassengerScreeenState extends State<FindPassengerScreeen> {
                 return ListView(
                   children: weightData,
                 );
-                // return Text(snapshots.data.forEach((doc)=>debugPrint(doc.data.toString())));
-              } else {
-                return Center(child: CircularProgressIndicator());
+                }
               }
+              
+       
+           
+          
+
+      
+                // return Text(snapshots.data.forEach((doc)=>debugPrint(doc.data.toString())));
+        
             },
           ),
         ),

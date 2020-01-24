@@ -355,7 +355,7 @@ class MapState with ChangeNotifier{
   Future<List<SuggestedPlaces>>getCountries() async{
     // final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&input=${textDestinationControler.text}');
     // The location is filter for suggestion is restricted for 50km with center at olongapo city hall as LatLng
-    final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&location=14.842299, 120.287810&radius=1000&input=${textDestinationControler.text}');
+    final response = await http .get('https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=AIzaSyB8jxZ33qr3HXTSKgXqx0mXbzQWzLjnfLU&location=14.842299, 120.287810&radius=1000&input=${textDestinationControler.text.toString()}');
 
 
 
